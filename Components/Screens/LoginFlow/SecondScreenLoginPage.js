@@ -57,7 +57,7 @@ export default function Onboarding() {
           <ScrollView contentContainerStyle={styles.container}>
             {/* Skip Button */}
             <View style={styles.skipContainer}>
-              <TouchableOpacity onPress={() => navigation.replace('Login6')}>
+              <TouchableOpacity onPress={() => navigation.replace('Services')}>
                 <Text style={styles.skipText}>Skip ⏭</Text>
               </TouchableOpacity>
             </View>

@@ -34,7 +34,7 @@ const HealthUmbrellaScreen = () => {
         <ScrollView style={styles.container}>
           {/* Skip Button */}
           <View style={styles.skipContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('Login6')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Services')}>
               <Text style={styles.skipText}>Skip ⏭</Text>
             </TouchableOpacity>
           </View>

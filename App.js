@@ -10,6 +10,8 @@ import Login3 from './Components/Screens/LoginFlow/ThirdScreenLoginPage';
 import Login4 from './Components/Screens/LoginFlow/FourthScreenLoginPage';
 import Login5 from './Components/Screens/LoginFlow/FifthScreenLoginPage';
 import Login6 from './Components/Screens/LoginFlow/LoginAccoundScreen';
+import Services from './Components/Screens/LoginFlow/CategoryServicesScreen';
+
 import Login7 from './Components/Screens/LoginFlow/LoginOtpScreen';
 import Login8 from './Components/Screens/LoginFlow/Conguratulation';
 import { Provider } from 'react-redux';
@@ -34,6 +36,9 @@ export default function App() {
           <Stack.Screen name="Login6" component={Login6} />
           <Stack.Screen name="Login7" component={Login7} />
           <Stack.Screen name="Login8" component={Login8} />
+          <Stack.Screen name="Services" component={Services} />
+
+
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
