@@ -11,9 +11,12 @@ import Login4 from './Components/Screens/LoginFlow/FourthScreenLoginPage';
 import Login5 from './Components/Screens/LoginFlow/FifthScreenLoginPage';
 import Login6 from './Components/Screens/LoginFlow/LoginAccoundScreen';
 import Services from './Components/Screens/LoginFlow/CategoryServicesScreen';
-
+import Servicesform from './Components/Screens/LoginFlow/ServicesFormScreen';
 import Login7 from './Components/Screens/LoginFlow/LoginOtpScreen';
 import Login8 from './Components/Screens/LoginFlow/Conguratulation';
+
+import WelcomeSwipe from './Components/Screens/LoginFlow/WelcomeSwipeScreen';
+
 import { Provider } from 'react-redux';
 import store from './Components/redux/store';
 
@@ -37,8 +40,9 @@ export default function App() {
           <Stack.Screen name="Login7" component={Login7} />
           <Stack.Screen name="Login8" component={Login8} />
           <Stack.Screen name="Services" component={Services} />
-
-
+          <Stack.Screen name="Servicesform" component={Servicesform} />
+          <Stack.Screen name="WelcomeSwipe" component={WelcomeSwipe} />
+      
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
