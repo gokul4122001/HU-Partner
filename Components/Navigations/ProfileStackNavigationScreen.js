@@ -2,11 +2,12 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ProfileScreen from '../Screens/ProfileFlow/ProfileScreen';
 import Profileone from '../Screens/ProfileFlow/ProfileScreenone'
-import ProfileTwo from '../Screens/ProfileFlow/ProfileTwo'
+import Payments from '../Screens/ProfileFlow/Payment&Billes'
+
 import ChangePassword from '../Screens/ProfileFlow/ChangePasswordScreen'
 import EmergencyContactScreen from '../Screens/ProfileFlow/ProfileEmergencyContactPage';
-import MyReport from '../Screens/ProfileFlow/MyReport';
-import ListofHospitals from '../Screens/ProfileFlow/ReportListOfEnquiryPage';
+import Assignment from '../Screens/ProfileFlow/AssignmentOverview.js';
+
 import TermsAndConditionsScreen from '../Screens/ProfileFlow/Terms&ConditionPage';
 
 const ProfileStack = createNativeStackNavigator();
@@ -24,11 +25,7 @@ const ProfileStackScreen = () => {
         component={Profileone}
         options={{ headerShown: false }}
       />
-       <ProfileStack.Screen
-        name="ProfileTwo"
-        component={ProfileTwo}
-        options={{ headerShown: false }}
-      />
+    
       <ProfileStack.Screen
         name="ChangePassword"
         component={ChangePassword}
@@ -40,13 +37,13 @@ const ProfileStackScreen = () => {
         options={{ headerShown: false }}
       />
         <ProfileStack.Screen
-        name="MyReport"
-        component={MyReport}
+        name="Assignment"
+        component={Assignment}
         options={{ headerShown: false }}
       />
         <ProfileStack.Screen
-        name="ListofHospitals"
-        component={ListofHospitals}
+        name="Payments"
+        component={Payments}
         options={{ headerShown: false }}
       />
        <ProfileStack.Screen

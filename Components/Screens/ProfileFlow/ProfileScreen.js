@@ -40,19 +40,19 @@ const ProfileScreen = ({ navigation }) => {
     },
     {
       id: 2,
-      title: 'Change Password',
+      title: 'Assignment Overview',
       icon: 'lock',
       isActive: false,
     },
     {
       id: 3,
-      title: 'Emergency Contact',
+      title: 'Payment & Bills',
       icon: 'phone',
       isActive: false,
     },
     {
       id: 4,
-      title: 'My Reports',
+      title: 'Change Password',
       icon: 'description',
       isActive: false,
     },
@@ -70,36 +70,23 @@ const ProfileScreen = ({ navigation }) => {
     },
   ];
 
-  const checkProfileData = async () => {
-    UserProfileAPI(token)
-      .then(data => {
-        if (data.data.mobile&&data.data.email) {
-          navigation.navigate('Profileone');
-        } else {
-          navigation.navigate('ProfileTwo');
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching profile data:', error);
-      });
-  };
-
+ 
   const handleMenuPress = item => {
     setSelectedItem(item.id); 
     console.log(`Pressed: ${item.title}`);
 
     switch (item.title) {
       case 'My Profile':
-        checkProfileData()
+        navigation.navigate('Profileone');
+        break;
+      case 'Assignment Overview':
+        navigation.navigate('Assignment');
+        break;
+      case 'Payment & Bills':
+        navigation.navigate('Payments');
         break;
       case 'Change Password':
         navigation.navigate('ChangePassword');
-        break;
-      case 'Emergency Contact':
-        navigation.navigate('EmergencyContactScreen');
-        break;
-      case 'My Reports':
-        navigation.navigate('MyReport');
         break;
       case 'Terms and Conditions':
         navigation.navigate('TermsAndConditionsScreen');

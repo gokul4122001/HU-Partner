@@ -1,546 +1,357 @@
-// screens/ProfileFormScreen.js
 import React, { useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  StatusBar,
-  SafeAreaView,
-  ScrollView,
   TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  SafeAreaView,
+  StatusBar,
+  Modal,
+  FlatList,
   Alert,
-  Platform,
-  ActivityIndicator,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { launchImageLibrary } from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
-import { MAX_IMAGE_SIZE, ALLOWED_IMAGE_TYPES,IMAGE_URL } from '../Config';
-import { updateUserProfile } from '../APICall/ProfileApi';
-import logo from '../../Assets/logos.png';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import logo from '../../Assets/logos.png';
 import Fonts from '../../Fonts/Fonts';
 import Colors from '../../Colors/Colors';
-import { useSelector } from 'react-redux';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const ProfileFormScreen = ({ navigation }) => {
-  const authToken = useSelector(state => state.auth.token)
-  const [profileData, setProfileData] = useState({
+const { width, height } = Dimensions.get('window');
+
+const ServiceSelectionForm = ({ navigation }) => {
+  const [formData, setFormData] = useState({
     name: '',
-    dob: '',
-    email: '',
-    mobileNumber: '',
-    age: '',
-    gender: 'Select Gender',
-    profile_photo: null,
-    familyDetails: [],
+    contactNumber: '',
+    emailAddress: '',
+    service: 'Ambulance',
+    state: '',
+    city: '',
   });
 
-  const [includeFamilyMembers, setIncludeFamilyMembers] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [activeDatePickerFor, setActiveDatePickerFor] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showServiceModal, setShowServiceModal] = useState(false);
+  const [showStateModal, setShowStateModal] = useState(false);
+  const [showCityModal, setShowCityModal] = useState(false);
+  const [showNoteModal, setShowNoteModal] = useState(false); // NOTE modal
 
-  // Helper functions
-  const updateProfileData = (field, value) => {
-    setProfileData(prev => ({ ...prev, [field]: value }));
-  };
+  const services = [
+    'Ambulance',
+    'Fire Department',
+    'Police',
+    'Medical Emergency',
+    'Hospital',
+    'Pharmacy',
+  ];
 
-  const updateFamilyMember = (index, field, value) => {
-    const updatedMembers = [...profileData.familyDetails];
-    updatedMembers[index] = { ...updatedMembers[index], [field]: value };
-    setProfileData(prev => ({ ...prev, familyDetails: updatedMembers }));
-  };
+  const states = [
+    'Tamil Nadu',
+    'Kerala',
+    'Karnataka',
+    'Andhra Pradesh',
+    'Telangana',
+    'Maharashtra',
+    'Gujarat',
+    'Rajasthan',
+  ];
 
-  const addFamilyMember = () => {
-    setProfileData(prev => ({
+  const cities = [
+    'Chennai',
+    'Mumbai',
+    'Delhi',
+    'Bangalore',
+    'Hyderabad',
+    'Pune',
+    'Kolkata',
+    'Ahmedabad',
+  ];
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
       ...prev,
-      familyDetails: [
-        ...prev.familyDetails,
-        {
-          name: '',
-          dob: '',
-          email: '',
-          mobile: '',
-          age: '',
-          gender: 'Select Gender',
-        },
-      ],
+      [field]: value,
     }));
   };
 
-  const selectImage = async () => {
-    if (isSubmitting) return;
-
-    try {
-      const result = await launchImageLibrary({
-        mediaType: 'photo',
-        quality: 0.8,
-        maxWidth: 2000,
-        maxHeight: 2000,
-      });
-
-      if (result.didCancel) return;
-      if (result.errorCode) {
-        throw new Error(result.errorMessage || 'Image selection failed');
-      }
-
-      const selectedImage = result.assets?.[0];
-      if (!selectedImage) return;
-
-      if (selectedImage.fileSize > MAX_IMAGE_SIZE) {
-        throw new Error('Image size should be less than 2MB');
-      }
-
-      if (!ALLOWED_IMAGE_TYPES.includes(selectedImage.type)) {
-        throw new Error('Only JPEG and PNG images are allowed');
-      }
-
-      console.log(selectedImage, 'selectedImage');
-
-      updateProfileData('profile_photo', selectedImage.uri);
-    } catch (error) {
-      Alert.alert('Error', error.message);
-    }
-  };
-
-  const handleDateChange = (event, selectedDate) => {
-    setShowDatePicker(Platform.OS === 'ios');
-
-    if (!selectedDate) return;
-
-    const formattedDate = selectedDate.toISOString().split('T')[0];
-
-    if (activeDatePickerFor === 'profile') {
-      updateProfileData('dob', formattedDate);
-    } else if (typeof activeDatePickerFor === 'number') {
-      updateFamilyMember(activeDatePickerFor, 'dob', formattedDate);
-    }
-  };
-
-  const showGenderPicker = (isProfile = true, memberIndex = 0) => {
-    Alert.alert('Select Gender', '', [
-      {
-        text: 'Male',
-        onPress: () => updateGender('Male', isProfile, memberIndex),
-      },
-      {
-        text: 'Female',
-        onPress: () => updateGender('Female', isProfile, memberIndex),
-      },
-      {
-        text: 'Other',
-        onPress: () => updateGender('Other', isProfile, memberIndex),
-      },
-      { text: 'Cancel', style: 'cancel' },
-    ]);
-  };
-
-  const updateGender = (gender, isProfile, memberIndex) => {
-    if (isProfile) {
-      updateProfileData('gender', gender);
-    } else {
-      updateFamilyMember(memberIndex, 'gender', gender);
-    }
-  };
-
-  const validateForm = () => {
-    if (!profileData.name.trim()) {
-      Alert.alert('Error', 'Please enter your name');
-      return false;
+  const handleSubmit = () => {
+    if (!formData.name || !formData.contactNumber || !formData.emailAddress) {
+      Alert.alert('Error', 'Please fill in all required fields');
+      return;
     }
 
-    if (!profileData.email.trim()) {
-      Alert.alert('Error', 'Please enter your email');
-      return false;
-    } else if (!/^\S+@\S+\.\S+$/.test(profileData.email)) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.emailAddress)) {
       Alert.alert('Error', 'Please enter a valid email address');
-      return false;
+      return;
     }
 
-    if (!profileData.dob) {
-      Alert.alert('Error', 'Please select your date of birth');
-      return false;
-    }
-
-    return true;
+    // Show Note Modal
+    setShowNoteModal(true);
   };
 
-  const handleSave = async () => {
-    if (isSubmitting || !validateForm()) return;
-
-    setIsSubmitting(true);
-
-    try {
-      await updateUserProfile(
-        {
-          ...profileData,
-          familyDetails: includeFamilyMembers ? profileData.familyDetails : [],
-        },
-        authToken,
-      );
-
-      Alert.alert('Success', 'Profile updated successfully!', [
-        { text: 'OK', onPress: () => navigation.navigate('ProfileTwo') },
-      ]);
-    } catch (error) {
-      Alert.alert('Error', error.message || 'Failed to update profile');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const renderFormField = (
-    label,
-    value,
-    onChangeText,
-    placeholder,
-    isDropdown = false,
-    onPress = () => {},
-    isDateField = false,
-    keyboardType = 'default',
+  const renderDropdownModal = (
+    visible,
+    setVisible,
+    data,
+    selectedValue,
+    onSelect,
+    placeholder
   ) => (
-    <View style={styles.fieldContainer}>
-      <Text style={styles.fieldLabel}>{label}</Text>
-      {isDropdown ? (
-        <TouchableOpacity
-          style={styles.dropdownContainer}
-          onPress={onPress}
-          disabled={isSubmitting}
-        >
-          <Text
-            style={[
-              styles.dropdownText,
-              value === 'Select Gender' && styles.placeholderText,
-            ]}
-          >
-            {value}
-          </Text>
-          <Icon name="keyboard-arrow-down" size={24} color="#9CA3AF" />
-        </TouchableOpacity>
-      ) : isDateField ? (
-        <View style={styles.dateInputContainer}>
-          <TouchableOpacity
-            style={styles.dateInput}
-            onPress={onPress}
-            disabled={isSubmitting}
-          >
-            <Text style={value ? styles.dropdownText : styles.placeholderText}>
-              {value || placeholder}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={onPress}
-            style={styles.calendarIcon}
-            disabled={isSubmitting}
-          >
-            <Icon name="calendar-today" size={20} color="#7518AA" />
-          </TouchableOpacity>
+    <Modal
+      visible={visible}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={() => setVisible(false)}
+    >
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalContent}>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>{placeholder}</Text>
+            <TouchableOpacity
+              onPress={() => setVisible(false)}
+              style={styles.closeButton}
+            >
+              <Icon name="close" size={24} color="#666" />
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            data={data}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={[
+                  styles.modalItem,
+                  selectedValue === item && styles.selectedModalItem,
+                ]}
+                onPress={() => {
+                  onSelect(item);
+                  setVisible(false);
+                }}
+              >
+                <Text
+                  style={[
+                    styles.modalItemText,
+                    selectedValue === item && styles.selectedModalItemText,
+                  ]}
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
         </View>
-      ) : (
-        <TextInput
-          style={styles.textInput}
-          value={value}
-          onChangeText={onChangeText}
-          placeholder={placeholder}
-          placeholderTextColor="#9CA3AF"
-          editable={!isSubmitting}
-          keyboardType={keyboardType}
-        />
-      )}
-    </View>
+      </View>
+    </Modal>
   );
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.statusBar} />
+      <StatusBar backgroundColor="#8B5CF6" barStyle="light-content" />
       <LinearGradient
         colors={['#ffffff', '#C3DFFF']}
-        start={{ x: 0, y: 0.3 }}
+        start={{ x: -0, y: 0.3 }}
         end={{ x: 0, y: 0 }}
         style={styles.topBackground}
       >
-        {/* Header Section - Fixed */}
-        <View style={styles.header}>
-          <Image source={logo} style={styles.logo} resizeMode="contain" />
-          <View style={styles.greetingContainer}>
-            <Text style={styles.greeting}>Hi, Welcome</Text>
-            <Text style={styles.userName}>Janmani Kumar</Text>
-          </View>
-          <View style={styles.notificationIcons}>
-            <TouchableOpacity
-              style={[styles.notificationButton, { right: hp('2%') }]}
-            >
-              <Icon name="notifications" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.notificationButton, { backgroundColor: 'red' }]}
-            >
-              <MaterialCommunityIcons
-                name="alarm-light-outline"
-                size={24}
-                color="white"
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
 
-        <View style={styles.headered}>
+   <View style={styles.header}>
+                                 <Image source={logo} style={styles.logo} />
+                                 <View style={styles.greetingContainer}>
+                                   <Text style={styles.greeting}>Hi, Welcome</Text>
+                                   <Text style={styles.userName}>Janmani Kumar</Text>
+                                 </View>
+                                 <TouchableOpacity
+                                   style={[styles.notificationButton, { right: hp('2%') }]}
+                                 >
+                                   <Icon name="notifications-on" size={24} color="black" />
+                                 </TouchableOpacity>
+                                 <TouchableOpacity
+                                   style={[styles.notificationButton, { backgroundColor: 'red' }]}
+                                 >
+                                   <MaterialCommunityIcons
+                                     name="alarm-light-outline"
+                                     size={24}
+                                     color="white"
+                                   />
+                                 </TouchableOpacity>
+                               </View>
+
+
+        {/* Header */}
+        <View style={styles.header1}>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.goBack()}
-            disabled={isSubmitting}
           >
-            <Icon name="arrow-back" size={24} color="#000000" />
+            <Icon name="arrow-back" size={24} color="#8B5CF6" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>My Profile</Text>
+          <Text style={styles.headerTitle}>Profile</Text>
+        </View>
+   <View style={styles.profileContainer}>
+          <Image
+            source={require('../../Assets/profile.png')} // replace with your local image path
+            style={styles.profileImage}
+          />
+          <TouchableOpacity style={styles.editIcon}>
+            <Icon name="edit" size={18} color="#fff" />
+          </TouchableOpacity>
         </View>
 
-        <ScrollView
-          style={styles.content}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
-          {/* Profile Section */}
-          <View style={styles.section}>
-            {renderFormField(
-              'Name*',
-              profileData.name,
-              text => updateProfileData('name', text),
-              'Enter Your Name',
-            )}
-
-            {renderFormField(
-              'Date of Birth*',
-              profileData.dob,
-              null,
-              'Select Date of Birth',
-              false,
-              () => {
-                setActiveDatePickerFor('profile');
-                setShowDatePicker(true);
-              },
-              true,
-            )}
-
-            {renderFormField(
-              'E-mail ID*',
-              profileData.email,
-              text => updateProfileData('email', text),
-              'Enter mail id',
-              false,
-              null,
-              false,
-              'email-address',
-            )}
-
-            {renderFormField(
-              'Mobile Number',
-              profileData.mobileNumber,
-              text => updateProfileData('mobileNumber', text),
-              'Enter mobile number',
-              false,
-              null,
-              false,
-              'phone-pad',
-            )}
-
-            <View style={styles.rowContainer}>
-              <View style={styles.halfField}>
-                {renderFormField(
-                  'Age',
-                  profileData.age,
-                  text => updateProfileData('age', text),
-                  'Enter your Age',
-                  false,
-                  null,
-                  false,
-                  'numeric',
-                )}
-              </View>
-              <View style={styles.halfField}>
-                {renderFormField(
-                  'Gender*',
-                  profileData.gender,
-                  null,
-                  '',
-                  true,
-                  () => showGenderPicker(true),
-                )}
-              </View>
-            </View>
-
-            <View style={styles.fieldContainer}>
-              <Text style={styles.fieldLabel}>Upload Profile Image</Text>
-              <TouchableOpacity
-                style={styles.uploadContainer}
-                onPress={selectImage}
-                disabled={isSubmitting}
-              >
-                {profileData.profile_photo ? (
-                  <Image
-                    source={{
-                      uri: profileData.profile_photo.startsWith('http')
-                        ? profileData.profile_photo
-                        : `${IMAGE_URL}${profileData.profile_photo}`,
-                    }}
-                    style={styles.uploadedImage}
+          <ScrollView
+            contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.formContainer}>
+              {/* Input Fields */}
+              {[
+                { label: 'Name', key: 'name', keyboardType: 'default' },
+                {
+                  label: 'Contact Number',
+                  key: 'contactNumber',
+                  keyboardType: 'phone-pad',
+                },
+                {
+                  label: 'Email Address',
+                  key: 'emailAddress',
+                  keyboardType: 'email-address',
+                },
+              ].map((item, index) => (
+                <View style={styles.inputGroup} key={index}>
+                  <Text style={styles.label}>{item.label}</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder={`Enter ${item.label}`}
+                    placeholderTextColor="#A0A0A0"
+                    value={formData[item.key]}
+                    keyboardType={item.keyboardType}
+                    onChangeText={text =>
+                      handleInputChange(item.key, text)
+                    }
                   />
-                ) : (
-                  <>
-                    <Icon name="cloud-upload" size={40} color="#7518AA" />
-                    <Text style={styles.uploadText}>Upload image</Text>
-                  </>
-                )}
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity
-              style={styles.toggleContainer}
-              onPress={() => setIncludeFamilyMembers(!includeFamilyMembers)}
-              disabled={isSubmitting}
-            >
-              <Icon
-                name={
-                  includeFamilyMembers ? 'check-box' : 'check-box-outline-blank'
-                }
-                size={24}
-                color="#4CAF50"
-              />
-              <Text style={styles.toggleText}>
-                Would you like to include your family members details?
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Family Members Section */}
-          {includeFamilyMembers && (
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Family Members Details</Text>
-
-              {profileData.familyDetails.map((member, index) => (
-                <View
-                  key={`member-${index}`}
-                  style={styles.familyMemberContainer}
-                >
-                  {renderFormField(
-                    'Name',
-                    member.name,
-                    text => updateFamilyMember(index, 'name', text),
-                    'Enter Your Name',
-                  )}
-
-                  {renderFormField(
-                    'Date of Birth',
-                    member.dob,
-                    null,
-                    'Select Date of Birth',
-                    false,
-                    () => {
-                      setActiveDatePickerFor(index);
-                      setShowDatePicker(true);
-                    },
-                    true,
-                  )}
-
-                  {renderFormField(
-                    'E-mail ID',
-                    member.email,
-                    text => updateFamilyMember(index, 'email', text),
-                    'Enter mail id',
-                    false,
-                    null,
-                    false,
-                    'email-address',
-                  )}
-
-                  {renderFormField(
-                    'Mobile Number',
-                    member.mobile,
-                    text => updateFamilyMember(index, 'mobile', text),
-                    'Enter mobile number',
-                    false,
-                    null,
-                    false,
-                    'phone-pad',
-                  )}
-
-                  <View style={styles.rowContainer}>
-                    <View style={styles.halfField}>
-                      {renderFormField(
-                        'Age',
-                        member.age,
-                        text => updateFamilyMember(index, 'age', text),
-                        'Enter your Age',
-                        false,
-                        null,
-                        false,
-                        'numeric',
-                      )}
-                    </View>
-                    <View style={styles.halfField}>
-                      {renderFormField(
-                        'Gender',
-                        member.gender,
-                        null,
-                        '',
-                        true,
-                        () => showGenderPicker(false, index),
-                      )}
-                    </View>
-                  </View>
                 </View>
               ))}
 
+              {/* Dropdowns */}
+              {[
+                {
+                  label: 'Service',
+                  value: formData.service,
+                  onPress: () => setShowServiceModal(true),
+                },
+                {
+                  label: 'State',
+                  value: formData.state || 'Select state',
+                  onPress: () => setShowStateModal(true),
+                },
+                {
+                  label: 'City',
+                  value: formData.city || 'Select city',
+                  onPress: () => setShowCityModal(true),
+                },
+              ].map((item, index) => (
+                <View style={styles.inputGroup} key={index}>
+                  <Text style={styles.label}>{item.label}</Text>
+                  <TouchableOpacity
+                    style={styles.dropdown}
+                    onPress={item.onPress}
+                  >
+                    <Text
+                      style={[
+                        styles.dropdownText,
+                        (item.value === 'Select state' ||
+                          item.value === 'Select city') &&
+                          styles.placeholderText,
+                      ]}
+                    >
+                      {item.value}
+                    </Text>
+                    <Icon name="keyboard-arrow-down" size={24} color="#666" />
+                  </TouchableOpacity>
+                </View>
+              ))}
+
+              {/* Submit Button */}
               <TouchableOpacity
-                style={styles.addButton}
-                onPress={addFamilyMember}
-                disabled={isSubmitting}
+                style={styles.submitButton}
+                onPress={handleSubmit}
               >
-                <Icon name="add" size={20} color="#8B5CF6" />
-                <Text style={styles.addButtonText}>Add one more Person</Text>
+                <Text style={styles.submitButtonText}>Submit</Text>
               </TouchableOpacity>
             </View>
-          )}
+          </ScrollView>
+        </KeyboardAvoidingView>
 
-          <TouchableOpacity
-            style={[styles.saveButton, isSubmitting && styles.disabledButton]}
-            onPress={handleSave}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <ActivityIndicator color="#FFFFFF" />
-            ) : (
-              <Text style={styles.saveButtonText}>Save</Text>
-            )}
-          </TouchableOpacity>
-        </ScrollView>
-
-        {/* Date Pickers */}
-        {showDatePicker && (
-          <DateTimePicker
-            value={
-              activeDatePickerFor === 'profile'
-                ? profileData.dob
-                  ? new Date(profileData.dob)
-                  : new Date()
-                : profileData.familyDetails[activeDatePickerFor]?.dob
-                ? new Date(profileData.familyDetails[activeDatePickerFor].dob)
-                : new Date()
-            }
-            mode="date"
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            onChange={handleDateChange}
-            maximumDate={new Date()}
-          />
+        {/* Dropdown Modals */}
+        {renderDropdownModal(
+          showServiceModal,
+          setShowServiceModal,
+          services,
+          formData.service,
+          value => handleInputChange('service', value),
+          'Select Service'
         )}
+        {renderDropdownModal(
+          showStateModal,
+          setShowStateModal,
+          states,
+          formData.state,
+          value => handleInputChange('state', value),
+          'Select State'
+        )}
+        {renderDropdownModal(
+          showCityModal,
+          setShowCityModal,
+          cities,
+          formData.city,
+          value => handleInputChange('city', value),
+          'Select City'
+        )}
+
+        {/* Note Modal */}
+        <Modal
+          visible={showNoteModal}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setShowNoteModal(false)}
+        >
+          <View style={styles.overlay}>
+            <View style={styles.noteModal}>
+              <Text style={styles.noteTitle}>Note</Text>
+              <Text style={styles.noteMessage}>
+                Once your request form is approved by the admin, you will be
+                granted access to use as Vendor
+              </Text>
+            <TouchableOpacity
+  style={styles.cancelButton}
+  onPress={() => {
+    setShowNoteModal(false);
+    navigation.navigate('Login6'); 
+  }}
+>
+  <LinearGradient
+    colors={['#8B5CF6', '#7C3AED']}
+    style={styles.cancelButtonGradient}
+  >
+    <Text style={styles.cancelButtonText}>Cancel</Text>
+  </LinearGradient>
+</TouchableOpacity>
+
+            </View>
+          </View>
+        </Modal>
       </LinearGradient>
     </SafeAreaView>
   );
@@ -549,234 +360,223 @@ const ProfileFormScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: '#F5F5F5',
   },
   topBackground: {
-    flex: 1,
-    paddingTop: hp('2%'),
+    paddingTop: hp('4%'),
+    paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
+    height: hp('100%'),
   },
-  header: {
+  header1: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: hp('2%'),
+    paddingHorizontal: width * 0.04,
+    paddingVertical:'10%'
+  },
+  backButton: {
+    marginRight: width * 0.04,
+  },
+  headerTitle: {
+    fontSize: width * 0.045,
+    fontWeight: '600',
+    color: '#8B5CF6',
+    flex: 1,
+    alignSelf: 'center',
+  },
+  formContainer: {
+    flex: 1,
+    top: 10,
+  },
+  inputGroup: {
+    marginBottom: height * 0.025,
+  },
+  label: {
+    fontSize: width * 0.04,
+    fontWeight: '600',
+    color: '#4F4C4C',
+    marginBottom: height * 0.02,
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    paddingHorizontal: width * 0.04,
+    paddingVertical: height * 0.02,
+    fontSize: width * 0.04,
+    backgroundColor: '#FFFFFF',
+    color: '#333333',
+  },
+  dropdown: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 8,
+    paddingHorizontal: width * 0.04,
+    paddingVertical: height * 0.015,
+    backgroundColor: '#FFFFFF',
+  },
+  dropdownText: {
+    fontSize: width * 0.04,
+    color: '#333333',
+    flex: 1,
+  },
+  placeholderText: {
+    color: '#A0A0A0',
+  },
+  submitButton: {
+    backgroundColor: '#8B5CF6',
+    borderRadius: 8,
+    paddingVertical: height * 0.02,
+    alignItems: 'center',
+    marginTop: height * 0.03,
+    marginHorizontal: width * 0.02,
+  },
+  submitButtonText: {
+    color: '#FFFFFF',
+    fontSize: width * 0.045,
+    fontWeight: '600',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: height * 0.6,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.02,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  modalTitle: {
+    fontSize: width * 0.045,
+    fontWeight: '600',
+    color: '#333333',
+  },
+  closeButton: {
+    padding: 4,
+  },
+  modalItem: {
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.018,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
+  },
+  selectedModalItem: {
+    backgroundColor: '#F3E8FF',
+  },
+  modalItemText: {
+    fontSize: width * 0.04,
+    color: '#333333',
+  },
+  selectedModalItemText: {
+    color: '#8B5CF6',
+    fontWeight: '600',
+  },
+
+  // NOTE MODAL
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noteModal: {
+    backgroundColor: '#FFF',
+    padding: 24,
+    borderRadius: 20,
+    width: '85%',
+    alignItems: 'center',
+    elevation: 10,
+    height:'30%'
+  },
+  noteTitle: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#6B21A8',
+    marginBottom: 20,
+  },
+  noteMessage: {
+    fontSize: 20,
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 24,
+    lineHeight: 30,
+  },
+  cancelButton: {
+    width: '100%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    position:'absolute',
+    bottom:40
+  },
+  cancelButtonGradient: {
+    paddingVertical: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cancelButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+   profileContainer: { alignItems: 'center', marginBottom: 30 ,top:10},
+  profileImage: {
+    width: 100, height: 100, borderRadius: 50,
+  },
+  editIcon: {
+    position: 'absolute',
+    bottom: 0,
+    right: width / 2 - 60,
+    backgroundColor: '#8B5CF6',
+    borderRadius: 20,
+    padding: 4,
+  },
+ header: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   logo: {
-    width: wp('12%'),
-    height: hp('6%'),
+    width: wp('10%'),
+    height: hp('5%'),
+    resizeMode: 'contain',
   },
   greetingContainer: {
     flex: 1,
     marginLeft: wp('3%'),
   },
   greeting: {
-    fontSize: Fonts.size.TopHeading,
+     fontSize:  Fonts.size.TopHeading,
     color: 'black',
     opacity: 0.9,
-    fontFamily: Fonts.family.regular,
+     fontFamily:Fonts.family.regular
   },
   userName: {
-    fontSize: Fonts.size.TopSubheading,
+  fontSize:  Fonts.size.TopSubheading,
     fontWeight: 'bold',
     color: 'black',
-    fontFamily: Fonts.family.regular,
-  },
-  notificationIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
+     fontFamily:Fonts.family.regular
   },
   notificationButton: {
     width: wp('10%'),
     height: wp('10%'),
     borderRadius: wp('5%'),
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: wp('2%'),
-  },
-  headered: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: hp('2%'),
-  },
-  backButton: {
-    padding: wp('1%'),
-  },
-  headerTitle: {
-    flex: 1,
-    fontSize: Fonts.size.PageHeading,
-    fontWeight: '600',
-    color: '#1F2937',
-    marginLeft: wp('2%'),
-    fontFamily: Fonts.family.regular,
-  },
-  content: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: hp('10%'),
-  },
-  section: {
-    marginBottom: hp('2%'),
     backgroundColor: 'white',
-    borderRadius: 10,
-    padding: wp('4%'),
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  sectionTitle: {
-    fontSize: Fonts.size.PageHeading,
-    fontWeight: '600',
-    color: '#1F2937',
-    marginBottom: hp('2%'),
-    fontFamily: Fonts.family.regular,
-  },
-  fieldContainer: {
-    marginBottom: hp('2%'),
-  },
-  fieldLabel: {
-    fontSize: Fonts.size.PageHeading,
-    fontWeight: '500',
-    color: '#4F4C4C',
-    marginBottom: hp('1%'),
-    fontFamily: Fonts.family.regular,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#D1D5DB',
-    borderRadius: 8,
-    paddingHorizontal: wp('3%'),
-    paddingVertical: hp('1.5%'),
-    fontSize: Fonts.size.PageHeading,
-    color: '#1F2937',
-    backgroundColor: '#FFFFFF',
-  },
-  dropdownContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: '#D1D5DB',
-    borderRadius: 8,
-    paddingHorizontal: wp('3%'),
-    paddingVertical: hp('1.5%'),
-    backgroundColor: '#FFFFFF',
-  },
-  dropdownText: {
-    fontSize: Fonts.size.PageHeading,
-    color: '#1F2937',
-    fontFamily: Fonts.family.regular,
-  },
-  placeholderText: {
-    color: '#9CA3AF',
-    fontFamily: Fonts.family.regular,
-  },
-  rowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  halfField: {
-    width: '48%',
-  },
-  dateInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#D1D5DB',
-    borderRadius: 8,
-    backgroundColor: '#FFFFFF',
-    overflow: 'hidden',
-  },
-  dateInput: {
-    flex: 1,
-    paddingHorizontal: wp('3%'),
-    paddingVertical: hp('1.5%'),
     justifyContent: 'center',
-  },
-  calendarIcon: {
-    paddingHorizontal: wp('3%'),
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-  },
-  uploadContainer: {
-    borderWidth: 2,
-    borderColor: '#D1D5DB',
-    borderStyle: 'dashed',
-    borderRadius: 8,
-    padding: wp('6%'),
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F9FAFB',
-  },
-  uploadedImage: {
-    width: wp('20%'),
-    height: wp('20%'),
-    borderRadius: wp('10%'),
-  },
-  uploadText: {
-    marginTop: hp('1%'),
-    fontSize: Fonts.size.PageHeading,
-    color: '#6B7280',
-    fontFamily: Fonts.family.regular,
-  },
-  toggleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: hp('1.5%'),
-    paddingHorizontal: wp('4%'),
-    backgroundColor: '#F0FDF4',
-    borderRadius: 8,
-    marginTop: hp('1%'),
-  },
-  toggleText: {
-    fontSize: Fonts.size.PageSubheading,
     marginLeft: wp('2%'),
-    color: '#166534',
-    flex: 1,
-    fontFamily: Fonts.family.regular,
-  },
-  familyMemberContainer: {
-    marginBottom: hp('3%'),
-    paddingBottom: hp('2%'),
-    borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
-  },
-  addButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: hp('1.5%'),
-    borderWidth: 1,
-    borderColor: '#8B5CF6',
-    borderRadius: 8,
-    backgroundColor: '#FAFAFA',
-  },
-  addButtonText: {
-    marginLeft: wp('2%'),
-    fontSize: Fonts.size.PageHeading,
-    color: '#8B5CF6',
-    fontWeight: '500',
-    fontFamily: Fonts.family.regular,
-  },
-  saveButton: {
-    backgroundColor: '#7518AA',
-    borderRadius: 8,
-    paddingVertical: hp('2%'),
-    alignItems: 'center',
-    marginVertical: hp('3%'),
-    marginHorizontal: wp('4%'),
-  },
-  disabledButton: {
-    backgroundColor: '#A0AEC0',
-  },
-  saveButtonText: {
-    color: '#FFFFFF',
-    fontSize: Fonts.size.PageHeading,
-    fontWeight: '600',
-    fontFamily: Fonts.family.regular,
   },
 });
 
-export default ProfileFormScreen;
+export default ServiceSelectionForm;
