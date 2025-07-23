@@ -14,6 +14,7 @@ import Services from './Components/Screens/LoginFlow/CategoryServicesScreen';
 import Servicesform from './Components/Screens/LoginFlow/ServicesFormScreen';
 import Login7 from './Components/Screens/LoginFlow/LoginOtpScreen';
 import Login8 from './Components/Screens/LoginFlow/Conguratulation';
+import ForgetPassword from './Components/Screens/LoginFlow/ForgetPassWord.js'
 
 import WelcomeSwipe from './Components/Screens/LoginFlow/WelcomeSwipeScreen';
 
@@ -42,6 +43,8 @@ export default function App() {
           <Stack.Screen name="Services" component={Services} />
           <Stack.Screen name="Servicesform" component={Servicesform} />
           <Stack.Screen name="WelcomeSwipe" component={WelcomeSwipe} />
+          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+
       
         </Stack.Navigator>
       </NavigationContainer>

@@ -155,17 +155,15 @@ const LoginScreen = ({navigation}) => {
     <Icons name="arrow-back-ios" size={20} color="#000000" />
   </TouchableOpacity>
   <Text style={styles.title}>
-    Login your <Text style={styles.titleAccent}>account</Text>
+    Forget Password
   </Text>
 </View>
 
-            <Text style={styles.subtitle}>
-              Your username and password credentials will be sent to you mobile number
-            </Text>
+          
 
             {/* Mobile Number Input */}
             <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Mobile Number</Text>
+              <Text style={styles.inputLabel}> Enter Mobile Number</Text>
               <TextInput
                 style={styles.textInput}
                 value={phoneInput}
@@ -180,7 +178,31 @@ const LoginScreen = ({navigation}) => {
 
             {/* Password Input */}
             <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Password</Text>
+              <Text style={styles.inputLabel}> New Password</Text>
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={styles.passwordInput}
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder="••••••••••"
+                  placeholderTextColor="#A0A0A0"
+                  secureTextEntry={!showPassword}
+                  editable={!isLoading}
+                />
+                <TouchableOpacity
+                  style={styles.eyeButton}
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  <Icons 
+                    name={showPassword ? "visibility" : "visibility-off"} 
+                    size={20} 
+                    color="#A0A0A0" 
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+               <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}> Confirm New Password</Text>
               <View style={styles.passwordContainer}>
                 <TextInput
                   style={styles.passwordInput}
@@ -216,7 +238,7 @@ const LoginScreen = ({navigation}) => {
                 <Text style={styles.rememberMeText}>Remember me</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => navigation.navigate('ForgetPassword')}>
+              <TouchableOpacity onPress={() => navigation.navigate('WelcomeSwipe')}>
                 <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
               </TouchableOpacity>
             </View>
@@ -233,7 +255,7 @@ const LoginScreen = ({navigation}) => {
                 style={styles.loginButton}
               >
                 <Text style={styles.loginButtonText}>
-                  {isLoading ? 'Logging In...' : 'Log In'}
+                  {isLoading ? 'Submiting...' : 'Submit'}
                 </Text>
               </LinearGradient>
             </TouchableOpacity>

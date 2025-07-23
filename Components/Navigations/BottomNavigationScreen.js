@@ -2,13 +2,16 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomTabButton from '../Navigations/CustomTabButton';
+//Company Stack
 import HomeStackScreen from './HomeStackNavigationScreen';
 import EmergencyStackScreen from './EmergencyStackNavigationScreen';
-import BookmarkScreen from '../Screens/HomeScreenFlow/BookmarkScreen';
+import BookmarkScreen from '../Screens/AmbulanceHomeScreenFlow/BookmarkScreen';
 import ProfileStackScreen from '../Navigations/ProfileStackNavigationScreen';
 import ServiceStackScreen from '../Navigations/ServiceStackNavigationScreen';
-import BoookingStackScreen from './BookingstackNavigation'
+import BoookingStackScreen from './BookingstackNavigation';
 
+// Drivar Stack
+import DrivarHomeStackScreen from './DriverHomeStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,9 +27,9 @@ const BottomTabs = () => {
           height: 70,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-          position: 'absolute', 
+          position: 'absolute',
         },
-        tabBarHideOnKeyboard: true, 
+        tabBarHideOnKeyboard: true,
         tabBarIcon: ({ color, size }) => {
           let iconName;
 
@@ -57,27 +60,23 @@ const BottomTabs = () => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeStackScreen}
+        component={DrivarHomeStackScreen}
         options={{
-          tabBarButton: (props) => (
-            <CustomTabButton {...props} label="Home" />
-          ),
+          tabBarButton: props => <CustomTabButton {...props} label="Home" />,
         }}
       />
       <Tab.Screen
         name="Menu"
         component={ServiceStackScreen}
         options={{
-          tabBarButton: (props) => (
-            <CustomTabButton {...props} label="Menu" />
-          ),
+          tabBarButton: props => <CustomTabButton {...props} label="Menu" />,
         }}
       />
       <Tab.Screen
         name="Bookmark"
         component={BoookingStackScreen}
         options={{
-          tabBarButton: (props) => (
+          tabBarButton: props => (
             <CustomTabButton {...props} label="Bookmark" />
           ),
         }}
@@ -86,18 +85,14 @@ const BottomTabs = () => {
         name="Alert"
         component={EmergencyStackScreen}
         options={{
-          tabBarButton: (props) => (
-            <CustomTabButton {...props} label="Alert" />
-          ),
+          tabBarButton: props => <CustomTabButton {...props} label="Alert" />,
         }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileStackScreen}
         options={{
-          tabBarButton: (props) => (
-            <CustomTabButton {...props} label="Profile" />
-          ),
+          tabBarButton: props => <CustomTabButton {...props} label="Profile" />,
         }}
       />
     </Tab.Navigator>
