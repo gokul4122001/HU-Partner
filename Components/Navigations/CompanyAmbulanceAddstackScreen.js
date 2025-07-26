@@ -1,8 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import EmergencyHomeScreen from '../Screens/CompanyAmbulanceAddFlow/EmergencyHomeScreen';
-import EmergencyHospitalScreen from '../Screens/CompanyAmbulanceAddFlow/EmergencyHospitalScreen';
-import EmergencyHospitalDetailScreen from '../Screens/CompanyAmbulanceAddFlow/EmergencyHospitaldetailPage';
+import EmergencyHomeScreen from '../Screens/CompanyAmbulanceAddFlow/CompanyAmbulanceAddPage';
+import EmergencyHospitalScreen from '../Screens/CompanyAmbulanceAddFlow/AmbulanceAddRegisterPage';
+import EmergencyHospitalDetailScreen from '../Screens/CompanyAmbulanceAddFlow/AmbulanceDetailsPage';
 
 const EmergencyStack = createNativeStackNavigator();
 
