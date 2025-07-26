@@ -2,16 +2,14 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomTabButton from '../Navigations/CustomTabButton';
-//Company Stack
-import HomeStackScreen from './HomeStackNavigationScreen';
-import EmergencyStackScreen from './EmergencyStackNavigationScreen';
-import BookmarkScreen from '../Screens/AmbulanceHomeScreenFlow/BookmarkScreen';
+
+import AmbulanceAddStackScreen from './CompanyAmbulanceAddstackScreen';
 import ProfileStackScreen from '../Navigations/ProfileStackNavigationScreen';
-import ServiceStackScreen from '../Navigations/ServiceStackNavigationScreen';
-import BoookingStackScreen from './BookingstackNavigation';
+import DrivarAddStackScreen from './CompanyDrivarAddStackScreen';
+import BoookingStackScreen from './CompanyBookingstackNavigation';
 
 // Drivar Stack
-import DrivarHomeStackScreen from './DriverHomeStack';
+import CompanyHomeStackScreen from './CompanyHomeStackNavigationScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -60,21 +58,21 @@ const BottomTabs = () => {
     >
       <Tab.Screen
         name="Home"
-        component={DrivarHomeStackScreen}
+        component={CompanyHomeStackScreen}
         options={{
           tabBarButton: props => <CustomTabButton {...props} label="Home" />,
         }}
       />
       <Tab.Screen
         name="Menu"
-        component={ServiceStackScreen}
+        component={BoookingStackScreen}
         options={{
           tabBarButton: props => <CustomTabButton {...props} label="Menu" />,
         }}
       />
       <Tab.Screen
         name="Bookmark"
-        component={BoookingStackScreen}
+        component={AmbulanceAddStackScreen}
         options={{
           tabBarButton: props => (
             <CustomTabButton {...props} label="Bookmark" />
@@ -83,7 +81,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="Alert"
-        component={EmergencyStackScreen}
+        component={DrivarAddStackScreen}
         options={{
           tabBarButton: props => <CustomTabButton {...props} label="Alert" />,
         }}
