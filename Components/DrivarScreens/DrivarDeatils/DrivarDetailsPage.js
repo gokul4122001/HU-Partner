@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,314 +7,345 @@ import {
   TouchableOpacity,
   Image,
   StatusBar,
-  SafeAreaView,
+  Dimensions,Modal,TextInput
 } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const App = ({navigation}) => {
-  const drivers = [
-    {
-      id: 'AK0215',
-      name: 'Selva Kumar',
-      contact: '9345665447',
-      email: 'selvakumar@gmail.com',
-      gender: 'Male',
-      dateOfBirth: '03/06/2002',
-      age: 22,
-      status: 'ON DUTY',
-      avatar: require('../../Assets/profile.png'), 
-    },
-    {
-      id: 'AK0215',
-      name: 'Selva Kumar',
-      contact: '9345665447',
-      email: 'selvakumar@gmail.com',
-      gender: 'Male',
-      dateOfBirth: '03/06/2002',
-      age: 22,
-      status: 'ON DUTY',
-      avatar: require('../../Assets/profile.png'),
-    },
-    {
-      id: 'AK0215',
-      name: 'Selva Kumar',
-      contact: '9345665447',
-      email: 'selvakumar@gmail.com',
-      gender: 'Male',
-      dateOfBirth: '03/06/2002',
-      age: 22,
-      status: 'ON DUTY',
-      avatar: require('../../Assets/profile.png'),
-    },
-  ];
+const { width } = Dimensions.get('window');
 
-  const DriverCard = ({ driver }) => (
-    <View style={styles.driverCard}>
-      <View style={styles.driverHeader}>
-        <Image source={driver.avatar} style={styles.avatar} />
-        <View style={styles.driverInfo}>
-          <View style={styles.nameRow}>
-            <Text style={styles.driverName}>{driver.name}</Text>
-            <View style={styles.statusBadge}>
-              <View style={styles.statusDot} />
-              <Text style={styles.statusText}>{driver.status}</Text>
-            </View>
-          </View>
-          <Text style={styles.driverId}>ID no : {driver.id}</Text>
-        </View>
-      </View>
+const DriverDetailsScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+const [reason, setReason] = useState('');
 
-      <View style={styles.driverDetails}>
-        <Text style={styles.detailText}>Contact No : {driver.contact}</Text>
-        <Text style={styles.detailText}>Email ID : {driver.email}</Text>
-        <Text style={styles.detailText}>Gender : {driver.gender}</Text>
-        <View style={styles.dobAgeRow}>
-          <Text style={styles.detailText}>Date of Birth : {driver.dateOfBirth}</Text>
-          <Text style={styles.ageText}>Age : {driver.age}</Text>
-        </View>
-      </View>
+    const handleModalSubmit = () => {
+    console.log('Submitted Reason:', reason);
+    setModalVisible(false);
+    setReason('');
+  };
 
-      <TouchableOpacity style={styles.viewDetailsButton}>
-        <Text style={styles.viewDetailsText}>View Details</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  const driver = {
+    name: 'Selva Kumar',
+    id: 'AK0215',
+    contact: '9345655447',
+    email: 'Selvakumar@gmail.com',
+    gender: 'Male',
+    dob: '03/06/2002',
+    age: 22,
+    address: 'No 3/2, 1 street, Samiyar Thottam, Vyasarpadi, Chennai - 39',
+    driverType: 'FullTime',
+    experience: '20 years',
+    licenseNumber: 'MH12 20010149313',
+    licenseType: 'International Driving Permit (IDP)',
+    licenseValidity: '08/04/2050',
+    issuedState: '454242',
+    password: 'selva201',
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#8B5CF6" barStyle="light-content" />
-      
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>🚗</Text>
-          </View>
-          <View>
-            <Text style={styles.welcomeText}>Hi, Welcome</Text>
-            <Text style={styles.userText}>Akash Ambulance</Text>
-          </View>
-        </View>
-        <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Text style={styles.iconText}>🔔</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Text style={styles.iconText}>💬</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+
+      <View style={styles.topBar}>
+        <TouchableOpacity>
+          <Icon name="arrow-back-ios" size={20} color="#000" />
+        </TouchableOpacity>
+        <Text style={styles.screenTitle}>Driver Details</Text>
+        <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.editBtn}>
+          <Icon name="edit" size={20} color="#000" />
+        </TouchableOpacity>
       </View>
 
-      {/* Driver List Title */}
-      <Text style={styles.pageTitle}>Driver List</Text>
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={{ paddingBottom: 120 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.statsRow}>
+          <View style={[styles.statCard, { backgroundColor: '#fef3c7' }]}>  
+            <Text style={styles.statValue}>20K</Text>
+            <Text style={styles.statLabel}>Earnings</Text>
+          </View>
+          <View style={[styles.statCard, { backgroundColor: '#dbeafe' }]}>  
+            <Text style={styles.statValue}>150</Text>
+            <Text style={styles.statLabel}>Completed</Text>
+          </View>
+          <View style={[styles.statCard, { backgroundColor: '#fee2e2' }]}>  
+            <Text style={styles.statValue}>50</Text>
+            <Text style={styles.statLabel}>Rejected</Text>
+          </View>
+        </View>
 
-      {/* Driver List */}
-     <ScrollView
-  style={styles.scrollView}
-  contentContainerStyle={{ paddingBottom:100}} 
-  showsVerticalScrollIndicator={false}
->
-        {drivers.map((driver, index) => (
-          <DriverCard key={index} driver={driver} />
-        ))}
-          <TouchableOpacity
-      style={styles.addButton}
-      onPress={() => navigation.navigate('ServiceHospitalScreen')}  
-    >
-        <Text style={styles.addButtonIcon}>➕</Text>
-        <Text style={styles.addButtonText}>Add New Driver</Text>
-      </TouchableOpacity>
+        <View style={styles.card}>
+          <View style={styles.rowCenter}>
+            <Image
+              source={require('../../Assets/profile.png')}
+              style={styles.avatar}
+            />
+            <View style={styles.profileInfo}>
+              <Text style={styles.name}>{driver.name}</Text>
+              <Text style={styles.id}>ID no : {driver.id}</Text>
+            </View>
+            <View style={styles.statusBadge}>
+              <Text style={styles.statusText}>ON DUTY</Text>
+            </View>
+          </View>
+          <Text style={styles.label}>Contact No : <Text style={styles.value}>{driver.contact}</Text></Text>
+          <Text style={styles.label}>Email ID : <Text style={styles.value}>{driver.email}</Text></Text>
+          <Text style={styles.label}>Gender : <Text style={styles.value}>{driver.gender}</Text>   Date of Birth : <Text style={styles.value}>{driver.dob}</Text>   Age : <Text style={styles.value}>{driver.age}</Text></Text>
+          <Text style={styles.label}>Address : <Text style={styles.value}>{driver.address}</Text></Text>
+          <Text style={styles.label}>Driver Type : <Text style={styles.value}>{driver.driverType}</Text></Text>
+          <Text style={styles.label}>Years of Experience : <Text style={styles.value}>{driver.experience}</Text></Text>
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Driver License</Text>
+          <Text style={styles.label}>License Number : <Text style={styles.value}>{driver.licenseNumber}</Text></Text>
+          <Text style={styles.label}>License Type : <Text style={styles.value}>{driver.licenseType}</Text></Text>
+          <Text style={styles.label}>License Validity Date : <Text style={styles.value}>{driver.licenseValidity}</Text></Text>
+          <Text style={styles.label}>Issued State : <Text style={styles.value}>{driver.issuedState}</Text></Text>
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Account Credentials</Text>
+          <Text style={styles.label}>E-mail ID : <Text style={styles.value}>{driver.email}</Text></Text>
+          <Text style={styles.label}>Password : <Text style={styles.value}>{driver.password}</Text></Text>
+          <Text style={styles.label}>Confirm Password : <Text style={styles.value}>{driver.password}</Text></Text>
+        </View>
+
+        <View style={styles.docGrid}>
+          {['Driver License', 'ID Proof', 'Medical Fitness', 'Profile Image'].map((title, index) => (
+            <View key={index} style={styles.docCard}>
+              <MaterialCommunityIcons name="file-pdf-box" size={40} color="#ef4444" />
+              <Text style={styles.docTitle}>{title}</Text>
+            </View>
+          ))}
+        </View>
       </ScrollView>
 
-      {/* Add New Driver Button */}
-    
-    </SafeAreaView>
+        <Modal
+        visible={modalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Note</Text>
+            <Text style={styles.modalDescription}>
+              Want to update your driver details?{"\n"}Click 'OK' and the admin will contact you.
+            </Text>
+            <Text style={styles.modalLabel}>Enter Reason</Text>
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Enter Reason"
+              value={reason}
+              onChangeText={setReason}
+              multiline
+            />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={styles.modalCancel} onPress={() => setModalVisible(false)}>
+                <Text style={styles.cancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalOk} onPress={handleModalSubmit}>
+                <Text style={styles.okText}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: '#fff',
   },
-  header: {
-    backgroundColor: '#8B5CF6',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    marginBottom: 12,
+    paddingHorizontal: 12,
+  },
+  screenTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#111',
+  },
+  editBtn: {
+    backgroundColor: '#f3f4f6',
+    padding: 6,
+    borderRadius: 8,
+  },
+  content: {
+    paddingHorizontal: 12,
+  },
+  statsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    marginBottom: 16,
   },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logoContainer: {
-    width: 40,
-    height: 40,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  logoText: {
-    fontSize: 20,
-  },
-  welcomeText: {
-    color: 'white',
-    fontSize: 14,
-    opacity: 0.9,
-  },
-  userText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  headerRight: {
-    flexDirection: 'row',
-  },
-  iconButton: {
-    width: 35,
-    height: 35,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 17.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 10,
-  },
-  iconText: {
-    fontSize: 16,
-  },
-  pageTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#8B5CF6',
-    textAlign: 'center',
-    marginVertical: 20,
-  },
-  scrollView: {
+  statCard: {
     flex: 1,
-    paddingHorizontal: 20,
+    alignItems: 'center',
+    paddingVertical: 10,
+    marginHorizontal: 4,
+    borderRadius: 10,
   },
-  driverCard: {
-    backgroundColor: 'white',
-    borderRadius: 15,
-    padding: 20,
-    marginBottom: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
+  statValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
-  driverHeader: {
+  statLabel: {
+    fontSize: 12,
+    color: '#555',
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 14,
+    elevation: 2,
+  },
+  rowCenter: {
     flexDirection: 'row',
-    marginBottom: 15,
+    alignItems: 'center',
+    marginBottom: 10,
   },
   avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 15,
-    backgroundColor: '#E5E7EB', // Placeholder background
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
   },
-  driverInfo: {
+  profileInfo: {
     flex: 1,
   },
-  nameRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  driverName: {
-    fontSize: 18,
+  name: {
+    fontSize: 15,
     fontWeight: 'bold',
-    color: '#1F2937',
+  },
+  id: {
+    fontSize: 12,
+    color: '#555',
   },
   statusBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#D1FAE5',
-    paddingHorizontal: 8,
+    backgroundColor: '#dcfce7',
+    paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
   },
-  statusDot: {
-    width: 6,
-    height: 6,
-    backgroundColor: '#10B981',
-    borderRadius: 3,
-    marginRight: 4,
-  },
   statusText: {
-    fontSize: 10,
-    color: '#10B981',
+    fontSize: 11,
+    color: '#16a34a',
     fontWeight: 'bold',
   },
-  driverId: {
+  sectionTitle: {
     fontSize: 14,
-    color: '#6B7280',
-    fontWeight: '500',
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
-  driverDetails: {
-    marginBottom: 20,
-  },
-  detailText: {
-    fontSize: 14,
-    color: '#374151',
+  label: {
+    fontSize: 13,
+    color: '#333',
     marginBottom: 4,
   },
-  dobAgeRow: {
+  value: {
+    fontWeight: 'bold',
+    color: '#111',
+  },
+  docGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginBottom: 80,
+  },
+  docCard: {
+    width: width / 2 - 20,
+    backgroundColor: '#f9fafb',
+    padding: 14,
+    alignItems: 'center',
+    borderRadius: 12,
+    marginBottom: 10,
+  },
+  docTitle: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#111',
+    marginTop: 6,
+  },
+   modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '85%',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  modalDescription: {
+    fontSize: 14,
+    color: '#444',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  modalLabel: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 6,
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    height: 80,
+    padding: 10,
+    textAlignVertical: 'top',
+    marginBottom: 16,
+  },
+  modalButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  ageText: {
-    fontSize: 14,
-    color: '#374151',
-  },
-  viewDetailsButton: {
-    backgroundColor: '#8B5CF6',
+  modalCancel: {
+    flex: 1,
+    backgroundColor: '#f3f4f6',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
+    marginRight: 10,
   },
-  viewDetailsText: {
-    color: 'white',
-    fontSize: 16,
+  cancelText: {
+    color: '#111',
     fontWeight: 'bold',
   },
-  addButton: {
-    backgroundColor: '#8B5CF6',
-    marginHorizontal: 20,
-    marginBottom: 20,
-    paddingVertical: 15,
-    borderRadius: 12,
-    flexDirection: 'row',
-    justifyContent: 'center',
+  modalOk: {
+    flex: 1,
+    backgroundColor: '#6d28d9',
+    paddingVertical: 12,
+    borderRadius: 8,
     alignItems: 'center',
-    shadowColor: '#8B5CF6',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    marginLeft: 10,
   },
-  addButtonIcon: {
-    color: 'white',
-    fontSize: 16,
-    marginRight: 8,
-  },
-  addButtonText: {
-    color: 'white',
-    fontSize: 16,
+  okText: {
+    color: '#fff',
     fontWeight: 'bold',
   },
 });
 
-export default App;
+export default DriverDetailsScreen;

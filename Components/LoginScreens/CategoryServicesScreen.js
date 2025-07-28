@@ -16,21 +16,21 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
-import Colors from '../../Colors/Colors';
-import Fonts from '../../Fonts/Fonts';
+import Colors from '../Colors/Colors';
+import Fonts from '../Fonts/Fonts';
 
 const MyReportsScreen = ({ navigation }) => {
   const services = [ 
-    { id: '1', name: 'Ambulance', image: require('../../Assets/HomeAmbulance.png'), screen: 'Servicesform' },
-    { id: '2', name: 'Home Care Nursing', image: require('../../Assets/Homecarenursing.png')},
-    { id: '3', name: 'Phisiotherapy', image: require('../../Assets/phisiotherapy.png')},
-    { id: '4', name: 'Lap', image: require('../../Assets/lap.png') },
-    { id: '5', name: 'Funeral & Mortuary Service ', image: require('../../Assets/murchary.png')},
-    { id: '6', name: 'Hospital ', image: require('../../Assets/myreportServiceHospital.png') },
-    { id: '7', name: 'Clinics ', image: require('../../Assets/clinics.png') },
-    { id: '8', name: 'Blood Bank ', image: require('../../Assets/report3.png') },
-    { id: '9', name: 'Pharmacy', image: require('../../Assets/report4.png') },
-    { id: '10', name: 'Medical Equipment', image: require('../../Assets/mediequp.png') },
+    { id: '1', name: 'Ambulance', image: require('../Assets/HomeAmbulance.png'), screen: 'Servicesform' },
+    { id: '2', name: 'Home Care Nursing', image: require('../Assets/Homecarenursing.png')},
+    { id: '3', name: 'Phisiotherapy', image: require('../Assets/phisiotherapy.png')},
+    { id: '4', name: 'Lap', image: require('../Assets/lap.png') },
+    { id: '5', name: 'Funeral & Mortuary Service ', image: require('../Assets/murchary.png')},
+    { id: '6', name: 'Hospital ', image: require('../Assets/myreportServiceHospital.png') },
+    { id: '7', name: 'Clinics ', image: require('../Assets/clinics.png') },
+    { id: '8', name: 'Blood Bank ', image: require('../Assets/report3.png') },
+    { id: '9', name: 'Pharmacy', image: require('../Assets/report4.png') },
+    { id: '10', name: 'Medical Equipment', image: require('../Assets/mediequp.png') },
   
   ];
 

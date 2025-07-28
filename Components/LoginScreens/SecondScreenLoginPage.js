@@ -15,11 +15,11 @@ import {
 import Swiper from 'react-native-swiper';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import Fonts from '../../Fonts/Fonts';
+import Fonts from '../Fonts/Fonts';
 import SecoundSlide from './ThirdScreenLoginPage';
 import ThirdSlide from './FourthScreenLoginPage';
 import FourthSlide from './FifthScreenLoginPage';
-import Colors from '../../Colors/Colors';
+import Colors from '../Colors/Colors';
 
 const { width, height } = Dimensions.get('window');
 
@@ -67,7 +67,7 @@ export default function Onboarding() {
             {/* Logo and Title */}
             <View style={styles.logoRow1}>
               <Image
-                source={require('../../Assets/logos.png')}
+                source={require('../Assets/logos.png')}
                 style={styles.logoImage}
               />
               <View style={{ marginLeft: 10 }}>
@@ -91,7 +91,7 @@ export default function Onboarding() {
             {/* Center Circle Image */}
             <View style={styles.spinContainer}>
               <Image
-                source={require('../../Assets/spin1.png')}
+                source={require('../Assets/spin1.png')}
                 style={styles.spinImage}
               />
             </View>

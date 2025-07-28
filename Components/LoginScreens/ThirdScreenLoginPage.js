@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import Fonts from '../../Fonts/Fonts';
+import Fonts from '../Fonts/Fonts';
 const { width, height } = Dimensions.get('window');
-import Colors from '../../Colors/Colors';
+import Colors from '../Colors/Colors';
 export default function Onboarding() {
   const navigation = useNavigation();
 
@@ -48,7 +48,7 @@ export default function Onboarding() {
             <View style={styles.logoRow1}>
               <View style={styles.logoRow}>
                 <Image
-                  source={require('../../Assets/logos.png')}
+                  source={require('../Assets/logos.png')}
                   style={styles.logoImage}
                 />
               </View>
@@ -70,7 +70,7 @@ export default function Onboarding() {
             {/* Center Circle Image */}
             <View style={styles.spinContainer}>
               <Image
-                source={require('../../Assets/bookambulance.png')}
+                source={require('../Assets/bookambulance.png')}
                 style={styles.spinImage}
               />
             </View>

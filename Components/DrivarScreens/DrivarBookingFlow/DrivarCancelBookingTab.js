@@ -14,10 +14,10 @@ import {
 } from 'react-native-responsive-screen';
 import Colors from '../../Colors/Colors';
 import Fonts from '../../Fonts/Fonts';
-import { useNavigation } from '@react-navigation/native'; // ✅ Import navigation hook
+import { useNavigation } from '@react-navigation/native'; 
 
 const CurrentBookingTab = () => {
-    const navigation = useNavigation(); // ✅ Hook to access navigation
+    const navigation = useNavigation(); 
   
   const currentBookings = [
     {

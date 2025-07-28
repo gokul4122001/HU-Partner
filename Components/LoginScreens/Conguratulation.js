@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, StatusBar, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import LottieView from 'lottie-react-native';
-import Colors from '../../Colors/Colors';
-import Fonts from '../../Fonts/Fonts';
+import Colors from '../Colors/Colors';
+import Fonts from '../Fonts/Fonts';
 const { width, height } = Dimensions.get('window');
 
 const CongratulationsScreen = ({ navigation }) => {
@@ -27,7 +27,7 @@ const CongratulationsScreen = ({ navigation }) => {
       <View style={styles.contentWrapper}>
       
         <LottieView
-          source={require('../../Assets/lottie/tick.json')}
+          source={require('../Assets/lottie/tick.json')}
           autoPlay
           loop={true} // ✅ makes the animation repeat forever
           style={styles.lottieStyle}

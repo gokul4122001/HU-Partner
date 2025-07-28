@@ -3,13 +3,19 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomTabButton from '../Navigations/CustomTabButton';
 
-import AmbulanceAddStackScreen from './CompanyAmbulanceAddstackScreen';
-import ProfileStackScreen from '../Navigations/ProfileStackNavigationScreen';
-import DrivarAddStackScreen from './CompanyDrivarAddStackScreen';
-import BoookingStackScreen from './CompanyBookingstackNavigation';
+//CompanyFlow Stack Screens
+import CompanyHomeStackScreen from '../../Components/Navigations/CompanyStackNavigation/CompanyHomeStackNavigationScreen';
+import AmbulanceAddStackScreen from '../../Components/Navigations/CompanyStackNavigation/CompanyAmbulanceAddstackScreen';
+import ProfileStackScreen from '../../Components/Navigations/CompanyStackNavigation/ProfileStackNavigationScreen';
+import DrivarAddStackScreen from '../../Components/Navigations/CompanyStackNavigation/CompanyDrivarAddStackScreen';
+import BoookingStackScreen from '../../Components/Navigations/CompanyStackNavigation/CompanyBookingstackNavigation';
 
 // Drivar Stack
-import CompanyHomeStackScreen from './CompanyHomeStackNavigationScreen';
+import DrivarHomeScreen from './DrivarStackNavigations/DrivarNavigation/DrivarCompanyHomeStackNavigationScreen';
+import DrivarBookingScreen from './DrivarStackNavigations/DrivarNavigation/DrivarBookingstackNavigation';
+import DrivarAmbulance from './DrivarStackNavigations/DrivarNavigation/DrivarAmbulanceDetailsstackScreen';
+import DrivarDetails from './DrivarStackNavigations/DrivarNavigation/DrivarDetailsStackScreen';
+import DrivarProfile from './DrivarStackNavigations/DrivarNavigation/DrivarProfileStackNavigationScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -58,21 +64,27 @@ const BottomTabs = () => {
     >
       <Tab.Screen
         name="Home"
+      
         component={CompanyHomeStackScreen}
+
         options={{
           tabBarButton: props => <CustomTabButton {...props} label="Home" />,
         }}
       />
       <Tab.Screen
         name="Menu"
+       
         component={BoookingStackScreen}
+
         options={{
           tabBarButton: props => <CustomTabButton {...props} label="Menu" />,
         }}
       />
       <Tab.Screen
         name="Bookmark"
+      
         component={AmbulanceAddStackScreen}
+
         options={{
           tabBarButton: props => (
             <CustomTabButton {...props} label="Bookmark" />
@@ -81,14 +93,18 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="Alert"
+       
         component={DrivarAddStackScreen}
+
         options={{
           tabBarButton: props => <CustomTabButton {...props} label="Alert" />,
         }}
       />
       <Tab.Screen
         name="Profile"
+
         component={ProfileStackScreen}
+
         options={{
           tabBarButton: props => <CustomTabButton {...props} label="Profile" />,
         }}

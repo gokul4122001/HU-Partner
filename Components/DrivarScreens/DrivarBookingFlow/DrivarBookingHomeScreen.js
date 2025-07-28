@@ -23,10 +23,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Colors from '../../Colors/Colors';
 import logo from '../../Assets/logos.png';
-import CurrentBookingTab from './CurrentBookingTab';
-import ScheduleBookingTab from './ScheduleBookingTab';
-import CompleteBookingTab from './CompleteBookingTab';
-import CancellationBookingTab from './CancelBookingTab';
+import CurrentBookingTab from './DrivarCurrentBookingTab';
+import CompleteBookingTab from './DrivarCompleteBookingTab';
+import CancellationBookingTab from './DrivarCancelBookingTab';
 import Fonts from '../../Fonts/Fonts';
 
 const BookingListScreen = ({ navigation }) => {
@@ -39,7 +38,6 @@ const BookingListScreen = ({ navigation }) => {
 
   const tabs = [
     { id: 'current', label: 'Current Booking', key: 'current' },
-    { id: 'schedule', label: 'Schedule Booking', key: 'schedule' },
     { id: 'complete', label: 'Completed Booking', key: 'complete' },
     { id: 'cancellation', label: 'Cancellation Booking', key: 'cancellation' },
   ];
@@ -200,8 +198,6 @@ const BookingListScreen = ({ navigation }) => {
     switch (activeTab) {
       case 'current':
         return <CurrentBookingTab dateFilter={selectedDateFilter} />;
-      case 'schedule':
-        return <ScheduleBookingTab dateFilter={selectedDateFilter} />;
       case 'complete':
         return <CompleteBookingTab dateFilter={selectedDateFilter} />;
       case 'cancellation':
@@ -407,16 +403,14 @@ bottomServiceButton: {
 },
 
 serviceButtonGradient: {
-  flex: 1, // ✅ make it fill the button
+  flex: 1, 
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
- 
   borderRadius: 12,
-  backgroundColor: 'transparent', // ✅ make sure it's transparent too
+  backgroundColor: 'transparent', 
   
 },
-
   serviceButtonText: {
     color: 'white',
     fontSize:  Fonts.size.PageHeading,
@@ -425,7 +419,6 @@ serviceButtonGradient: {
     
   },
 
-  
   serviceModalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

@@ -16,7 +16,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Colors from '../../Colors/Colors';
 
 const CurrentBookingTab = () => {
-  const navigation = useNavigation(); // ✅ Fixed navigation access
+  const navigation = useNavigation(); 
 
   const [accepted, setAccepted] = useState(false);
   const [otpSubmitted, setOtpSubmitted] = useState(false);
@@ -83,12 +83,12 @@ const CurrentBookingTab = () => {
         )}
         {type === 'otp' && (
           <>
-            <TouchableOpacity style={styles.otpButton} onPress={handleEnterOTP}>
-              <Text style={styles.otpButtonText}>Enter OTP</Text>
+            <TouchableOpacity style={styles.otpButton} onPress={handleViewDetails}>
+              <Text style={styles.otpButtonText}>View Details</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.trackLocationButton} onPress={handleTrackLocation}>
-              <MaterialCommunityIcons name="map-marker" size={16} color="white" />
-              <Text style={styles.trackLocationText}>Track Location</Text>
+              
+              <Text style={styles.trackLocationText}>Start Ride</Text>
             </TouchableOpacity>
           </>
         )}

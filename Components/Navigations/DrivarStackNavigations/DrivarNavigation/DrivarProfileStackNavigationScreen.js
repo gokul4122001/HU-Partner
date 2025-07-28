@@ -1,14 +1,11 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileScreen from '../Screens/ProfileFlow/ProfileScreen';
-import Profileone from '../Screens/ProfileFlow/ProfileScreenone'
-import Payments from '../Screens/ProfileFlow/Payment&Billes'
-
-import ChangePassword from '../Screens/ProfileFlow/ChangePasswordScreen'
-import EmergencyContactScreen from '../Screens/ProfileFlow/ProfileEmergencyContactPage';
-import Assignment from '../Screens/ProfileFlow/AssignmentOverview.js';
-
-import TermsAndConditionsScreen from '../Screens/ProfileFlow/Terms&ConditionPage';
+import ProfileScreen from '../../../DrivarScreens/DrivarProfileFlow/DrivarProfileScreen.js';
+import Profileone from '../../../DrivarScreens/DrivarProfileFlow/DrivarProfileScreenone.js';
+import Payments from '../../../DrivarScreens/DrivarProfileFlow/DrivarPayment&Billes.js';
+import ChangePassword from '../../../DrivarScreens/DrivarProfileFlow/DrivarChangePasswordScreen.js';
+import Assignment from '../../../DrivarScreens/DrivarProfileFlow/DrivarAssignmentOverview.js.js';
+import TermsAndConditionsScreen from '../../../DrivarScreens/DrivarProfileFlow/Terms&ConditionPage.js';
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -25,35 +22,28 @@ const ProfileStackScreen = () => {
         component={Profileone}
         options={{ headerShown: false }}
       />
-    
+
       <ProfileStack.Screen
         name="ChangePassword"
         component={ChangePassword}
         options={{ headerShown: false }}
       />
-       <ProfileStack.Screen
-        name="EmergencyContactScreen"
-        component={EmergencyContactScreen}
-        options={{ headerShown: false }}
-      />
-        <ProfileStack.Screen
+      <ProfileStack.Screen
         name="Assignment"
         component={Assignment}
         options={{ headerShown: false }}
       />
-        <ProfileStack.Screen
+      <ProfileStack.Screen
         name="Payments"
         component={Payments}
         options={{ headerShown: false }}
       />
-       <ProfileStack.Screen
+      <ProfileStack.Screen
         name="TermsAndConditionsScreen"
         component={TermsAndConditionsScreen}
         options={{ headerShown: false }}
       />
-
     </ProfileStack.Navigator>
-    
   );
 };
 

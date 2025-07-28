@@ -1,8 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import EmergencyHomeScreen from '../Screens/CompanyAmbulanceAddFlow/CompanyAmbulanceAddPage';
-import EmergencyHospitalScreen from '../Screens/CompanyAmbulanceAddFlow/AmbulanceAddRegisterPage';
-import EmergencyHospitalDetailScreen from '../Screens/CompanyAmbulanceAddFlow/AmbulanceDetailsPage';
+import EmergencyHomeScreen from '../../../DrivarScreens/DrivarAmbulanceDetails/DrivarAmbulanceDetailsPage';
 
 const EmergencyStack = createNativeStackNavigator();
 
@@ -14,8 +12,6 @@ const EmergencyStackScreen = () => {
         component={EmergencyHomeScreen}
         options={{ headerShown: false }}
       />
-
-    
     </EmergencyStack.Navigator>
   );
 };

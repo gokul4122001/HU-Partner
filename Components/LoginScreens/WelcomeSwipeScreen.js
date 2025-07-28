@@ -15,8 +15,8 @@ import {
 
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
-import Fonts from '../../Fonts/Fonts';
-import Colors from '../../Colors/Colors';
+import Fonts from '../Fonts/Fonts';
+import Colors from '../Colors/Colors';
 import LottieView from 'lottie-react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -154,7 +154,7 @@ const WelcomeScreen = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollContainer}>
           <View style={styles.illustrationContainer}>
             <LottieView
-              source={require('../../Assets/lottie/ambulancia.json')}
+              source={require('../Assets/lottie/ambulancia.json')}
               autoPlay
               loop
               style={{ width: width * 0.8, height: height * 0.4 }}
@@ -200,7 +200,7 @@ const WelcomeScreen = ({ navigation }) => {
                 >
                   <View style={styles.iconCircle}>
                     <LottieView
-                      source={require('../../Assets/lottie/FingerPrint.json')}
+                      source={require('../Assets/lottie/FingerPrint.json')}
                       autoPlay
                       loop={!isSwiped}
                       style={{ width: '100%', height: '100%' }}
@@ -212,7 +212,7 @@ const WelcomeScreen = ({ navigation }) => {
                   </Text>
 
                   <LottieView
-                    source={require('../../Assets/lottie/swip.json')}
+                    source={require('../Assets/lottie/swip.json')}
                     autoPlay
                     loop={!isSwiped}
                     style={styles.arrowLottie}

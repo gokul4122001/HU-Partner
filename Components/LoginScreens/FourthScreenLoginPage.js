@@ -14,8 +14,8 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import Fonts from '../../Fonts/Fonts';
-import Colors from '../../Colors/Colors';
+import Fonts from '../Fonts/Fonts';
+import Colors from '../Colors/Colors';
 const { width, height } = Dimensions.get('window');
 
 const HealthUmbrellaScreen = () => {
@@ -44,7 +44,7 @@ const HealthUmbrellaScreen = () => {
             <View style={styles.logoRow1}>
               <View style={styles.logoRow}>
                 <Image
-                  source={require('../../Assets/logos.png')}
+                  source={require('../Assets/logos.png')}
                   style={styles.logoImage}
                 />
               </View>
@@ -56,21 +56,23 @@ const HealthUmbrellaScreen = () => {
 
             {/* Title and Subtitle */}
             <View style={styles.centeredContent}>
-              <Text style={styles.title}>A - Z Health care service</Text>
+              <Text style={styles.title}>Book Your Physiotherapist</Text>
               <Text style={styles.subtitle}>
-                All your health needs connect with us For all emergency and routine health care needs
+               Home Visit / Clinic Appointment
               </Text>
             </View>
           </View>
         </ScrollView>
 
-        {/* Bottom Image */}
+       
         <View style={styles.bottomImageContainer}>
           <Image
-            source={require('../../Assets/log.png')}
+            source={require('../Assets/fourthscreen.png')}
             style={styles.bottomImage}
           />
+          
         </View>
+        
       </SafeAreaView>
     </LinearGradient>
   );
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
     color: '#555',
     fontWeight: 'bold',
      fontFamily:Fonts.family.regular,
-         fontSize:  Fonts.size.PageHeading,
+        fontSize:  Fonts.size.PageHeading,
   },
   logoRow: {
     flexDirection: 'row',
@@ -111,10 +113,10 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   logoTitle: {
-     fontSize:  Fonts.size.FlashScreenSubHeading,
-    color:  Colors.statusBar,
+    fontSize:  Fonts.size.FlashScreenSubHeading,
+    color: Colors.statusBar,
     fontWeight: '700',
-     fontFamily:Fonts.family.regular
+    fontFamily:Fonts.family.regular,
   },
   centeredContent: {
     alignItems: 'center',
@@ -123,18 +125,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   title: {
-  fontSize:  Fonts.size.FlashScreenHeader,
+     fontSize:  Fonts.size.FlashScreenHeader,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
      fontFamily:Fonts.family.regular
   },
   subtitle: {
-    fontSize:  Fonts.size.PageHeading,
+     fontSize:  Fonts.size.PageHeading,
     color: '#666',
     textAlign: 'center',
-     fontFamily:Fonts.family,
-      lineHeight: 25, 
+      fontWeight: '500',
+     top:20
   },
   logoRow1: {
     flexDirection: 'row',
@@ -143,16 +145,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     top: 10,
   },
-  bottomImageContainer: {
-    position: 'absolute',
+   bottomImageContainer: {
+   
     bottom: '10%',
     width: width,
-    alignItems: 'center',
-    justifyContent: 'center',
+   
   },
   bottomImage: {
     width: width * 1,
-    height: width * 1.2,
+    height: width * 1,
     resizeMode: 'contain',
   },
 });

@@ -10,26 +10,26 @@ import {
   Easing,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Fonts from '../../Fonts/Fonts';
-import Colors from '../../Colors/Colors';
+import Fonts from '../Fonts/Fonts';
+import Colors from '../Colors/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
-import { setAuthDetails } from '../../redux/slice/authSlice';
+import { setAuthDetails } from '../redux/slice/authSlice';
 
 
 const { width } = Dimensions.get('window');
 const radius = width * 0.35;
 
 const icons = [
-  require('../../Assets/flash1.png'),
-  require('../../Assets/flash2.png'),
-  require('../../Assets/flash3.png'),
-  require('../../Assets/flash4.png'),
-  require('../../Assets/flash5.png'),
-  require('../../Assets/flash6.png'),
-  require('../../Assets/flash7.png'),
-  require('../../Assets/flash8.png'),
-  require('../../Assets/flash9.png'),
+  require('../Assets/flash1.png'),
+  require('../Assets/flash2.png'),
+  require('../Assets/flash3.png'),
+  require('../Assets/flash4.png'),
+  require('../Assets/flash5.png'),
+  require('../Assets/flash6.png'),
+  require('../Assets/flash7.png'),
+  require('../Assets/flash8.png'),
+  require('../Assets/flash9.png'),
 ];
 
 export default function App() {
@@ -116,7 +116,7 @@ export default function App() {
         {/* Center Logo */}
         <View style={styles.centerLogo}>
           <Image
-            source={require('../../Assets/logos.png')}
+            source={require('../Assets/logos.png')}
             style={styles.logo}
             resizeMode="contain"
           />

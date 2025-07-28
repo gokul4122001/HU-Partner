@@ -1,10 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ServiceHomeScreen from '../Screens/DrivarAddFlow/CompanyDriverListScreen';
-import ServiceHospitalScreen from '../Screens/DrivarAddFlow/CompanyDriverRegisterPage';
-import ServiceHospitalDetailScreen from '../Screens/DrivarAddFlow/CompanyDriverDetailPage';
-import FormPage from '../Screens/DrivarAddFlow/CompanyDrivar&AmbulanceAssignmentPage'
-import TrackAmbulance from '../Screens/DrivarAddFlow/CompanyDrivertrackMapScreenPage'
+import ServiceHomeScreen from '../../CompanyScreens/DrivarAddFlow/CompanyDriverListScreen';
+import ServiceHospitalScreen from '../../CompanyScreens/DrivarAddFlow/CompanyDriverRegisterPage';
+import ServiceHospitalDetailScreen from '../../CompanyScreens/DrivarAddFlow/CompanyDriverDetailPage';
+import FormPage from '../../CompanyScreens/DrivarAddFlow/CompanyDrivar&AmbulanceAssignmentPage'
+import TrackAmbulance from '../../CompanyScreens/DrivarAddFlow/CompanyDrivertrackMapScreenPage'
 
 
 

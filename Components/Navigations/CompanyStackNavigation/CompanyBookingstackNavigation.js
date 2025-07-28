@@ -1,12 +1,12 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import BookingHomeScreen from '../Screens/CompanyBookingFlow/BookingHomeScreen';
-import BookingDetailsScreen from '../Screens/CompanyBookingFlow/BookingDetailPage';
-import TrackDrivar from '../Screens/CompanyBookingFlow/TrackDrivar';
-import SwpingPayments from '../Screens/CompanyBookingFlow/SwipPayment';
-import Schedulebookingdetails from '../Screens/CompanyBookingFlow/ScheduleBookingdetailsPage';
-import Completebookingdetails from '../Screens/CompanyBookingFlow/CompleteViewDetails';
-import Canceledbookingdetails from '../Screens/CompanyBookingFlow/CanceledDetailsPage';
+import BookingHomeScreen from '../../CompanyScreens/CompanyBookingFlow/BookingHomeScreen';
+import BookingDetailsScreen from '../../CompanyScreens/CompanyBookingFlow/BookingDetailPage';
+import TrackDrivar from '../../CompanyScreens/CompanyBookingFlow/TrackDrivar';
+import SwpingPayments from '../../CompanyScreens/CompanyBookingFlow/SwipPayment';
+import Schedulebookingdetails from '../../CompanyScreens/CompanyBookingFlow/ScheduleBookingdetailsPage';
+import Completebookingdetails from '../../CompanyScreens/CompanyBookingFlow/CompleteViewDetails';
+import Canceledbookingdetails from '../../CompanyScreens/CompanyBookingFlow/CanceledDetailsPage';
 
 
 const BookingStack = createNativeStackNavigator();

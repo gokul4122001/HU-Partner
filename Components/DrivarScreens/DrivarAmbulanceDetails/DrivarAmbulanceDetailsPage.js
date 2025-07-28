@@ -2,295 +2,351 @@ import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  StatusBar,
-  Image,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const AmbulanceDetailsScreen = ({ navigation }) => {
-  return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#7B3F98" barStyle="light-content" />
+const { width } = Dimensions.get('window');
 
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <View style={styles.logo} />
-          <View>
-            <Text style={styles.welcomeText}>Hi, Welcome</Text>
-            <Text style={styles.companyText}>Akash Ambulance</Text>
+const AkashAmbulanceApp = () => {
+  const ambulanceBookings = [
+    {
+      id: "AM801",
+      vehicle: "TN0352541",
+      pickup: "No.3/1, 1 Street west mambalam chennai-33",
+      drop: "No.3/1, 1 Street vyasarpadi chennai-33",
+      name: "Jeeventh Kumar",
+      contact: "9444666447",
+      date: "05/04/2025",
+      time: "10:00 AM",
+      amount: 1800
+    },
+    {
+      id: "AM801",
+      vehicle: "TN0352541",
+      pickup: "No.3/1, 1 Street west mambalam chennai-33",
+      drop: "No.3/1, 1 Street vyasarpadi chennai-33",
+      name: "Jeeventh Kumar",
+      contact: "9444666447",
+      date: "05/04/2025",
+      time: "10:00 AM",
+      amount: 1800
+    },
+    {
+      id: "AM801",
+      vehicle: "TN0352541",
+      pickup: "No.3/1, 1 Street west mambalam chennai-33",
+      drop: "No.3/1, 1 Street vyasarpadi chennai-33",
+      name: "Jeeventh Kumar",
+      contact: "9444666447",
+      date: "05/04/2025",
+      time: "10:00 AM",
+      amount: 1800
+    }
+  ];
+
+  const handleBackPress = () => {
+    // Handle back navigation
+    console.log('Back pressed');
+  };
+
+  const handlePhoneCall = (phoneNumber) => {
+    // Handle phone call
+    console.log('Calling:', phoneNumber);
+  };
+
+  const renderAmbulanceCard = (booking, index) => (
+    <View key={index} style={styles.cardContainer}>
+      {/* Ambulance Header */}
+      <View style={styles.cardHeader}>
+        <View style={styles.ambulanceInfo}>
+          <View style={styles.ambulanceIcon}>
+            <Text style={styles.ambulanceEmoji}>🚑</Text>
           </View>
-        </View>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Icon name="notifications" size={24} color="#fff" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Icon name="calendar-today" size={24} color="#fff" />
-          </TouchableOpacity>
+          <View style={styles.ambulanceDetails}>
+            <Text style={styles.ambulanceTitle}>Advanced Life Support</Text>
+            <Text style={styles.ambulanceSubtitle}>Small ( 2mins, etc )</Text>
+          </View>
         </View>
       </View>
 
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Title Bar */}
-        <View style={styles.titleBar}>
-          <TouchableOpacity>
-            <Icon name="arrow-back" size={24} color="#000" />
-          </TouchableOpacity>
-          <Text style={styles.titleText}>Ambulance Details</Text>
-          <TouchableOpacity style={styles.editIcon}>
-            <Icon name="edit" size={20} color="#7B3F98" />
-            <Text style={styles.editText}>Edit</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Detail Card */}
-        <View style={styles.card}>
-          <View style={styles.row}>
-            <Text style={styles.emoji}>🚑</Text>
-            <View>
-              <Text style={styles.cardTitle}>Advanced Life Support</Text>
-              <Text style={styles.cardSubtitle}>Small ( Omni, etc )</Text>
-            </View>
-          </View>
-
-          {/* Inline Detail Rows */}
+      {/* Booking Details */}
+      <View style={styles.bookingDetails}>
+        <View style={styles.detailRow}>
           <View style={styles.detailItem}>
-            <Text style={styles.label}>Ambulance Name :</Text>
-            <Text style={styles.value}>Jaya Ambulance</Text>
+            <Text style={styles.detailLabel}>Ambulance ID No:</Text>
+            <Text style={styles.detailValue}>{booking.id}</Text>
           </View>
           <View style={styles.detailItem}>
-            <Text style={styles.label}>Ambulance Type :</Text>
-            <Text style={styles.value}>Advanced Life Support</Text>
-          </View>
-          <View style={styles.detailItem}>
-            <Text style={styles.label}>Vehicle Number Plate :</Text>
-            <Text style={styles.value}>TN05D2541</Text>
-          </View>
-          <View style={styles.detailItem}>
-            <Text style={styles.label}>FC Details :</Text>
-            <Text style={styles.value}>AGSV235434D</Text>
-          </View>
-          <View style={styles.detailItem}>
-            <Text style={styles.label}>Insurance Details :</Text>
-            <Text style={styles.value}>07/04/2025 & 07/05/2028</Text>
-          </View>
-          <View style={styles.detailItem}>
-            <Text style={styles.label}>Facility :</Text>
-            <Text style={styles.value}>
-              Emergency kit, Oxygen Tanks, IV equipment, Cardiac Monitors, Ambulance Bed
-            </Text>
+            <Text style={styles.detailLabel}>Vehicle no:</Text>
+            <Text style={styles.detailValue}>{booking.vehicle}</Text>
           </View>
         </View>
 
-        {/* Document Cards */}
-        <View style={styles.docRow}>
-          <View style={styles.docCard}>
-            <Icon name="picture-as-pdf" size={40} color="#7B3F98" />
-            <Text style={styles.docLabel}>Ambulance RC Book</Text>
-            <Text style={styles.docText}>Document name</Text>
-          </View>
+       <View style={styles.locationContainer}>
+  <View style={styles.locationRow}>
+    <Icon name="place" size={16} color="#ef4444" />
+    <Text style={styles.locationText}>
+      <Text style={styles.locationLabel}>Pickup: </Text>
+      <Text style={styles.locationAddress}>{booking.pickup}</Text>
+    </Text>
+  </View>
 
-          <View style={styles.docCard}>
-            <Icon name="picture-as-pdf" size={40} color="#7B3F98" />
-            <Text style={styles.docLabel}>Ambulance License</Text>
-            <Text style={styles.docText}>Document name</Text>
+  <View style={styles.locationRow}>
+    <Icon name="place" size={16} color="#ef4444" />
+    <Text style={styles.locationText}>
+      <Text style={styles.locationLabel}>Drop: </Text>
+      <Text style={styles.locationAddress}>{booking.drop}</Text>
+    </Text>
+  </View>
+</View>
+
+
+        <View style={styles.detailRow}>
+          <View style={styles.detailItem}>
+            <Text style={styles.detailLabel}>Name:</Text>
+            <Text style={styles.detailValue}>{booking.name}</Text>
+          </View>
+          <View style={styles.contactItem}>
+            <Text style={styles.detailLabel}>Contact:</Text>
+            <Text style={styles.detailValue}>{booking.contact}</Text>
+        
           </View>
         </View>
 
-        <View style={styles.docRow}>
-         
-
-          <View style={styles.docCard}>
-            <Icon name="picture-as-pdf" size={40} color="#7B3F98" />
-            <Text style={styles.docLabel}>Ambulance Image</Text>
-            <Text style={styles.docText}>Document name</Text>
+        <View style={styles.detailRow}>
+          <View style={styles.detailItem}>
+            <Text style={styles.detailLabel}>Date:</Text>
+            <Text style={styles.detailValue}>{booking.date}</Text>
+          </View>
+          <View style={styles.detailItem}>
+            <Text style={styles.detailLabel}>Time:</Text>
+            <Text style={styles.detailValue}>{booking.time}</Text>
           </View>
         </View>
 
-        {/* Action Buttons */}
-        <View style={styles.buttonRow}>
-          <TouchableOpacity style={styles.deleteButton}>
-            <Text style={styles.deleteText}>Delete Ambulance</Text>
+        <View style={styles.totalContainer}>
+          <Text style={styles.totalLabel}>Total Amount</Text>
+          <Text style={styles.totalAmount}>₹ {booking.amount.toLocaleString()}</Text>
+        </View>
+      </View>
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerContent}>
+          <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
+            <Icon name="arrow-back" size={24} color="#ffffff" />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.editButton}
-            onPress={() => navigation?.navigate('EditAmbulance')}
-          >
-            <Text style={styles.editBtnText}>Edit Ambulance</Text>
-          </TouchableOpacity>
+          <View style={styles.headerText}>
+            <Text style={styles.welcomeText}>Hi, Welcome</Text>
+            <Text style={styles.appTitle}>Akash Ambulance</Text>
+          </View>
+          <View style={styles.profileIcon}>
+            <Text style={styles.profileText}>A</Text>
+          </View>
+        </View>
+        <View style={styles.pageTitle}>
+          <Text style={styles.pageTitleText}>Ambulance Details</Text>
+        </View>
+      </View>
+
+      {/* Ambulance Bookings List */}
+   <ScrollView
+  style={styles.content}
+  contentContainerStyle={{ paddingBottom: 100 }}
+  showsVerticalScrollIndicator={false}
+>
+
+        <View style={styles.bookingsList}>
+          {ambulanceBookings.map((booking, index) => renderAmbulanceCard(booking, index))}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
-export default AmbulanceDetailsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#e9d5ff',
   },
   header: {
-    backgroundColor: '#7B3F98',
-    padding: 16,
+    backgroundColor: '#9333ea',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  headerContent: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  backButton: {
+    padding: 4,
   },
-  logo: {
-    width: 36,
-    height: 36,
-    backgroundColor: '#fff',
-    borderRadius: 18,
-    marginRight: 10,
+  headerText: {
+    flex: 1,
+    marginLeft: 12,
   },
   welcomeText: {
-    color: '#fff',
-    fontSize: 14,
+    color: '#ffffff',
+    fontSize: 12,
+    opacity: 0.9,
   },
-  companyText: {
-    color: '#fff',
+  appTitle: {
+    color: '#ffffff',
     fontSize: 16,
+    fontWeight: '600',
+  },
+  profileIcon: {
+    width: 32,
+    height: 32,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profileText: {
+    color: '#ffffff',
+    fontSize: 14,
     fontWeight: 'bold',
   },
-  headerIcons: {
-    flexDirection: 'row',
-  },
-  iconButton: {
-    marginLeft: 10,
-  },
-  scrollView: {
-    paddingHorizontal: 16,
-  },
-  titleBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  pageTitle: {
     marginTop: 16,
   },
-  titleText: {
+  pageTitleText: {
+    color: '#ffffff',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
+  },
+  content: {
     flex: 1,
-    textAlign: 'center',
-    marginRight: 24,
   },
-  editIcon: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  editText: {
-    color: '#7B3F98',
-    marginLeft: 4,
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
+  bookingsList: {
     padding: 16,
-    marginTop: 16,
-    elevation: 2,
   },
-  row: {
+  cardContainer: {
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    marginBottom: 16,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: '#e9d5ff',
+  },
+  cardHeader: {
+    marginBottom: 16,
+  },
+  ambulanceInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
   },
-  emoji: {
-    fontSize: 36,
+  ambulanceIcon: {
+    width: 48,
+    height: 48,
+    backgroundColor: '#fef2f2',
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: 12,
   },
-  cardTitle: {
+  ambulanceEmoji: {
+    fontSize: 20,
+  },
+  ambulanceDetails: {
+    flex: 1,
+  },
+  ambulanceTitle: {
     fontSize: 16,
     fontWeight: '600',
+    color: '#1f2937',
   },
-  cardSubtitle: {
-    fontSize: 14,
-    color: '#888',
+  ambulanceSubtitle: {
+    fontSize: 12,
+    color: '#6b7280',
+    marginTop: 2,
+  },
+  bookingDetails: {
+    gap: 12,
+  },
+  detailRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   detailItem: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 10,
-  },
-  label: {
-    fontSize: 13,
-    color: '#666',
-    fontWeight: '600',
-    marginRight: 4,
-  },
-  value: {
-    fontSize: 14,
-    color: '#333',
-    fontWeight: '500',
-    flexShrink: 1,
-  },
-  docRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16,
-  },
-  docCard: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
+    flexDirection: 'row',
+  },
+  contactItem: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 4,
-    elevation: 2,
-    minWidth: 160,
   },
-  docLabel: {
-    marginTop: 8,
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  docText: {
+  detailLabel: {
     fontSize: 12,
-    color: '#888',
-    marginTop: 4,
+    color: '#6b7280',
   },
-  buttonRow: {
-    flexDirection: 'row',
-    marginTop: 24,
-    justifyContent: 'space-between',
-  },
-  deleteButton: {
-    flex: 1,
-    backgroundColor: '#fff',
-    borderColor: '#ccc',
-    borderWidth: 1,
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginRight: 8,
-  },
-  deleteText: {
-    color: '#333',
-    fontWeight: '600',
-  },
-  editButton: {
-    flex: 1,
-    backgroundColor: '#7B3F98',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
+  detailValue: {
+    fontSize: 12,
+    fontWeight: '500',
     marginLeft: 8,
+    color: '#1f2937',
   },
-  editBtnText: {
-    color: '#fff',
+  phoneIcon: {
+    marginLeft: 4,
+  },
+ locationContainer: {
+  paddingVertical: 10,
+},
+locationRow: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginVertical: 4,
+},
+locationText: {
+  marginLeft: 6,
+  flexShrink: 1,
+},
+locationLabel: {
+  fontWeight: 'bold',
+  color: '#111',
+},
+locationAddress: {
+  color: '#555',
+},
+
+  totalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#f3f4f6',
+  },
+  totalLabel: {
+    fontSize: 14,
     fontWeight: '600',
+    color: '#1f2937',
+  },
+  totalAmount: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#9333ea',
   },
 });
+
+export default AkashAmbulanceApp;

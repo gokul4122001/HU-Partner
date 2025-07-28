@@ -1,14 +1,14 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ProfileScreen from '../Screens/ProfileFlow/ProfileScreen';
-import Profileone from '../Screens/ProfileFlow/ProfileScreenone'
-import Payments from '../Screens/ProfileFlow/Payment&Billes'
+import ProfileScreen from '../../CompanyScreens/ProfileFlow/ProfileScreen';
+import Profileone from '../../CompanyScreens/ProfileFlow/ProfileScreenone'
+import Payments from '../../CompanyScreens/ProfileFlow/Payment&Billes'
 
-import ChangePassword from '../Screens/ProfileFlow/ChangePasswordScreen'
-import EmergencyContactScreen from '../Screens/ProfileFlow/ProfileEmergencyContactPage';
-import Assignment from '../Screens/ProfileFlow/AssignmentOverview.js';
+import ChangePassword from '../../CompanyScreens/ProfileFlow/ChangePasswordScreen'
+import EmergencyContactScreen from '../../CompanyScreens/ProfileFlow/ProfileEmergencyContactPage';
+import Assignment from '../../CompanyScreens/ProfileFlow/AssignmentOverview.js';
 
-import TermsAndConditionsScreen from '../Screens/ProfileFlow/Terms&ConditionPage';
+import TermsAndConditionsScreen from '../../CompanyScreens/ProfileFlow/Terms&ConditionPage';
 
 const ProfileStack = createNativeStackNavigator();
 

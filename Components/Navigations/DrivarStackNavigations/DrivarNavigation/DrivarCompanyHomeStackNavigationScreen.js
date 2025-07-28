@@ -1,7 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../DrivarScreens/DrivarHomeScreenFlow/DrivarHomeScreen';
-
+import HomeScreen from '../../../DrivarScreens/DrivarHomeScreenFlow/DrivarHomeScreen';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -13,7 +12,6 @@ const HomeStackScreen = () => {
         component={HomeScreen}
         options={{ headerShown: false }}
       />
-     
     </HomeStack.Navigator>
   );
 };

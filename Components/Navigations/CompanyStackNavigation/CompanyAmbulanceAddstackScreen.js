@@ -1,8 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import EmergencyHomeScreen from '../Screens/CompanyAmbulanceAddFlow/CompanyAmbulanceAddPage';
-import EmergencyHospitalScreen from '../Screens/CompanyAmbulanceAddFlow/AmbulanceAddRegisterPage';
-import EmergencyHospitalDetailScreen from '../Screens/CompanyAmbulanceAddFlow/AmbulanceDetailsPage';
+import Company1 from '../../CompanyScreens/CompanyAmbulanceAddFlow/CompanyAmbulanceAddPage';
+import Company2 from '../../CompanyScreens/CompanyAmbulanceAddFlow/AmbulanceAddRegisterPage';
+import Company3 from '../../CompanyScreens/CompanyAmbulanceAddFlow/AmbulanceDetailsPage';
 
 const EmergencyStack = createNativeStackNavigator();
 
@@ -10,20 +10,20 @@ const EmergencyStackScreen = () => {
   return (
     <EmergencyStack.Navigator>
       <EmergencyStack.Screen
-        name="EmergencyHomeScreen"
-        component={EmergencyHomeScreen}
+        name="Company1"
+        component={Company1}
         options={{ headerShown: false }}
       />
 
       <EmergencyStack.Screen
-        name="EmergencyHospitalScreen"
-        component={EmergencyHospitalScreen}
+        name="Company2"
+        component={Company2}
         options={{ headerShown: false }}
       />
 
       <EmergencyStack.Screen
-        name="EmergencyHospitalDetailScreen"
-        component={EmergencyHospitalDetailScreen}
+        name="Company3"
+        component={Company3}
         options={{ headerShown: false }}
       />
     </EmergencyStack.Navigator>
