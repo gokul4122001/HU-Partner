@@ -1,4 +1,3 @@
-// Your full BookingDetailsScreen.js file with updates
 import React, { useState } from 'react';
 import {
   View,
@@ -9,23 +8,31 @@ import {
   Image,
   SafeAreaView,
   StatusBar,
- 
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import logo from '../../Assets/logos.png';
+import Icons from 'react-native-vector-icons/Ionicons';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomHeader from '../../../Header';
 import Colors from '../../Colors/Colors';
-import Icons from 'react-native-vector-icons/Ionicons';
 import Fonts from '../../Fonts/Fonts';
 
 const BookingDetailsScreen = ({ navigation }) => {
   const [newDropLocation, setNewDropLocation] = useState('');
+
+  const handleNotificationPress = () => {
+    // Add your logic
+    console.log('Notification Pressed');
+  };
+
+  const handleWalletPress = () => {
+    // Add your logic
+    console.log('Wallet Pressed');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -36,19 +43,11 @@ const BookingDetailsScreen = ({ navigation }) => {
         end={{ x: 0, y: 0 }}
         style={styles.topBackground}
       >
-        <View style={styles.header}>
-          <Image source={logo} style={styles.logo} />
-          <View style={styles.greetingContainer}>
-            <Text style={styles.greeting}>Hi, Welcome</Text>
-            <Text style={styles.userName}>Janmani Kumar</Text>
-          </View>
-          <TouchableOpacity style={[styles.notificationButton, { right: hp('2%') }]}>
-            <Icon name="notifications-on" size={24} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.notificationButton, { backgroundColor: 'red' }]}>
-            <MaterialCommunityIcons name="alarm-light-outline" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
+        <CustomHeader
+          username="Janmani Kumar"
+          onNotificationPress={handleNotificationPress}
+          onWalletPress={handleWalletPress}
+        />
 
         <View style={styles.sectionHeader}>
           <View style={styles.headerLeft}>
@@ -58,14 +57,12 @@ const BookingDetailsScreen = ({ navigation }) => {
             <Text style={styles.sectionTitles}>Booking Details</Text>
           </View>
 
-          <TouchableOpacity style={styles.changeLocationBtn} >
+          <TouchableOpacity style={styles.changeLocationBtn}>
             <Text style={styles.changeLocationText}>Schedule Booking</Text>
           </TouchableOpacity>
         </View>
 
         <ScrollView style={styles.scrollContainer} contentContainerStyle={{ paddingBottom: 120 }}>
-          
-
           {/* Ambulance Card */}
           <View style={styles.driverCard}>
             <Image
@@ -75,7 +72,7 @@ const BookingDetailsScreen = ({ navigation }) => {
             <View style={styles.driverInfo}>
               <View style={styles.nameRow}>
                 <Text style={styles.driverName}>Patient Transfer</Text>
-                <MaterialCommunityIcons name="ambulance" size={18} color="#7B2CBF" style={{ marginHorizontal: 4 }} />
+                <MaterialIcons name="ambulance" size={18} color="#7B2CBF" style={{ marginHorizontal: 4 }} />
                 <Text style={styles.rating}>Small (Omni, etc)</Text>
               </View>
               <View style={styles.detailsRow}>
@@ -102,14 +99,12 @@ const BookingDetailsScreen = ({ navigation }) => {
                 NO 3/1, I Street vyasarpadi chennai -33
               </Text>
             </View>
-               {newDropLocation !== '' && (
-              <View style={{ marginTop: 10,flexDirection:'row' }}>
-                <Text style={{ color: '#555' }}>Drop (Change By Driver):</Text>
+            {newDropLocation !== '' && (
+              <View style={{ marginTop: 10, flexDirection: 'row' }}>
+                <Text style={{ color: '#555' }}>Drop (Change By Driver): </Text>
                 <Text style={{ fontWeight: '600' }}>{newDropLocation}</Text>
               </View>
             )}
-
-            
           </View>
 
           {/* Booking Date & Time */}
@@ -141,9 +136,6 @@ const BookingDetailsScreen = ({ navigation }) => {
             </View>
           </View>
 
-          {/* Emergency Card */}
-         
-
           {/* Price */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Price Details</Text>
@@ -162,12 +154,7 @@ const BookingDetailsScreen = ({ navigation }) => {
               </Text>
             </View>
           </View>
-
-       
         </ScrollView>
-
-        {/* Modal */}
-  
       </LinearGradient>
     </SafeAreaView>
   );
@@ -250,80 +237,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   topBackground: {
-    paddingTop: hp('4%'),
+    paddingTop: hp('2%'),
     paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
     height: hp('100%'),
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logo: {
-    width: wp('10%'),
-    height: hp('5%'),
-    resizeMode: 'contain',
-  },
-  greetingContainer: {
-    flex: 1,
-    marginLeft: wp('3%'),
-  },
-  greeting: {
-     fontSize:  Fonts.size.TopHeading,
-    color: 'black',
-    opacity: 0.9,
-  },
-  userName: {
-   fontSize:  Fonts.size.TopSubheading,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  notificationButton: {
-    width: wp('10%'),
-    height: wp('10%'),
-    borderRadius: wp('5%'),
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  titleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#fff',
-  },
-  screenTitle: { 
-    fontSize: 16, 
-    fontWeight: 'bold', 
-    flex: 1, 
-    marginLeft: 12 
-  },
-  locationButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    backgroundColor: '#EDE9FE',
-    borderRadius: 8,
-  },
-  locationText: { 
-    fontSize: 12, 
-    color: '#7B2CBF' 
-  },
-  otpContainer: {
-    position: 'absolute',
-    top: 15,
-    right: 10,
-    backgroundColor: '#4CAF50',
-    borderRadius: 6,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
-    zIndex: 1,
-  },
-  otpText: {
-    color: 'white',
-    fontWeight: 'bold',
-  fontSize:  Fonts.size.PageHeading,
-  },
+  
+
   section: {
     backgroundColor: '#fff',
     borderRadius: 12,

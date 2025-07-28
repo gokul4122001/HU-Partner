@@ -18,6 +18,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import CustomHeader from '../../../Header'; // Adjust path as needed
 
 const { width } = Dimensions.get('window');
 
@@ -100,27 +101,11 @@ const AmbulanceDashboard = () => {
         style={styles.headerBackground}
         resizeMode="cover"
       >
-        <View style={styles.header}>
-          <View style={styles.headerTop}>
-            <View style={styles.welcomeSection}>
-              <View style={styles.logoContainer}>
-                <MaterialCommunityIcons name="ambulance" size={24} color="#8b5cf6" />
-              </View>
-              <View style={styles.welcomeText}>
-                <Text style={styles.hiText}>Hi, Welcome</Text>
-                <Text style={styles.companyText}>Akash Ambulance</Text>
-              </View>
-            </View>
-            <View style={styles.headerIcons}>
-              <TouchableOpacity style={styles.iconButton}>
-                <MaterialIcons name="notifications-none" size={24} color="#fff" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.iconButton}>
-                <MaterialIcons name="account-balance-wallet" size={24} color="#fff" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+        <CustomHeader
+          username="Akash Ambulance"
+          onNotificationPress={() => console.log('Notification pressed')}
+          onWalletPress={() => console.log('Wallet pressed')}
+        />
 
         <View style={styles.earningsCard}>
           <Text style={styles.earningsTitle}>Total Earnings</Text>
@@ -181,6 +166,7 @@ const AmbulanceDashboard = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f8fafc' },

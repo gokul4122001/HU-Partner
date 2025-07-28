@@ -26,6 +26,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Colors from '../../Colors/Colors';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Fonts from '../../Fonts/Fonts';
+import CustomHeader from '../../../Header'; 
+
 
 const BookingDetailsScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -49,19 +51,11 @@ const BookingDetailsScreen = ({ navigation }) => {
         end={{ x: 0, y: 0 }}
         style={styles.topBackground}
       >
-        <View style={styles.header}>
-          <Image source={logo} style={styles.logo} />
-          <View style={styles.greetingContainer}>
-            <Text style={styles.greeting}>Hi, Welcome</Text>
-            <Text style={styles.userName}>Janmani Kumar</Text>
-          </View>
-          <TouchableOpacity style={[styles.notificationButton, { right: hp('2%') }]}>
-            <Icon name="notifications-on" size={24} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.notificationButton, { backgroundColor: 'red' }]}>
-            <MaterialCommunityIcons name="alarm-light-outline" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
+     <CustomHeader
+          username="Janmani Kumar"
+          onNotificationPress={() => console.log('Notification Pressed')}
+          onWalletPress={() => console.log('Wallet Pressed')}
+        />
 
         <View style={styles.sectionHeader}>
           <View style={styles.headerLeft}>
@@ -350,80 +344,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   topBackground: {
-    paddingTop: hp('4%'),
+    paddingTop: hp('2%'),
     paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
     height: hp('100%'),
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logo: {
-    width: wp('10%'),
-    height: hp('5%'),
-    resizeMode: 'contain',
-  },
-  greetingContainer: {
-    flex: 1,
-    marginLeft: wp('3%'),
-  },
-  greeting: {
-     fontSize:  Fonts.size.TopHeading,
-    color: 'black',
-    opacity: 0.9,
-  },
-  userName: {
-   fontSize:  Fonts.size.TopSubheading,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  notificationButton: {
-    width: wp('10%'),
-    height: wp('10%'),
-    borderRadius: wp('5%'),
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  titleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#fff',
-  },
-  screenTitle: { 
-    fontSize: 16, 
-    fontWeight: 'bold', 
-    flex: 1, 
-    marginLeft: 12 
-  },
-  locationButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    backgroundColor: '#EDE9FE',
-    borderRadius: 8,
-  },
-  locationText: { 
-    fontSize: 12, 
-    color: '#7B2CBF' 
-  },
-  otpContainer: {
-    position: 'absolute',
-    top: 15,
-    right: 10,
-    backgroundColor: '#4CAF50',
-    borderRadius: 6,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
-    zIndex: 1,
-  },
-  otpText: {
-    color: 'white',
-    fontWeight: 'bold',
-  fontSize:  Fonts.size.PageHeading,
-  },
+ 
   section: {
     backgroundColor: '#fff',
     borderRadius: 12,

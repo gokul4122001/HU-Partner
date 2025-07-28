@@ -13,21 +13,21 @@ import {
   Platform,
 } from 'react-native';
 import Icons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
+
 import Colors from '../../Colors/Colors';
-import logo from '../../Assets/logos.png';
+import Fonts from '../../Fonts/Fonts';
+import CustomHeader from '../../../Header'; 
 import CurrentBookingTab from './CurrentBookingTab';
 import ScheduleBookingTab from './ScheduleBookingTab';
 import CompleteBookingTab from './CompleteBookingTab';
 import CancellationBookingTab from './CancelBookingTab';
-import Fonts from '../../Fonts/Fonts';
 
 const BookingListScreen = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState('current');
@@ -95,7 +95,6 @@ const BookingListScreen = ({ navigation }) => {
   const handleServiceSelect = (service) => {
     console.log('Selected service:', service);
     setShowServiceModal(false);
-    // navigation.navigate('ServiceBooking', { service });
   };
 
   const renderTabButton = (tab) => (
@@ -170,7 +169,7 @@ const BookingListScreen = ({ navigation }) => {
               style={styles.closeButton}
               onPress={() => setShowServiceModal(false)}
             >
-              <Icons name="close" size={20} color="#ffff" />
+              <Icons name="close" size={20} color="#fff" />
             </TouchableOpacity>
           </View>
 
@@ -220,19 +219,11 @@ const BookingListScreen = ({ navigation }) => {
         end={{ x: 0, y: 0 }}
         style={styles.headerBackground}
       >
-        <View style={styles.header}>
-          <Image source={logo} style={styles.logo} />
-          <View style={styles.greetingContainer}>
-            <Text style={styles.greeting}>Hi, Welcome</Text>
-            <Text style={styles.userName}>Janmani Kumar</Text>
-          </View>
-          <TouchableOpacity style={[styles.notificationButton, { marginRight: wp('2%') }]}>
-            <Icon name="notifications-on" size={24} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.notificationButton, { backgroundColor: 'red' }]}>
-            <MaterialCommunityIcons name="alarm-light-outline" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
+        <CustomHeader
+          username="Janmani Kumar"
+          onNotificationPress={() => console.log('Notification Pressed')}
+          onWalletPress={() => console.log('Wallet Pressed')}
+        />
 
         <View style={styles.sectionHeader}>
           <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
@@ -288,11 +279,9 @@ const BookingListScreen = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F5F5F5' },
   headerBackground: {
-    paddingTop: hp('4%'),
     paddingBottom: hp('1.2%'),
     paddingHorizontal: wp('4%'),
   },
@@ -316,23 +305,9 @@ const styles = StyleSheet.create({
     minHeight: wp('10%'),
   },
   activeTabButton: { backgroundColor: Colors.statusBar || '#007AFF' },
-  tabButtonText: { fontSize:  Fonts.size.PageHeading, color: '#666', fontWeight: '600' },
+  tabButtonText: { fontSize: Fonts.size.PageHeading, color: '#666', fontWeight: '600' },
   activeTabButtonText: { color: 'white' },
   tabContent: { flex: 1, backgroundColor: '#fff', paddingBottom: hp('12%') },
-  header: { flexDirection: 'row', alignItems: 'center' },
-  logo: { width: wp('10%'), height: hp('5%'), resizeMode: 'contain' },
-  greetingContainer: { flex: 1, marginLeft: wp('3%') },
-  greeting: { fontSize:  Fonts.size.TopHeading, color: 'black', opacity: 0.9 },
-  userName: { fontSize:  Fonts.size.TopSubheading, fontWeight: 'bold', color: 'black' },
-  notificationButton: {
-    width: wp('10%'),
-    height: wp('10%'),
-    borderRadius: wp('5%'),
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 3,
-  },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -340,7 +315,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     justifyContent: 'space-between',
   },
-  sectionTitle: {fontSize:  Fonts.size.PageHeading, fontWeight: 'bold', marginLeft: 10 },
+  sectionTitle: {
+    fontSize: Fonts.size.PageHeading,
+    fontWeight: 'bold',
+    marginLeft: 10,
+  },
   inlineDateDropdownContainer: { marginLeft: wp('2%'), alignItems: 'flex-end' },
   dateDropdownButton: {
     flexDirection: 'row',
@@ -355,7 +334,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   dateDropdownText: {
-    fontSize:  Fonts.size.PageHeading,
+    fontSize: Fonts.size.PageHeading,
     color: '#333',
     fontWeight: '500',
     marginRight: wp('2%'),
@@ -383,49 +362,15 @@ const styles = StyleSheet.create({
   selectedDropdownItem: { backgroundColor: '#F0F8FF' },
   dropdownItemContent: { flexDirection: 'row', alignItems: 'center' },
   dropdownIcon: { marginRight: wp('3%') },
-  dropdownItemText: {  fontSize:  Fonts.size.PageHeading, color: '#333', fontWeight: '500' },
+  dropdownItemText: {
+    fontSize: Fonts.size.PageHeading,
+    color: '#333',
+    fontWeight: '500',
+  },
   selectedDropdownItemText: {
     color: Colors.statusBar || '#007AFF',
     fontWeight: '600',
   },
-  
-bottomServiceButton: {
-  position: 'absolute',
-  bottom: hp('10%'),
-  elevation: 10,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 4 },
-  shadowOpacity: 0.3,
-  shadowRadius: 8,
-  alignSelf: 'center',
-  height: '5%',
-  width: '30%',
-  backgroundColor: 'transparent', 
-  borderRadius: 30,
-  overflow: 'hidden',
-  
-},
-
-serviceButtonGradient: {
-  flex: 1, // ✅ make it fill the button
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
- 
-  borderRadius: 12,
-  backgroundColor: 'transparent', // ✅ make sure it's transparent too
-  
-},
-
-  serviceButtonText: {
-    color: 'white',
-    fontSize:  Fonts.size.PageHeading,
-    fontWeight: 'bold',
-    marginLeft: wp('2%'),
-    
-  },
-
-  
   serviceModalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -452,7 +397,7 @@ serviceButtonGradient: {
     borderBottomColor: '#F0F0F0',
   },
   serviceModalTitle: {
-    fontSize:  Fonts.size.PageHeading,
+    fontSize: Fonts.size.PageHeading,
     fontWeight: 'bold',
     color: '#333',
   },
@@ -469,20 +414,14 @@ serviceButtonGradient: {
   },
   serviceCard: {
     width: wp('37%'),
-  
     borderRadius: 12,
     padding: wp('4%'),
     marginBottom: hp('2%'),
     alignItems: 'center',
     justifyContent: 'center',
-  
   },
-  serviceCardLeft: {
-    marginRight: wp('2%'),
-  },
-  serviceCardRight: {
-    marginLeft: wp('2%'),
-  },
+  serviceCardLeft: { marginRight: wp('2%') },
+  serviceCardRight: { marginLeft: wp('2%') },
   serviceIconContainer: {
     width: wp('15%'),
     height: wp('15%'),
@@ -491,26 +430,19 @@ serviceButtonGradient: {
     justifyContent: 'center',
     marginBottom: hp('1%'),
   },
-  serviceIcon: {
-    fontSize: wp('8%'),
-  },
- serviceTitle: {
- fontSize:  Fonts.size.PageHeading,
-  fontWeight: '600',
-  color: '#333',
-  textAlign: 'center',
-  lineHeight: hp('2.2%'),
-  marginTop: hp('2%'), // ✅ Add this line
-},
-
   serviceIconImage: {
-  width: 110,
-  height: 110,
-  resizeMode: 'contain',
-  
-},
-
-
+    width: 110,
+    height: 110,
+    resizeMode: 'contain',
+  },
+  serviceTitle: {
+    fontSize: Fonts.size.PageHeading,
+    fontWeight: '600',
+    color: '#333',
+    textAlign: 'center',
+    lineHeight: hp('2.2%'),
+    marginTop: hp('2%'),
+  },
 });
 
 export default BookingListScreen;

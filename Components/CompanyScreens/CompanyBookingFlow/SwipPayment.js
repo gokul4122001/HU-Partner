@@ -1,5 +1,6 @@
+// BookingDetailsScreen.js
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -12,24 +13,24 @@ import {
   Modal,
   TextInput,
   Keyboard,
-  TouchableWithoutFeedback, 
-  Animated,  
+  TouchableWithoutFeedback,
+  Animated,
   PanResponder,
   Dimensions
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import logo from '../../Assets/logos.png';
+import Icons from 'react-native-vector-icons/Ionicons';
+import LinearGradient from 'react-native-linear-gradient';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import LottieView from 'lottie-react-native';
+import CustomHeader from '../../../Header';
+import Colors from '../../Colors/Colors';
+import Fonts from '../../Fonts/Fonts';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import LinearGradient from 'react-native-linear-gradient';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Colors from '../../Colors/Colors';
-import Icons from 'react-native-vector-icons/Ionicons';
-import Fonts from '../../Fonts/Fonts';
-import LottieView from 'lottie-react-native';
 
 const windowDimensions = Dimensions.get('window');
 const SWIPE_THRESHOLD = windowDimensions.width * 0.3;
@@ -42,7 +43,8 @@ const BookingDetailsScreen = ({ navigation }) => {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastColor, setToastColor] = useState('#000');
-  const slideAnim = useRef(new Animated.Value(-100)).current; // Start off-screen
+  const slideAnim = useRef(new Animated.Value(-100)).current;
+  const panX = useRef(new Animated.Value(0)).current;
 
   const handleLocationChange = () => {
     if (currentLocation.trim()) {
@@ -52,13 +54,11 @@ const BookingDetailsScreen = ({ navigation }) => {
     setCurrentLocation('');
   };
 
-  const panX = useRef(new Animated.Value(0)).current;
-
   const showToast = (message, color) => {
     setToastMessage(message);
     setToastColor(color || '#000');
     setToastVisible(true);
-    
+
     Animated.sequence([
       Animated.timing(slideAnim, {
         toValue: 0,
@@ -91,17 +91,17 @@ const BookingDetailsScreen = ({ navigation }) => {
       },
       onPanResponderRelease: (_, gestureState) => {
         panX.flattenOffset();
-        
+
         if (gestureState.dx > SWIPE_THRESHOLD && gestureState.vx > 0) {
           setIsSwiped(true);
-          
+
           Animated.timing(panX, {
             toValue: windowDimensions.width * 0.7,
             duration: 250,
             useNativeDriver: true,
           }).start(() => {
             showToast('Swipe Successful! Navigating...', '#4CAF50');
-            
+
             setTimeout(() => {
               navigation.navigate('BookingHomeScreen');
               setTimeout(() => {
@@ -133,42 +133,41 @@ const BookingDetailsScreen = ({ navigation }) => {
   ).current;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{ flex: 1 }}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.statusBar} />
       <LinearGradient
         colors={['#ffffff', '#C3DFFF']}
         start={{ x: 0, y: 0.3 }}
         end={{ x: 0, y: 0 }}
-        style={styles.topBackground}
+        style={{ flex: 1 }}
       >
-        {/* Toast Notification */}
         {toastVisible && (
           <Animated.View
-            style={[
-              styles.toastContainer,
-              { 
-                backgroundColor: toastColor, 
-                transform: [{ translateY: slideAnim }] 
-              },
-            ]}
+            style={{
+              backgroundColor: toastColor,
+              transform: [{ translateY: slideAnim }],
+              position: 'absolute',
+              top: 20,
+              left: 20,
+              right: 20,
+              padding: 15,
+              borderRadius: 8,
+              zIndex: 1000,
+            }}
           >
-            <Text style={styles.toastText}>{toastMessage}</Text>
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>{toastMessage}</Text>
           </Animated.View>
         )}
 
-        <View style={styles.header}>
-          <Image source={logo} style={styles.logo} />
-          <View style={styles.greetingContainer}>
-            <Text style={styles.greeting}>Hi, Welcome</Text>
-            <Text style={styles.userName}>Janmani Kumar</Text>
-          </View>
-          <TouchableOpacity style={[styles.notificationButton, { right: hp('2%') }]}>
-            <Icon name="notifications-on" size={24} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.notificationButton, { backgroundColor: 'red' }]}>
-            <MaterialCommunityIcons name="alarm-light-outline" size={24} color="white" />
-          </TouchableOpacity>
-        </View>
+        {/* Reusable Header */}
+        <CustomHeader
+          username="Janmani Kumar"
+          onNotificationPress={() => console.log('Notification Pressed')}
+          onWalletPress={() => console.log('Wallet Pressed')}
+        />
+
+
+     
 
         {/* Rest of your component remains the same */}
         <View style={styles.sectionHeader}>
@@ -483,75 +482,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('4%'),
     height: hp('100%'),
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logo: {
-    width: wp('10%'),
-    height: hp('5%'),
-    resizeMode: 'contain',
-  },
-  greetingContainer: {
-    flex: 1,
-    marginLeft: wp('3%'),
-  },
-  greeting: {
-     fontSize:  Fonts.size.TopHeading,
-    color: 'black',
-    opacity: 0.9,
-  },
-  userName: {
-   fontSize:  Fonts.size.TopSubheading,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  notificationButton: {
-    width: wp('10%'),
-    height: wp('10%'),
-    borderRadius: wp('5%'),
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  titleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#fff',
-  },
-  screenTitle: { 
-    fontSize: 16, 
-    fontWeight: 'bold', 
-    flex: 1, 
-    marginLeft: 12 
-  },
-  locationButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    backgroundColor: '#EDE9FE',
-    borderRadius: 8,
-  },
-  locationText: { 
-    fontSize: 12, 
-    color: '#7B2CBF' 
-  },
-  otpContainer: {
-    position: 'absolute',
-    top: 15,
-    right: 10,
-    backgroundColor: '#4CAF50',
-    borderRadius: 6,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
-    zIndex: 1,
-  },
-  otpText: {
-    color: 'white',
-    fontWeight: 'bold',
-  fontSize:  Fonts.size.PageHeading,
-  },
+ 
+ 
   section: {
     backgroundColor: '#fff',
     borderRadius: 12,
