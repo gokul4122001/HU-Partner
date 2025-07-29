@@ -1,4 +1,3 @@
-// src/Screens/AssignmentOverviewScreen.js
 import React from 'react';
 import {
   View,
@@ -7,124 +6,45 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
-  StatusBar,Image,Dimensions
+  StatusBar,
+  Image,
+  Dimensions,
 } from 'react-native';
 
-import Icons from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Fonts from '../../Fonts/Fonts';
 import LinearGradient from 'react-native-linear-gradient';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import logo from '../../Assets/logos.png';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomHeader from '../../../Header';
 
 const { width, height } = Dimensions.get('window');
 
 const AssignmentOverviewScreen = ({ navigation }) => {
   const assignmentData = [
     {
-      id: 1,
-      type: 'Advanced Life Support',
-      category: 'Small ( Omni, etc )',
-      ambulanceId: 'AMB01',
-      vehicleNo: 'TN0502541',
-      date: '05/04/2025',
-      time: '10:00 AM',
-      totalRide: 22,
+      id: '1',
+      type: 'Emergency Transfer',
+      category: 'small (Omni,etc)',
+      ambulanceId: 'AMB001',
+      vehicleNo: 'TN 05 MA 2658',
+      date: '2025-07-29',
+      time: '10:30 AM',
+      totalRide: '12',
     },
     {
-      id: 2,
-      type: 'Advanced Life Support',
-      category: 'Small ( Omni, etc )',
-      ambulanceId: 'AMB02',
-      vehicleNo: 'TN0502542',
-      date: '05/04/2025',
-      time: '11:30 AM',
-      totalRide: 18,
+      id: '2',
+      type: 'Scheduled Pickup',
+      category: 'small (Omni,etc)',
+      ambulanceId: 'AMB002',
+      vehicleNo: 'TN 09 BB 1274',
+      date: '2025-07-28',
+      time: '2:00 PM',
+      totalRide: '8',
     },
-    {
-      id: 3,
-      type: 'Basic Life Support',
-      category: 'Medium ( Tempo, etc )',
-      ambulanceId: 'AMB03',
-      vehicleNo: 'TN0502543',
-      date: '05/04/2025',
-      time: '09:15 AM',
-      totalRide: 35,
-    },
-    {
-      id: 4,
-      type: 'Advanced Life Support',
-      category: 'Large ( Van, etc )',
-      ambulanceId: 'AMB04',
-      vehicleNo: 'TN0502544',
-      date: '05/04/2025',
-      time: '02:45 PM',
-      totalRide: 12,
-    },
-    {
-      id: 5,
-      type: 'Critical Care Transport',
-      category: 'Small ( Omni, etc )',
-      ambulanceId: 'AMB05',
-      vehicleNo: 'TN0502545',
-      date: '06/04/2025',
-      time: '08:30 AM',
-      totalRide: 28,
-    },
-    {
-      id: 6,
-      type: 'Basic Life Support',
-      category: 'Medium ( Tempo, etc )',
-      ambulanceId: 'AMB06',
-      vehicleNo: 'TN0502546',
-      date: '06/04/2025',
-      time: '01:20 PM',
-      totalRide: 19,
-    },
-    {
-      id: 7,
-      type: 'Advanced Life Support',
-      category: 'Small ( Omni, etc )',
-      ambulanceId: 'AMB07',
-      vehicleNo: 'TN0502547',
-      date: '06/04/2025',
-      time: '04:10 PM',
-      totalRide: 31,
-    },
-    {
-      id: 8,
-      type: 'Emergency Response',
-      category: 'Large ( Van, etc )',
-      ambulanceId: 'AMB08',
-      vehicleNo: 'TN0502548',
-      date: '07/04/2025',
-      time: '07:45 AM',
-      totalRide: 24,
-    },
-    {
-      id: 9,
-      type: 'Critical Care Transport',
-      category: 'Medium ( Tempo, etc )',
-      ambulanceId: 'AMB09',
-      vehicleNo: 'TN0502549',
-      date: '07/04/2025',
-      time: '12:00 PM',
-      totalRide: 16,
-    },
-    {
-      id: 10,
-      type: 'Advanced Life Support',
-      category: 'Small ( Omni, etc )',
-      ambulanceId: 'AMB10',
-      vehicleNo: 'TN0502550',
-      date: '07/04/2025',
-      time: '05:30 PM',
-      totalRide: 27,
-    },
+    
   ];
 
   const renderAssignmentCard = (assignment) => (
@@ -132,10 +52,13 @@ const AssignmentOverviewScreen = ({ navigation }) => {
       <View style={styles.card}>
         <View style={styles.cardHeader}>
           <View style={styles.ambulanceIconContainer}>
-           <View style={styles.ambulanceIcon}>
-  <Image source={require('../../Assets/ambualnce.png')} style={styles.ambulanceImage} resizeMode="contain" />
-</View>
-
+            <View style={styles.ambulanceIcon}>
+              <Image
+                source={require('../../Assets/ambualnce.png')}
+                style={styles.ambulanceImage}
+                resizeMode="contain"
+              />
+            </View>
           </View>
           <View style={styles.headerTextContainer}>
             <Text style={styles.assignmentType}>{assignment.type}</Text>
@@ -181,50 +104,37 @@ const AssignmentOverviewScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#F8F9FF" />
 
-  <LinearGradient
-          colors={['#ffffff', '#C3DFFF']}
-          start={{ x: -0, y: 0.3 }}
-          end={{ x: 0, y: 0 }}
-          style={styles.topBackground}
-        >
+      <LinearGradient
+        colors={['#ffffff', '#C3DFFF']}
+        start={{ x: -0, y: 0.3 }}
+        end={{ x: 0, y: 0 }}
+        style={styles.topBackground}
+      >
+        <CustomHeader
+          username="Janmani Kumar"
+          onNotificationPress={() => console.log('Notification pressed')}
+          onWalletPress={() => console.log('Wallet pressed')}
+        />
 
-           <View style={styles.header}>
-                                           <Image source={logo} style={styles.logo} />
-                                           <View style={styles.greetingContainer}>
-                                             <Text style={styles.greeting}>Hi, Welcome</Text>
-                                             <Text style={styles.userName}>Janmani Kumar</Text>
-                                           </View>
-                                           <TouchableOpacity
-                                             style={[styles.notificationButton, { right: hp('2%') }]}
-                                           >
-                                             <Icon name="notifications-on" size={24} color="black" />
-                                           </TouchableOpacity>
-                                           <TouchableOpacity
-                                             style={[styles.notificationButton, { backgroundColor: 'red' }]}
-                                           >
-                                             <MaterialCommunityIcons
-                                               name="alarm-light-outline"
-                                               size={24}
-                                               color="white"
-                                             />
-                                           </TouchableOpacity>
-                                         </View>
-
-                                            <View style={styles.header1}>
-                                                   <TouchableOpacity
-                                                     style={styles.backButton}
-                                                     onPress={() => navigation.goBack()}
-                                                   >
-                                                     <Icon name="arrow-back" size={24} color="#8B5CF6" />
-                                                   </TouchableOpacity>
-                                                   <Text style={styles.headerTitle}>Assignment Overview</Text>
-                                                 </View>
-  
-      <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}   contentContainerStyle={{ paddingBottom: 100 }} >
-        <View style={styles.cardsContainer}>
-          {assignmentData.map((assignment) => renderAssignmentCard(assignment))}
+        <View style={styles.header1}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Icon name="arrow-back" size={24} color="#000000" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Assignment Overview</Text>
         </View>
-      </ScrollView>
+
+        <ScrollView
+          style={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        >
+          <View style={styles.cardsContainer}>
+            {assignmentData.map((assignment) => renderAssignmentCard(assignment))}
+          </View>
+        </ScrollView>
       </LinearGradient>
     </SafeAreaView>
   );
@@ -235,17 +145,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F9FF',
   },
- 
-
   scrollContainer: {
     flex: 1,
+    top:'3%'
   },
   cardsContainer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     paddingBottom: 20,
   },
   cardContainer: {
-    marginBottom: 16,
+    marginBottom: 20
+    ,
   },
   card: {
     backgroundColor: '#FFFFFF',
@@ -271,23 +181,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  ambulanceEmoji: {
-    fontSize: 24,
+  ambulanceImage: {
+    width: 90,
+    height: 90,
   },
   headerTextContainer: {
     flex: 1,
   },
   assignmentType: {
-    fontSize: 16,
+    fontSize:  Fonts.size.PageSubheading,
     fontWeight: '600',
-    color: '#333',
-    fontFamily: Fonts?.family?.semiBold || 'System',
+    color: '#00000',
     marginBottom: 4,
+    left:20
   },
   categoryText: {
-    fontSize: 14,
+    fontSize:  Fonts.size.PageSubheading,
     color: '#8B5CF6',
-    fontFamily: Fonts?.family?.regular || 'System',
+    left:20
   },
   detailsContainer: {
     borderTopWidth: 1,
@@ -315,74 +226,37 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   detailLabel: {
-    fontSize: 14,
-    color: '#666',
-    fontFamily: Fonts?.family?.regular || 'System',
+    fontSize: Fonts.size.PageSubheading,
+    color: '#000000',
+    fontWeight: '550',
+ 
   },
   detailValue: {
-    fontSize: 14,
+   fontSize: Fonts.size.PageSubheading,
     fontWeight: '500',
-    color: '#333',
-    fontFamily: Fonts?.family?.medium || 'System',
+    color: '#454242',
+   
   },
-  ambulanceImage: {
-  width: 70,
-  height: 70,
-},
   topBackground: {
-    paddingTop: hp('4%'),
+      paddingTop: hp('1%'),
     paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
     height: hp('100%'),
-  },
-header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logo: {
-    width: wp('10%'),
-    height: hp('5%'),
-    resizeMode: 'contain',
-  },
-  greetingContainer: {
-    flex: 1,
-    marginLeft: wp('3%'),
-  },
-  greeting: {
-     fontSize:  Fonts.size.TopHeading,
-    color: 'black',
-    opacity: 0.9,
-     fontFamily:Fonts.family.regular
-  },
-  userName: {
-  fontSize:  Fonts.size.TopSubheading,
-    fontWeight: 'bold',
-    color: 'black',
-     fontFamily:Fonts.family.regular
-  },
-  notificationButton: {
-    width: wp('10%'),
-    height: wp('10%'),
-    borderRadius: wp('5%'),
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: wp('2%'),
   },
   header1: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: width * 0.04,
-    paddingVertical:'10%'
+    paddingVertical: '3%',
+
   },
   backButton: {
     marginRight: width * 0.04,
   },
   headerTitle: {
-    fontSize: width * 0.045,
+    fontSize:  Fonts.size.PageHeading,
     fontWeight: '600',
-    color: '#8B5CF6',
-    flex: 1,
+    color: '#7416B2',
     alignSelf: 'center',
   },
 });

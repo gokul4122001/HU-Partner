@@ -18,6 +18,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import Fonts from '../Fonts/Fonts';
 import Colors from '../Colors/Colors';
 import LottieView from 'lottie-react-native';
+import { useSelector } from 'react-redux';
+import { combineSlices } from '@reduxjs/toolkit';
 
 const { width, height } = Dimensions.get('window');
 const SWIPE_THRESHOLD = width * 0.3; 
@@ -62,6 +64,7 @@ const WelcomeScreen = ({ navigation }) => {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastColor, setToastColor] = useState('#000');
+  const user_type = useSelector(state=>state.auth.user_type)
 
   const showToast = (message, color) => {
     setToastMessage(message);
@@ -69,6 +72,8 @@ const WelcomeScreen = ({ navigation }) => {
     setToastVisible(true);
     setTimeout(() => setToastVisible(false), 2500);
   };
+  console.log(user_type,"user_type");
+  
 
   const panX = useRef(new Animated.Value(0)).current;
   const [isSwiped, setIsSwiped] = useState(false);
@@ -108,7 +113,10 @@ const WelcomeScreen = ({ navigation }) => {
             
             // Wait a moment then navigate
             setTimeout(() => {
-              navigation.navigate('MainApp'); // Replace with your actual route name
+              if(user_type === "company"){
+                navigation.navigate('MainApp'); 
+              }
+
               // Reset for next time (in case user comes back)
               setTimeout(() => {
                 panX.setValue(0);

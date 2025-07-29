@@ -6,11 +6,13 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
-  Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import LinearGradient from 'react-native-linear-gradient';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import CustomHeader from '../../../Header'; 
 
-const AmbulanceAssignmentScreen = () => {
+const AmbulanceAssignmentScreen = ({ navigation }) => {
   const assignmentData = [
     {
       id: 1,
@@ -24,7 +26,7 @@ const AmbulanceAssignmentScreen = () => {
       contact: '9344546447',
       date: '05/04/2025',
       time: '10 : 00 AM',
-      amount: '₹ 1,800'
+      amount: '₹ 1,800',
     },
     {
       id: 2,
@@ -38,7 +40,7 @@ const AmbulanceAssignmentScreen = () => {
       contact: '9344546447',
       date: '05/04/2025',
       time: '10 : 00 AM',
-      amount: '₹ 1,800'
+      amount: '₹ 1,800',
     },
     {
       id: 3,
@@ -52,13 +54,12 @@ const AmbulanceAssignmentScreen = () => {
       contact: '9344546447',
       date: '05/04/2025',
       time: '10 : 00 AM',
-      amount: '₹ 1,800'
-    }
+      amount: '₹ 1,800',
+    },
   ];
 
   const renderAssignmentCard = (item) => (
     <View key={item.id} style={styles.assignmentCard}>
-      {/* Ambulance Icon and Type */}
       <View style={styles.headerRow}>
         <View style={styles.ambulanceIcon}>
           <Icon name="local-hospital" size={20} color="#fff" />
@@ -69,7 +70,6 @@ const AmbulanceAssignmentScreen = () => {
         </View>
       </View>
 
-      {/* Ambulance Details */}
       <View style={styles.detailsSection}>
         <View style={styles.infoRow}>
           <Text style={styles.label}>Ambulance ID No: </Text>
@@ -78,7 +78,6 @@ const AmbulanceAssignmentScreen = () => {
           <Text style={styles.value}>{item.vehicleNo}</Text>
         </View>
 
-        {/* Pickup Location */}
         <View style={styles.locationRow}>
           <View style={styles.locationDot} />
           <View style={styles.locationInfo}>
@@ -87,16 +86,14 @@ const AmbulanceAssignmentScreen = () => {
           </View>
         </View>
 
-        {/* Drop Location */}
         <View style={styles.locationRow}>
-          <View style={[styles.locationDot, {backgroundColor: '#ef4444'}]} />
+          <View style={[styles.locationDot, { backgroundColor: '#ef4444' }]} />
           <View style={styles.locationInfo}>
             <Text style={styles.locationLabel}>Drop: </Text>
             <Text style={styles.locationText}>{item.drop}</Text>
           </View>
         </View>
 
-        {/* Customer Details */}
         <View style={styles.customerSection}>
           <View style={styles.infoRow}>
             <Text style={styles.label}>Name: </Text>
@@ -113,7 +110,6 @@ const AmbulanceAssignmentScreen = () => {
           </View>
         </View>
 
-        {/* Total Amount */}
         <View style={styles.amountSection}>
           <Text style={styles.totalLabel}>Total Amount</Text>
           <Text style={styles.totalAmount}>{item.amount}</Text>
@@ -123,125 +119,55 @@ const AmbulanceAssignmentScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#8b5cf6" barStyle="light-content" />
-      
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <View style={styles.welcomeSection}>
-            <View style={styles.logoContainer}>
-              <View style={styles.logo}>
-                <Text style={styles.logoText}>A</Text>
-              </View>
-            </View>
-            <View style={styles.welcomeText}>
-              <Text style={styles.hiText}>Hi, Welcome</Text>
-              <Text style={styles.companyText}>Akash Ambulance</Text>
-            </View>
-          </View>
-          <View style={styles.headerIcons}>
-            <TouchableOpacity style={styles.iconButton}>
-              <Icon name="refresh" size={24} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton}>
-              <Icon name="assignment" size={24} color="#fff" />
-            </TouchableOpacity>
-          </View>
-        </View>
-        
-        <View style={styles.titleSection}>
-          <TouchableOpacity style={styles.backButton}>
-            <Icon name="arrow-back" size={24} color="#fff" />
-          </TouchableOpacity>
-          <Text style={styles.pageTitle}>Driver & Ambulance Assignment Details</Text>
-        </View>
+    <LinearGradient
+      colors={['#ffffff', '#C3DFFF']}
+      start={{ x: 0, y: 0.3 }}
+      end={{ x: 0, y: 0 }}
+      style={styles.topBackground}
+    >
+      <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
+
+      <CustomHeader
+        username="Akash Ambulance"
+        onNotificationPress={() => console.log('Notification pressed')}
+        onWalletPress={() => console.log('Wallet pressed')}
+      />
+
+      <View style={styles.titleRow}>
+        <TouchableOpacity onPress={() => navigation?.goBack()}>
+          <Icon name="arrow-back" size={24} color="#000" />
+        </TouchableOpacity>
+        <Text style={styles.titleText}>Driver & Ambulance Assignment Details</Text>
       </View>
 
-   <ScrollView
-  style={styles.content}
-  contentContainerStyle={{ paddingBottom: 100 }} 
-  showsVerticalScrollIndicator={false}
->
+      <ScrollView style={styles.content} contentContainerStyle={{ paddingBottom: 100 }}>
         {assignmentData.map(item => renderAssignmentCard(item))}
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  topBackground: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    paddingTop: hp('4%'),
+    paddingBottom: hp('2%'),
+    paddingHorizontal: wp('4%'),
   },
-  header: {
-    backgroundColor: '#8b5cf6',
-    paddingTop: 44,
-    paddingBottom: 16,
-  },
-  headerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    marginBottom: 16,
-  },
-  welcomeSection: {
+  titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingVertical: 10,
   },
-  logoContainer: {
-    marginRight: 12,
-  },
-  logo: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logoText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#8b5cf6',
-  },
-  welcomeText: {
-    // Welcome text styles
-  },
-  hiText: {
-    fontSize: 14,
-    color: '#e5e7eb',
-    marginBottom: 2,
-  },
-  companyText: {
+  titleText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#fff',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-  },
-  iconButton: {
-    marginLeft: 16,
-  },
-  titleSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  pageTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-    flex: 1,
+    color: '#1f2937',
+    marginLeft: 12,
   },
   content: {
     flex: 1,
-    padding: 16,
+    marginTop: 10,
   },
   assignmentCard: {
     backgroundColor: '#fff',
@@ -250,10 +176,7 @@ const styles = StyleSheet.create({
     padding: 16,
     elevation: 2,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
   },
@@ -284,9 +207,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#6b7280',
   },
-  detailsSection: {
-    // Details section styles
-  },
+  detailsSection: {},
   infoRow: {
     flexDirection: 'row',
     alignItems: 'center',

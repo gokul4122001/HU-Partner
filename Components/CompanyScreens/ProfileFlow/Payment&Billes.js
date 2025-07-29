@@ -1,4 +1,3 @@
-// src/Screens/PaymentBillsScreen.js
 import React from 'react';
 import {
   View,
@@ -7,21 +6,18 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
-  StatusBar,Image
+  StatusBar,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icons from 'react-native-vector-icons/MaterialIcons';
-import Fonts from '../../Fonts/Fonts';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import logo from '../../Assets/logos.png';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Fonts from '../../Fonts/Fonts';
+import CustomHeader from '../../../Header'; 
 
 const PaymentBillsScreen = ({ navigation }) => {
-  // Sample data for payment & bills
   const paymentData = [
     {
       id: 1,
@@ -108,20 +104,15 @@ const PaymentBillsScreen = ({ navigation }) => {
   const renderPaymentItem = (item) => (
     <TouchableOpacity key={item.id} style={styles.paymentItem}>
       <View style={styles.itemContent}>
-        {/* Icon Section */}
         <View style={[styles.iconContainer, { backgroundColor: item.iconBg }]}>
           <Text style={styles.iconText}>{item.icon}</Text>
         </View>
-
-        {/* Text Section */}
         <View style={styles.textContainer}>
           <Text style={styles.paymentType}>{item.type}</Text>
           {item.description && (
             <Text style={styles.paymentDescription}>{item.description}</Text>
           )}
         </View>
-
-        {/* Amount Section */}
         <View style={styles.amountContainer}>
           <Text style={styles.amountText}>{item.amount}</Text>
         </View>
@@ -130,41 +121,26 @@ const PaymentBillsScreen = ({ navigation }) => {
   );
 
   return (
-  <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="#F8F9FF" />
-  
-    <LinearGradient
-            colors={['#ffffff', '#C3DFFF']}
-            start={{ x: -0, y: 0.3 }}
-            end={{ x: 0, y: 0 }}
-            style={styles.topBackground}
-          >
-      
-         <View style={styles.header}>
-                                                 <Image source={logo} style={styles.logo} />
-                                                 <View style={styles.greetingContainer}>
-                                                   <Text style={styles.greeting}>Hi, Welcome</Text>
-                                                   <Text style={styles.userName}>Janmani Kumar</Text>
-                                                 </View>
-                                                 <TouchableOpacity
-                                                   style={[styles.notificationButton, { right: hp('2%') }]}
-                                                 >
-                                                   <Icon name="notifications-on" size={24} color="black" />
-                                                 </TouchableOpacity>
-                                                 <TouchableOpacity
-                                                   style={[styles.notificationButton, { backgroundColor: 'red' }]}
-                                                 >
-                                                   <MaterialCommunityIcons
-                                                     name="alarm-light-outline"
-                                                     size={24}
-                                                     color="white"
-                                                   />
-                                                 </TouchableOpacity>
-                                               </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#F8F9FF" />
+
+      <LinearGradient
+        colors={['#ffffff', '#C3DFFF']}
+        start={{ x: -0, y: 0.3 }}
+        end={{ x: 0, y: 0 }}
+        style={styles.topBackground}
+      >
+        {/* ✅ CustomHeader integrated */}
+        <CustomHeader
+          username="Janmani Kumar"
+          onNotificationPress={() => console.log('Notification Pressed')}
+          onWalletPress={() => console.log('Wallet Pressed')}
+        />
+
         {/* Back Button and Title */}
         <View style={styles.titleSection}>
-          <TouchableOpacity 
-            onPress={() => navigation.goBack()} 
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
             style={styles.backButton}
           >
             <Icons name="arrow-back-ios" size={20} color="#333" />
@@ -173,74 +149,36 @@ const PaymentBillsScreen = ({ navigation }) => {
         </View>
 
         {/* Payment List */}
-        <ScrollView 
+        <ScrollView
           style={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
         >
           <View style={styles.paymentList}>
-            {paymentData.map(item => renderPaymentItem(item))}
+            {paymentData.map((item) => renderPaymentItem(item))}
           </View>
         </ScrollView>
-        
-       </LinearGradient>
-         </SafeAreaView>
+      </LinearGradient>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
   },
-topBackground: {
-    paddingTop: hp('4%'),
+  topBackground: {
+   paddingTop: hp('1%'),
     paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
     height: hp('100%'),
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logo: {
-    width: wp('10%'),
-    height: hp('5%'),
-    resizeMode: 'contain',
-  },
-  greetingContainer: {
-    flex: 1,
-    marginLeft: wp('3%'),
-  },
-  greeting: {
-     fontSize:  Fonts.size.TopHeading,
-    color: 'black',
-    opacity: 0.9,
-     fontFamily:Fonts.family.regular
-  },
-  userName: {
-  fontSize:  Fonts.size.TopSubheading,
-    fontWeight: 'bold',
-    color: 'black',
-     fontFamily:Fonts.family.regular
-  },
-  notificationButton: {
-    width: wp('10%'),
-    height: wp('10%'),
-    borderRadius: wp('5%'),
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: wp('2%'),
-  },
-
- 
   titleSection: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingBottom: 20,
-    paddingVertical:20
+    paddingVertical: 15,
   },
   backButton: {
     padding: 8,
@@ -248,7 +186,7 @@ topBackground: {
     marginLeft: -8,
   },
   pageTitle: {
-    fontSize: 22,
+   fontSize: Fonts.size.PageHeading,
     fontWeight: 'bold',
     color: '#8B5CF6',
     fontFamily: Fonts?.family?.bold || 'System',
@@ -262,24 +200,16 @@ topBackground: {
   paymentList: {
     paddingHorizontal: 16,
   },
-paymentItem: {
-  backgroundColor: '#FFFFFF', // Fix: was '#fffff' (invalid color)
-  borderRadius: 12,
-  marginBottom: 12,
-
-  // Shadow for iOS
-  shadowColor: '#000',
-  shadowOffset: {
-    width: 0,
-    height: 1,
+  paymentItem: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
-  shadowOpacity: 0.2,
-  shadowRadius: 2.22,
-
-  // Shadow for Android
-  elevation: 3,
-},
-
   itemContent: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -300,16 +230,16 @@ paymentItem: {
     flex: 1,
   },
   paymentType: {
-    fontSize: 16,
+    fontSize: Fonts.size.PageSubheading,
     fontWeight: '600',
     color: '#333',
-    fontFamily: Fonts?.family?.semiBold || 'System',
+  
     marginBottom: 2,
   },
   paymentDescription: {
-    fontSize: 14,
+  fontSize: Fonts.size.PageSubheading,
     color: '#666',
-    fontFamily: Fonts?.family?.regular || 'System',
+  
   },
   amountContainer: {
     alignItems: 'flex-end',
@@ -318,7 +248,8 @@ paymentItem: {
     fontSize: 16,
     fontWeight: '700',
     color: '#333',
-    fontFamily: Fonts?.family?.bold || 'System',
+      fontSize: Fonts.size.PageHeading,
+
   },
 });
 

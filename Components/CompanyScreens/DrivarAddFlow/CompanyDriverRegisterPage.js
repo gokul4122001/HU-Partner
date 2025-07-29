@@ -11,10 +11,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import LinearGradient from 'react-native-linear-gradient';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const RegistrationForm = ({ navigation }) => {
   const [formData, setFormData] = useState({
-    // Basic Details
     driverName: '',
     gender: '',
     dob: '',
@@ -24,25 +25,17 @@ const RegistrationForm = ({ navigation }) => {
     address: '',
     driverType: '',
     experience: '',
-
-    // Driving License
     licenseNo: '',
     licenseType: '',
     enterNumber: '',
     licenseValidity: '',
-
-    // Account Credentials
     password: '',
     confirmPassword: '',
-
-    // Bank Details
     bankHolder: '',
     bankName: '',
     bankBranch: '',
     accountNumber: '',
     ifsc: '',
-
-    // Document Uploads
     agreeToTerms: false,
   });
 
@@ -162,110 +155,140 @@ const RegistrationForm = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#8B5CF6" barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Driver Registration Form</Text>
-      </View>
+    <LinearGradient
+      colors={['#ffffff', '#C3DFFF']}
+      start={{ x: -0, y: 0.3 }}
+      end={{ x: 0, y: 0 }}
+      style={styles.topBackground}
+    >
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar backgroundColor="#8B5CF6" barStyle="light-content" />
+       <View style={styles.header}>
+  <TouchableOpacity
+    onPress={() => navigation.goBack()}
+    style={styles.iconTextContainer}
+  >
+    <Icon name="arrow-back" size={24} color="#000" />
+    <Text style={styles.headerText}>Driver Registration Form</Text>
+  </TouchableOpacity>
+</View>
 
-    <ScrollView
-  style={styles.scroll}
-  contentContainerStyle={{ paddingBottom:100}} 
->
 
-        {/* Section: Basic Details */}
-        <Section title="Basic Details" sectionKey="basic">
-          <InputField label="Driver Name" field="driverName" placeholder="Enter Driver Name" />
-          <PickerField
-            label="Gender"
-            selectedValue={formData.gender}
-            onValueChange={(val) => handleInputChange('gender', val)}
-            options={['Male', 'Female', 'Other']}
-            placeholder="Select Gender"
-          />
-          <InputField label="Date of Birth" field="dob" placeholder="DD/MM/YYYY" />
-          <InputField label="Age" field="age" placeholder="Enter Age" />
-          <InputField label="Contact Number" field="phone" placeholder="Enter Phone" />
-          <InputField label="Email" field="email" placeholder="Enter Email" />
-          <InputField label="Address" field="address" placeholder="Enter Address" />
-          <PickerField
-            label="Driver Type"
-            selectedValue={formData.driverType}
-            onValueChange={(val) => handleInputChange('driverType', val)}
-            options={['Professional', 'Personal', 'Commercial']}
-            placeholder="Select Driver Type"
-          />
-          <InputField label="Years of Experience" field="experience" placeholder="Enter Experience" />
-        </Section>
 
-        {/* Section: Driving License */}
-        <Section title="Driving License Details" sectionKey="license">
-          <InputField label="License No" field="licenseNo" placeholder="Enter License No" />
-          <PickerField
-            label="License Type"
-            selectedValue={formData.licenseType}
-            onValueChange={(val) => handleInputChange('licenseType', val)}
-            options={['LMV', 'HMV', 'Transport', 'Commercial']}
-            placeholder="Select License Type"
-          />
-          <InputField label="Enter Number" field="enterNumber" placeholder="Enter Number" />
-          <InputField label="License Validity Date" field="licenseValidity" placeholder="DD/MM/YYYY" />
-        </Section>
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        >
+          {/* Basic Details */}
+          <Section title="Basic Details" sectionKey="basic">
+            <InputField label="Driver Name" field="driverName" placeholder="Enter Driver Name" />
+            <PickerField
+              label="Gender"
+              selectedValue={formData.gender}
+              onValueChange={(val) => handleInputChange('gender', val)}
+              options={['Male', 'Female', 'Other']}
+              placeholder="Select Gender"
+            />
+            <InputField label="Date of Birth" field="dob" placeholder="DD/MM/YYYY" />
+            <InputField label="Age" field="age" placeholder="Enter Age" />
+            <InputField label="Contact Number" field="phone" placeholder="Enter Phone" />
+            <InputField label="Email" field="email" placeholder="Enter Email" />
+            <InputField label="Address" field="address" placeholder="Enter Address" />
+            <PickerField
+              label="Driver Type"
+              selectedValue={formData.driverType}
+              onValueChange={(val) => handleInputChange('driverType', val)}
+              options={['Professional', 'Personal', 'Commercial']}
+              placeholder="Select Driver Type"
+            />
+            <InputField label="Years of Experience" field="experience" placeholder="Enter Experience" />
+          </Section>
 
-        {/* Section: Account Credentials */}
-        <Section title="Account Credentials" sectionKey="account">
-          <InputField label="Create Password" field="password" placeholder="Enter Password" />
-          <InputField label="Confirm Password" field="confirmPassword" placeholder="Confirm Password" />
-        </Section>
+          {/* Driving License */}
+          <Section title="Driving License Details" sectionKey="license">
+            <InputField label="License No" field="licenseNo" placeholder="Enter License No" />
+            <PickerField
+              label="License Type"
+              selectedValue={formData.licenseType}
+              onValueChange={(val) => handleInputChange('licenseType', val)}
+              options={['LMV', 'HMV', 'Transport', 'Commercial']}
+              placeholder="Select License Type"
+            />
+            <InputField label="Enter Number" field="enterNumber" placeholder="Enter Number" />
+            <InputField label="License Validity Date" field="licenseValidity" placeholder="DD/MM/YYYY" />
+          </Section>
 
-        {/* Section: Bank Details */}
-        <Section title="Bank Account Details" sectionKey="bank">
-          <InputField label="Account Holder Name" field="bankHolder" placeholder="Enter Name" />
-          <InputField label="Bank Name" field="bankName" placeholder="Enter Bank Name" />
-          <InputField label="Bank Branch" field="bankBranch" placeholder="Enter Branch" />
-          <InputField label="Account Number" field="accountNumber" placeholder="Enter Account Number" />
-          <InputField label="IFSC Code" field="ifsc" placeholder="Enter IFSC Code" />
-        </Section>
+          {/* Account Credentials */}
+          <Section title="Account Credentials" sectionKey="account">
+            <InputField label="Create Password" field="password" placeholder="Enter Password" />
+            <InputField label="Confirm Password" field="confirmPassword" placeholder="Confirm Password" />
+          </Section>
 
-        {/* Section: Document Upload */}
-        <Section title="Document Upload" sectionKey="document">
-          <UploadField label="Upload Driver License" onPress={() => handleFileUpload('Driver License')} />
-          <UploadField label="Upload ID Proof (Aadhar, Passport, etc.)" onPress={() => handleFileUpload('ID Proof')} />
-          <UploadField label="Upload Profile Image" onPress={() => handleFileUpload('Profile Image')} />
-        </Section>
+          {/* Bank Details */}
+          <Section title="Bank Account Details" sectionKey="bank">
+            <InputField label="Account Holder Name" field="bankHolder" placeholder="Enter Name" />
+            <InputField label="Bank Name" field="bankName" placeholder="Enter Bank Name" />
+            <InputField label="Bank Branch" field="bankBranch" placeholder="Enter Branch" />
+            <InputField label="Account Number" field="accountNumber" placeholder="Enter Account Number" />
+            <InputField label="IFSC Code" field="ifsc" placeholder="Enter IFSC Code" />
+          </Section>
 
-        {/* Agreement */}
-        <View style={styles.agreement}>
-          <TouchableOpacity
-            style={styles.checkboxRow}
-            onPress={() => handleInputChange('agreeToTerms', !formData.agreeToTerms)}
-          >
-            <View style={[styles.checkbox, formData.agreeToTerms && styles.checkedBox]}>
-              {formData.agreeToTerms && <Icon name="check" size={16} color="white" />}
-            </View>
-            <Text style={styles.agreeText}>I agree to terms and conditions</Text>
+          {/* Document Upload */}
+          <Section title="Document Upload" sectionKey="document">
+            <UploadField label="Upload Driver License" onPress={() => handleFileUpload('Driver License')} />
+            <UploadField label="Upload ID Proof (Aadhar, Passport, etc.)" onPress={() => handleFileUpload('ID Proof')} />
+            <UploadField label="Upload Profile Image" onPress={() => handleFileUpload('Profile Image')} />
+          </Section>
+
+          {/* Agreement */}
+          <View style={styles.agreement}>
+            <TouchableOpacity
+              style={styles.checkboxRow}
+              onPress={() => handleInputChange('agreeToTerms', !formData.agreeToTerms)}
+            >
+              <View style={[styles.checkbox, formData.agreeToTerms && styles.checkedBox]}>
+                {formData.agreeToTerms && <Icon name="check" size={16} color="white" />}
+              </View>
+              <Text style={styles.agreeText}>I agree to terms and conditions</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Submit */}
+          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
-        </View>
-
-        {/* Submit */}
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitText}>Submit</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F5F5F5' },
-  header: {
-    backgroundColor: '#8B5CF6',
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    alignItems: 'center',
+  topBackground: {
+    flex: 1,
+    paddingTop: hp('4%'),
+    paddingBottom: hp('2%'),
+    paddingHorizontal: wp('4%'),
   },
-  headerText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
-  scroll: { flex: 1, paddingHorizontal: 16, paddingTop: 10 },
+header: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: 16,
+},
+
+iconTextContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+
+headerText: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginLeft: 10, // spacing between icon and text
+},
+
+
+  scroll: { flex: 1, marginTop: 10 },
   section: { marginBottom: 10, backgroundColor: '#fff', borderRadius: 5 },
   sectionHeader: {
     backgroundColor: '#8B5CF6',

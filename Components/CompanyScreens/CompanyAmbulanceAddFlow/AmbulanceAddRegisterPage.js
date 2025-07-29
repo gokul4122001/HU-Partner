@@ -51,7 +51,7 @@ const RegistrationForm = ({navigation}) => {
     Alert.alert('Success', 'Registration form submitted successfully!', [
       {
         text: 'OK',
-        onPress: () => navigation.navigate('EmergencyHospitalDetailScreen'), 
+        onPress: () => navigation.navigate('Company3'), 
       },
     ]);
   };

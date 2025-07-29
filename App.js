@@ -17,8 +17,6 @@ import ForgetPassword from './Components/LoginScreens/ForgetPassWord.js';
 
 import WelcomeSwipe from './Components/LoginScreens/WelcomeSwipeScreen.js';
 import Header from './Header.js';
-
-
 import { Provider } from 'react-redux';
 import store from './Components/redux/store';
 
@@ -29,11 +27,9 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="MainApp"
-          screenOptions={{ headerShown: false }}
-        >
+          initialRouteName="Login1"
+          screenOptions={{ headerShown: false }} >
           <Stack.Screen name="Header" component={Header} />
-
           <Stack.Screen name="MainApp" component={BottomTabs} />
           <Stack.Screen name="Login1" component={Login1} />
           <Stack.Screen name="Login2" component={Login2} />

@@ -9,20 +9,12 @@ import {
   StatusBar,
   SafeAreaView,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import CustomHeader from '../../../Header'; 
 
-const App = ({navigation}) => {
+const App = ({ navigation }) => {
   const drivers = [
-    {
-      id: 'AK0215',
-      name: 'Selva Kumar',
-      contact: '9345665447',
-      email: 'selvakumar@gmail.com',
-      gender: 'Male',
-      dateOfBirth: '03/06/2002',
-      age: 22,
-      status: 'ON DUTY',
-      avatar: require('../../Assets/profile.png'), 
-    },
     {
       id: 'AK0215',
       name: 'Selva Kumar',
@@ -35,13 +27,13 @@ const App = ({navigation}) => {
       avatar: require('../../Assets/profile.png'),
     },
     {
-      id: 'AK0215',
-      name: 'Selva Kumar',
-      contact: '9345665447',
-      email: 'selvakumar@gmail.com',
+      id: 'AK0216',
+      name: 'Raj Kumar',
+      contact: '9345123456',
+      email: 'rajkumar@gmail.com',
       gender: 'Male',
-      dateOfBirth: '03/06/2002',
-      age: 22,
+      dateOfBirth: '01/01/2000',
+      age: 24,
       status: 'ON DUTY',
       avatar: require('../../Assets/profile.png'),
     },
@@ -80,110 +72,51 @@ const App = ({navigation}) => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#8B5CF6" barStyle="light-content" />
-      
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>🚗</Text>
-          </View>
-          <View>
-            <Text style={styles.welcomeText}>Hi, Welcome</Text>
-            <Text style={styles.userText}>Akash Ambulance</Text>
-          </View>
-        </View>
-        <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Text style={styles.iconText}>🔔</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Text style={styles.iconText}>💬</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Driver List Title */}
-      <Text style={styles.pageTitle}>Driver List</Text>
-
-      {/* Driver List */}
-     <ScrollView
-  style={styles.scrollView}
-  contentContainerStyle={{ paddingBottom:100}} 
-  showsVerticalScrollIndicator={false}
->
-        {drivers.map((driver, index) => (
-          <DriverCard key={index} driver={driver} />
-        ))}
-          <TouchableOpacity
-      style={styles.addButton}
-      onPress={() => navigation.navigate('ServiceHospitalScreen')}  
+    <LinearGradient
+      colors={['#ffffff', '#C3DFFF']}
+      start={{ x: 0, y: 0.3 }}
+      end={{ x: 0, y: 0 }}
+      style={styles.topBackground}
     >
-        <Text style={styles.addButtonIcon}>➕</Text>
-        <Text style={styles.addButtonText}>Add New Driver</Text>
-      </TouchableOpacity>
-      </ScrollView>
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar backgroundColor="#8B5CF6" barStyle="dark-content" />
 
-      {/* Add New Driver Button */}
-    
-    </SafeAreaView>
+        <CustomHeader
+          username="Akash Ambulance"
+          onNotificationPress={() => console.log('Notification Pressed')}
+          onWalletPress={() => console.log('Wallet Pressed')}
+        />
+
+        <Text style={styles.pageTitle}>Driver List</Text>
+
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          showsVerticalScrollIndicator={false}
+        >
+          {drivers.map((driver, index) => (
+            <DriverCard key={index} driver={driver} />
+          ))}
+
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => navigation.navigate('ServiceHospitalScreen')}
+          >
+            <Text style={styles.addButtonIcon}>➕</Text>
+            <Text style={styles.addButtonText}>Add New Driver</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F8FAFC',
-  },
-  header: {
-    backgroundColor: '#8B5CF6',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logoContainer: {
-    width: 40,
-    height: 40,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  logoText: {
-    fontSize: 20,
-  },
-  welcomeText: {
-    color: 'white',
-    fontSize: 14,
-    opacity: 0.9,
-  },
-  userText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  headerRight: {
-    flexDirection: 'row',
-  },
-  iconButton: {
-    width: 35,
-    height: 35,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 17.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 10,
-  },
-  iconText: {
-    fontSize: 16,
+  topBackground: {
+    paddingTop: hp('4%'),
+    paddingBottom: hp('2%'),
+    paddingHorizontal: wp('4%'),
+    height: hp('100%'),
   },
   pageTitle: {
     fontSize: 24,
@@ -194,7 +127,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    paddingHorizontal: 20,
   },
   driverCard: {
     backgroundColor: 'white',
@@ -202,10 +134,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 15,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
@@ -219,11 +148,9 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     marginRight: 15,
-    backgroundColor: '#E5E7EB', // Placeholder background
+    backgroundColor: '#E5E7EB',
   },
-  driverInfo: {
-    flex: 1,
-  },
+  driverInfo: { flex: 1 },
   nameRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -289,18 +216,15 @@ const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: '#8B5CF6',
-    marginHorizontal: 20,
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 30,
     paddingVertical: 15,
     borderRadius: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#8B5CF6',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 8,

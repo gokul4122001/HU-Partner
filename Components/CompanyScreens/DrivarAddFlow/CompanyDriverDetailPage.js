@@ -9,54 +9,51 @@ import {
   StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import LinearGradient from 'react-native-linear-gradient';
+import CustomHeader from '../../../Header'; // ✅ Adjust the path as needed
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const DriverDetailsScreen = ({navigation}) => {
+const DriverDetailsScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor="#6366f1" barStyle="light-content" />
-      
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
-          <Icon name="arrow-back" size={24} color="#fff" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Driver Details</Text>
-        <TouchableOpacity style={styles.editButton}>
-          <Icon name="edit" size={24} color="#fff" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButton}>
-          <Icon name="more-vert" size={24} color="#fff" />
-        </TouchableOpacity>
-      </View>
+    <LinearGradient
+      colors={['#ffffff', '#C3DFFF']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      style={styles.gradientContainer}
+    >
+      <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
 
-    <ScrollView
-  style={styles.content}
-  contentContainerStyle={{ paddingBottom: 100 }} 
-  showsVerticalScrollIndicator={false}
->
-        {/* Stats Section */}
+      {/* ✅ Custom Header */}
+      <CustomHeader
+        username="Salva Kumar"
+        onNotificationPress={() => {}}
+        onWalletPress={() => {}}
+      />
+
+      <ScrollView
+        style={styles.scrollContainer}
+        contentContainerStyle={{ paddingBottom: 120 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* ✅ Stats */}
         <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <Text style={styles.statValue}>20K</Text>
-            <Text style={styles.statLabel}>Earnings</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={[styles.statValue, {color: '#6366f1'}]}>150</Text>
-            <Text style={styles.statLabel}>Completed</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={[styles.statValue, {color: '#ef4444'}]}>50</Text>
-            <Text style={styles.statLabel}>Rejected</Text>
-          </View>
+          {[
+            { label: 'Earnings', value: '20K', color: '#1f2937' },
+            { label: 'Completed', value: '150', color: '#6366f1' },
+            { label: 'Rejected', value: '50', color: '#ef4444' },
+          ].map((item, index) => (
+            <View key={index} style={styles.statItem}>
+              <Text style={[styles.statValue, { color: item.color }]}>{item.value}</Text>
+              <Text style={styles.statLabel}>{item.label}</Text>
+            </View>
+          ))}
         </View>
 
-        {/* Driver Profile */}
+        {/* ✅ Profile Section */}
         <View style={styles.profileSection}>
           <View style={styles.profileHeader}>
             <Image
-              source={{
-                uri: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face'
-              }}
+              source={{ uri: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face' }}
               style={styles.profileImage}
             />
             <View style={styles.profileInfo}>
@@ -71,173 +68,109 @@ const DriverDetailsScreen = ({navigation}) => {
             </View>
           </View>
 
-          {/* Contact Info */}
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Contact No: </Text>
-            <Text style={styles.infoValue}>9344546447</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Email ID: </Text>
-            <Text style={styles.infoValue}>Salvakumar@gmail.com</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Gender: </Text>
-            <Text style={styles.infoValue}>Male</Text>
-            <Text style={styles.infoLabel}>   Age: </Text>
-            <Text style={styles.infoValue}>27</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Date of Birth: </Text>
-            <Text style={styles.infoValue}>01/04/1997</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Address: </Text>
-            <Text style={styles.infoValue}>No 5/2, 1 street, Santhya Colony, Vyasarpadi, Chennai, 35</Text>
-          </View>
+          {[
+            { label: 'Contact No:', value: '9344546447' },
+            { label: 'Email ID:', value: 'Salvakumar@gmail.com' },
+            { label: 'Gender:', value: 'Male', extra: '   Age:', extraValue: '27' },
+            { label: 'Date of Birth:', value: '01/04/1997' },
+            { label: 'Address:', value: 'No 5/2, 1 street, Santhya Colony, Vyasarpadi, Chennai, 35' },
+          ].map((item, index) => (
+            <View key={index} style={styles.infoRow}>
+              <Text style={styles.infoLabel}>{item.label}</Text>
+              <Text style={styles.infoValue}>{item.value}</Text>
+              {item.extra && (
+                <>
+                  <Text style={styles.infoLabel}>{item.extra}</Text>
+                  <Text style={styles.infoValue}>{item.extraValue}</Text>
+                </>
+              )}
+            </View>
+          ))}
         </View>
 
-        {/* Driver License Section */}
+        {/* ✅ License Details */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Driver License</Text>
-          
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Driver Type: </Text>
-            <Text style={styles.infoValue}>Car</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>License Number: </Text>
-            <Text style={styles.infoValue}>MH13 20151149112</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>License Expiry Date: </Text>
-            <Text style={styles.infoValue}>Permanent (No need to renew) (SNT)</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>License Validity Date: </Text>
-            <Text style={styles.infoValue}>06/04/2050</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Issued State: </Text>
-            <Text style={styles.infoValue}>544205</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Years of Experience: </Text>
-            <Text style={styles.infoValue}>10 years</Text>
-          </View>
+          {[
+            { label: 'Driver Type:', value: 'Car' },
+            { label: 'License Number:', value: 'MH13 20151149112' },
+            { label: 'License Expiry Date:', value: 'Permanent (No need to renew) (SNT)' },
+            { label: 'License Validity Date:', value: '06/04/2050' },
+            { label: 'Issued State:', value: '544205' },
+            { label: 'Years of Experience:', value: '10 years' },
+          ].map((item, index) => (
+            <View key={index} style={styles.infoRow}>
+              <Text style={styles.infoLabel}>{item.label}</Text>
+              <Text style={styles.infoValue}>{item.value}</Text>
+            </View>
+          ))}
         </View>
 
-        {/* Account Credentials */}
+        {/* ✅ Account Credentials */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Account Credentials</Text>
-          
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>E-mail ID: </Text>
+            <Text style={styles.infoLabel}>E-mail ID:</Text>
             <Text style={styles.infoValue}>Salvakumar@gmail.com</Text>
           </View>
-
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Password: </Text>
+            <Text style={styles.infoLabel}>Password:</Text>
             <Text style={styles.infoValue}>•••••••••</Text>
           </View>
-
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Confirm Password: </Text>
+            <Text style={styles.infoLabel}>Confirm Password:</Text>
             <Text style={styles.infoValue}>salva2571</Text>
           </View>
         </View>
 
-        {/* Document Grid */}
+        {/* ✅ Documents */}
         <View style={styles.sectionContainer}>
           <View style={styles.documentsGrid}>
-            <View style={styles.documentItem}>
-              <View style={styles.documentIcon}>
-                <Icon name="description" size={30} color="#6b7280" />
+            {[
+              { title: 'Driver License', subtitle: 'ID Proof' },
+              { title: 'Document name' },
+              { title: 'Medical Fitness', subtitle: 'Document name' },
+              { title: 'Profile Image', subtitle: 'Document name' },
+            ].map((doc, idx) => (
+              <View key={idx} style={styles.documentItem}>
+                <View style={styles.documentIcon}>
+                  <Icon name="description" size={30} color="#6b7280" />
+                </View>
+                <Text style={styles.documentLabel}>{doc.title}</Text>
+                {doc.subtitle && <Text style={styles.documentSubLabel}>{doc.subtitle}</Text>}
               </View>
-              <Text style={styles.documentLabel}>Driver License</Text>
-              <Text style={styles.documentSubLabel}>ID Proof</Text>
-            </View>
-
-            <View style={styles.documentItem}>
-              <View style={styles.documentIcon}>
-                <Icon name="description" size={30} color="#6b7280" />
-              </View>
-              <Text style={styles.documentLabel}>Document name</Text>
-            </View>
-
-            <View style={styles.documentItem}>
-              <View style={styles.documentIcon}>
-                <Icon name="description" size={30} color="#6b7280" />
-              </View>
-              <Text style={styles.documentLabel}>Medical Fitness</Text>
-              <Text style={styles.documentSubLabel}>Document name</Text>
-            </View>
-
-            <View style={styles.documentItem}>
-              <View style={styles.documentIcon}>
-                <Icon name="description" size={30} color="#6b7280" />
-              </View>
-              <Text style={styles.documentLabel}>Profile Image</Text>
-              <Text style={styles.documentSubLabel}>Document name</Text>
-            </View>
+            ))}
           </View>
         </View>
-
-        {/* Bottom Buttons */}
-        <View style={styles.bottomButtons}>
-        <TouchableOpacity
-  style={styles.ambulanceButton}
-  onPress={() => navigation.navigate('FormPage')} 
->
-  <Text style={styles.ambulanceButtonText}>View Ambulance</Text>
-</TouchableOpacity>
-          
-          <TouchableOpacity style={styles.trackButton}  onPress={() => navigation.navigate('TrackAmbulance')} >
-            <Text style={styles.trackButtonText}>Track Ambulance</Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
-    </View>
+
+      {/* ✅ Bottom Buttons */}
+      <View style={styles.bottomButtons}>
+        <TouchableOpacity
+          style={styles.ambulanceButton}
+          onPress={() => navigation.navigate('FormPage')}
+        >
+          <Text style={styles.ambulanceButtonText}>View Ambulance</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.trackButton}
+          onPress={() => navigation.navigate('TrackAmbulance')}
+        >
+          <Text style={styles.trackButtonText}>Track Ambulance</Text>
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8fafc',
+  gradientContainer: {
+   paddingTop: hp('4%'),
+       paddingBottom: hp('2%'),
+       paddingHorizontal: wp('4%'),
+       height: hp('100%'),
   },
-  header: {
-    backgroundColor: '#6366f1',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    paddingTop: 48,
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  headerTitle: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#fff',
-  },
-  editButton: {
-    marginRight: 16,
-  },
-  menuButton: {
-    // Menu button styles
-  },
-  content: {
+  scrollContainer: {
     flex: 1,
   },
   statsContainer: {
@@ -246,54 +179,16 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     marginBottom: 8,
   },
-  statItem: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1f2937',
-  },
-  statLabel: {
-    fontSize: 14,
-    color: '#6b7280',
-    marginTop: 4,
-  },
-  profileSection: {
-    backgroundColor: '#fff',
-    padding: 16,
-    marginBottom: 8,
-  },
-  profileHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 16,
-  },
-  profileInfo: {
-    flex: 1,
-  },
-  driverName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1f2937',
-    marginBottom: 4,
-  },
-  driverId: {
-    fontSize: 14,
-    color: '#6b7280',
-    marginBottom: 8,
-  },
-  statusBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+  statItem: { flex: 1, alignItems: 'center' },
+  statValue: { fontSize: 24, fontWeight: 'bold' },
+  statLabel: { fontSize: 14, color: '#6b7280', marginTop: 4 },
+  profileSection: { backgroundColor: '#fff', padding: 16, marginBottom: 8 },
+  profileHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
+  profileImage: { width: 60, height: 60, borderRadius: 30, marginRight: 16 },
+  profileInfo: { flex: 1 },
+  driverName: { fontSize: 18, fontWeight: '600', color: '#1f2937', marginBottom: 4 },
+  driverId: { fontSize: 14, color: '#6b7280', marginBottom: 8 },
+  statusBadge: { flexDirection: 'row', alignItems: 'center' },
   statusDot: {
     width: 8,
     height: 8,
@@ -301,14 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#10b981',
     marginRight: 6,
   },
-  statusText: {
-    fontSize: 12,
-    color: '#10b981',
-    fontWeight: '600',
-  },
-  infoSection: {
-    marginBottom: 12,
-  },
+  statusText: { fontSize: 12, color: '#10b981', fontWeight: '600' },
   nameContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -321,19 +209,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     flexWrap: 'wrap',
   },
-  infoHalf: {
-    flex: 1,
-  },
-  infoLabel: {
-    fontSize: 14,
-    color: '#6b7280',
-    marginBottom: 4,
-  },
-  infoValue: {
-    fontSize: 14,
-    color: '#1f2937',
-    fontWeight: '500',
-  },
+  infoLabel: { fontSize: 14, color: '#6b7280', marginBottom: 4 },
+  infoValue: { fontSize: 14, color: '#1f2937', fontWeight: '500' },
   sectionContainer: {
     backgroundColor: '#fff',
     padding: 16,
@@ -371,15 +248,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 2,
   },
-  documentSubLabel: {
-    fontSize: 10,
-    color: '#6b7280',
-    textAlign: 'center',
-  },
+  documentSubLabel: { fontSize: 10, color: '#6b7280', textAlign: 'center' },
   bottomButtons: {
     flexDirection: 'row',
     padding: 16,
     gap: 12,
+    backgroundColor: '#f8fafc',
   },
   ambulanceButton: {
     flex: 1,
@@ -390,11 +264,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
   },
-  ambulanceButtonText: {
-    color: '#6366f1',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  ambulanceButtonText: { color: '#6366f1', fontSize: 16, fontWeight: '600' },
   trackButton: {
     flex: 1,
     backgroundColor: '#6366f1',
@@ -402,11 +272,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
   },
-  trackButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  trackButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
 });
 
 export default DriverDetailsScreen;

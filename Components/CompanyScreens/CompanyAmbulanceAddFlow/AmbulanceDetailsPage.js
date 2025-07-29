@@ -6,52 +6,44 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
-  Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import LinearGradient from 'react-native-linear-gradient';
+import CustomHeader from '../../../Header'; // adjust path as needed
 
 const AmbulanceDetailsScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#ffffff', '#C3DFFF']}
+      start={{ x: 0, y: 0.3 }}
+      end={{ x: 0, y: 0 }}
+      style={styles.topBackground}
+    >
       <StatusBar backgroundColor="#7B3F98" barStyle="light-content" />
 
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <View style={styles.logo} />
-          <View>
-            <Text style={styles.welcomeText}>Hi, Welcome</Text>
-            <Text style={styles.companyText}>Akash Ambulance</Text>
-          </View>
-        </View>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Icon name="notifications" size={24} color="#fff" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Icon name="calendar-today" size={24} color="#fff" />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <CustomHeader
+        username="Akash Ambulance"
+        onNotificationPress={() => console.log('Notification Pressed')}
+        onWalletPress={() => console.log('Wallet Pressed')}
+      />
 
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={{ paddingBottom: 100 }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Title Bar */}
         <View style={styles.titleBar}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrow-back" size={24} color="#000" />
           </TouchableOpacity>
           <Text style={styles.titleText}>Ambulance Details</Text>
-          <TouchableOpacity style={styles.editIcon}>
-            <Icon name="edit" size={20} color="#7B3F98" />
-            <Text style={styles.editText}>Edit</Text>
-          </TouchableOpacity>
+         <TouchableOpacity style={styles.editIcon1} onPress={() => console.log('Edit Pressed')}>
+  <Icon name="edit" size={20} color="#7B3F98" />
+  <Text style={styles.editText}>Edit</Text>
+</TouchableOpacity>
+
         </View>
 
-        {/* Detail Card */}
         <View style={styles.card}>
           <View style={styles.row}>
             <Text style={styles.emoji}>🚑</Text>
@@ -61,7 +53,6 @@ const AmbulanceDetailsScreen = ({ navigation }) => {
             </View>
           </View>
 
-          {/* Inline Detail Rows */}
           <View style={styles.detailItem}>
             <Text style={styles.label}>Ambulance Name :</Text>
             <Text style={styles.value}>Jaya Ambulance</Text>
@@ -90,7 +81,6 @@ const AmbulanceDetailsScreen = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Document Cards */}
         <View style={styles.docRow}>
           <View style={styles.docCard}>
             <Icon name="picture-as-pdf" size={40} color="#7B3F98" />
@@ -106,8 +96,6 @@ const AmbulanceDetailsScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.docRow}>
-         
-
           <View style={styles.docCard}>
             <Icon name="picture-as-pdf" size={40} color="#7B3F98" />
             <Text style={styles.docLabel}>Ambulance Image</Text>
@@ -115,61 +103,28 @@ const AmbulanceDetailsScreen = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Action Buttons */}
         <View style={styles.buttonRow}>
           <TouchableOpacity style={styles.deleteButton}>
             <Text style={styles.deleteText}>Delete Ambulance</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.editButton}
-            onPress={() => navigation?.navigate('EditAmbulance')}
+            onPress={() => navigation.navigate('EditAmbulance')}
           >
             <Text style={styles.editBtnText}>Edit Ambulance</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 
 export default AmbulanceDetailsScreen;
+
 const styles = StyleSheet.create({
-  container: {
+  topBackground: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
-  },
-  header: {
-    backgroundColor: '#7B3F98',
-    padding: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logo: {
-    width: 36,
-    height: 36,
-    backgroundColor: '#fff',
-    borderRadius: 18,
-    marginRight: 10,
-  },
-  welcomeText: {
-    color: '#fff',
-    fontSize: 14,
-  },
-  companyText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-  },
-  iconButton: {
-    marginLeft: 10,
+    paddingTop: 10,
   },
   scrollView: {
     paddingHorizontal: 16,
@@ -293,4 +248,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
   },
+  editIcon1: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: '#fffff', // light purple shade (you can change)
+  paddingVertical: 6,
+  paddingHorizontal: 12,
+  borderRadius: 10,
+},
 });
