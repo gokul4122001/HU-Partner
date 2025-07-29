@@ -15,6 +15,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Fonts from '../../Fonts/Fonts';
+
 
 const AmbulanceList = ({ navigation }) => {
   const ambulanceData = [
@@ -124,7 +126,7 @@ const AmbulanceList = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   topBackground: {
-    paddingTop: hp('4%'),
+    paddingTop: hp('1%'),
     paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
     height: hp('100%'),
@@ -136,13 +138,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pageTitle: {
-    color: '#000',
-    fontSize: 20,
+    color: '#7416B2',
+      fontSize: Fonts.size.PageHeading,
     fontWeight: '700',
   },
   scrollView: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     marginTop: 10,
   },
   card: {
@@ -177,13 +179,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   serviceType: {
-    fontSize: 16,
+     fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
     color: '#333',
     marginBottom: 2,
   },
   serviceSize: {
-    fontSize: 14,
+     fontSize: Fonts.size.PageHeading,
     color: '#666',
   },
   divider: {
@@ -199,36 +201,38 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   detailLabel: {
-    fontSize: 14,
+      fontSize: Fonts.size.PageHeading,
     color: '#666',
     flex: 1,
     fontWeight: '500',
   },
   detailValue: {
-    fontSize: 14,
+     fontSize: Fonts.size.PageHeading,
     color: '#333',
     fontWeight: '600',
     flex: 1,
   },
   viewDetailsButton: {
-    backgroundColor: '#7B3F98',
-    paddingVertical: 12,
+    backgroundColor: '#7518AA',
+    paddingVertical: 10,
     borderRadius: 8,
     alignItems: 'center',
+    alignSelf:'flex-end',
+    paddingHorizontal:30
   },
   viewDetailsText: {
     color: 'white',
-    fontSize: 16,
+      fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
   },
   addButton: {
-    backgroundColor: '#7B3F98',
+    backgroundColor: '#7518AA',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 16,
     marginHorizontal: 16,
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 80,
     borderRadius: 12,
     elevation: 3,
@@ -239,7 +243,7 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: 'white',
-    fontSize: 16,
+      fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
     marginLeft: 8,
   },

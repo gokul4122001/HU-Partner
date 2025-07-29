@@ -5,12 +5,13 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  StatusBar,
+  StatusBar,Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CustomHeader from '../../../Header'; 
+import Fonts from '../../Fonts/Fonts';
 
 const AmbulanceAssignmentScreen = ({ navigation }) => {
   const assignmentData = [
@@ -61,9 +62,13 @@ const AmbulanceAssignmentScreen = ({ navigation }) => {
   const renderAssignmentCard = (item) => (
     <View key={item.id} style={styles.assignmentCard}>
       <View style={styles.headerRow}>
-        <View style={styles.ambulanceIcon}>
-          <Icon name="local-hospital" size={20} color="#fff" />
-        </View>
+     <View style={styles.ambulanceIcon}>
+  <Image 
+    source={require('../../Assets/ambualnce.png')} 
+    style={{width: 70, height: 70}}
+    resizeMode="contain"
+  />
+</View>
         <View style={styles.typeInfo}>
           <Text style={styles.supportType}>{item.supportType}</Text>
           <Text style={styles.sizeText}>{item.size}</Text>
@@ -150,7 +155,7 @@ const AmbulanceAssignmentScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   topBackground: {
     flex: 1,
-    paddingTop: hp('4%'),
+    paddingTop: hp('1%'),
     paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
   },
@@ -160,7 +165,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   titleText: {
-    fontSize: 16,
+  fontSize: Fonts.size.PageSubheading,
     fontWeight: '600',
     color: '#1f2937',
     marginLeft: 12,
@@ -186,10 +191,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   ambulanceIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#10b981',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -215,12 +216,12 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   label: {
-    fontSize: 14,
+   fontSize: Fonts.size.PageSubheading,
     color: '#374151',
     fontWeight: '500',
   },
   value: {
-    fontSize: 14,
+       fontSize: Fonts.size.PageSubheading,
     color: '#1f2937',
     fontWeight: '600',
   },
@@ -243,12 +244,12 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   locationLabel: {
-    fontSize: 14,
+     fontSize: Fonts.size.PageSubheading,
     color: '#374151',
     fontWeight: '500',
   },
   locationText: {
-    fontSize: 14,
+       fontSize: Fonts.size.PageSubheading,
     color: '#1f2937',
     flex: 1,
   },
@@ -265,12 +266,12 @@ const styles = StyleSheet.create({
     borderTopColor: '#e5e7eb',
   },
   totalLabel: {
-    fontSize: 16,
+    fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
     color: '#374151',
   },
   totalAmount: {
-    fontSize: 18,
+      fontSize: Fonts.size.PageHeading,
     fontWeight: 'bold',
     color: '#1f2937',
   },

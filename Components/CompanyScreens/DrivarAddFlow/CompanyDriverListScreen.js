@@ -12,6 +12,10 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CustomHeader from '../../../Header'; 
+import Fonts from '../../Fonts/Fonts';
+import Icon from 'react-native-vector-icons/Feather';
+
+
 
 const App = ({ navigation }) => {
   const drivers = [
@@ -99,12 +103,13 @@ const App = ({ navigation }) => {
           ))}
 
           <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => navigation.navigate('ServiceHospitalScreen')}
-          >
-            <Text style={styles.addButtonIcon}>➕</Text>
-            <Text style={styles.addButtonText}>Add New Driver</Text>
-          </TouchableOpacity>
+  style={styles.addButton}
+  onPress={() => navigation.navigate('ServiceHospitalScreen')}
+>
+  <Icon name="plus" size={24} color="#fff" style={styles.addButtonIcon} />
+  <Text style={styles.addButtonText}>Add New Driver</Text>
+</TouchableOpacity>
+
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>
@@ -113,17 +118,17 @@ const App = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   topBackground: {
-    paddingTop: hp('4%'),
+    paddingTop: hp('1%'),
     paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
     height: hp('100%'),
   },
   pageTitle: {
-    fontSize: 24,
+      fontSize: Fonts.size.PageHeading,
     fontWeight: 'bold',
     color: '#8B5CF6',
     textAlign: 'center',
-    marginVertical: 20,
+    marginVertical: 15,
   },
   scrollView: {
     flex: 1,
@@ -158,7 +163,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   driverName: {
-    fontSize: 18,
+    fontSize: Fonts.size.PageHeading,
+
     fontWeight: 'bold',
     color: '#1F2937',
   },
@@ -178,12 +184,13 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   statusText: {
-    fontSize: 10,
+    fontSize: Fonts.size.PageSubheading,
     color: '#10B981',
     fontWeight: 'bold',
   },
   driverId: {
-    fontSize: 14,
+     fontSize: Fonts.size.PageSubheading,
+
     color: '#6B7280',
     fontWeight: '500',
   },
@@ -191,7 +198,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   detailText: {
-    fontSize: 14,
+       fontSize: Fonts.size.PageSubheading,
+
     color: '#374151',
     marginBottom: 4,
   },
@@ -200,22 +208,30 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   ageText: {
-    fontSize: 14,
+       fontSize: Fonts.size.PageSubheading,
+
     color: '#374151',
   },
   viewDetailsButton: {
-    backgroundColor: '#8B5CF6',
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
+  backgroundColor: '#7518AA',
+  paddingVertical: 10,
+  borderRadius: 8,
+  alignSelf: 'flex-end',
+
+  // ✅ Added size
+  height: 40,
+  width: 150,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
   viewDetailsText: {
     color: 'white',
-    fontSize: 16,
+      fontSize: Fonts.size.PageSubheading,
     fontWeight: 'bold',
   },
   addButton: {
-    backgroundColor: '#8B5CF6',
+    backgroundColor: '#7518AA',
     marginTop: 10,
     marginBottom: 30,
     paddingVertical: 15,
@@ -223,7 +239,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#8B5CF6',
+    shadowColor: '#7518AA',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -231,12 +247,11 @@ const styles = StyleSheet.create({
   },
   addButtonIcon: {
     color: 'white',
-    fontSize: 16,
     marginRight: 8,
   },
   addButtonText: {
     color: 'white',
-    fontSize: 16,
+       fontSize: Fonts.size.PageSubheading,
     fontWeight: 'bold',
   },
 });

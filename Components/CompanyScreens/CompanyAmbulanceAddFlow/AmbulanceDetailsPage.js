@@ -10,6 +10,10 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomHeader from '../../../Header'; // adjust path as needed
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const AmbulanceDetailsScreen = ({ navigation }) => {
   return (
@@ -123,8 +127,10 @@ export default AmbulanceDetailsScreen;
 
 const styles = StyleSheet.create({
   topBackground: {
-    flex: 1,
-    paddingTop: 10,
+     paddingTop: hp('1%'),
+      paddingBottom: hp('2%'),
+      paddingHorizontal: wp('4%'),
+      height: hp('100%'),
   },
   scrollView: {
     paddingHorizontal: 16,

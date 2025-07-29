@@ -13,6 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import Fonts from '../../Fonts/Fonts';
 
 const RegistrationForm = ({ navigation }) => {
   const [formData, setFormData] = useState({
@@ -27,8 +28,9 @@ const RegistrationForm = ({ navigation }) => {
     experience: '',
     licenseNo: '',
     licenseType: '',
-    enterNumber: '',
+    issuedstate: '',
     licenseValidity: '',
+    mobile:'',
     password: '',
     confirmPassword: '',
     bankHolder: '',
@@ -206,7 +208,7 @@ const RegistrationForm = ({ navigation }) => {
 
           {/* Driving License */}
           <Section title="Driving License Details" sectionKey="license">
-            <InputField label="License No" field="licenseNo" placeholder="Enter License No" />
+            <InputField label="License Number" field="licenseNo" placeholder="Enter License No" />
             <PickerField
               label="License Type"
               selectedValue={formData.licenseType}
@@ -214,12 +216,15 @@ const RegistrationForm = ({ navigation }) => {
               options={['LMV', 'HMV', 'Transport', 'Commercial']}
               placeholder="Select License Type"
             />
-            <InputField label="Enter Number" field="enterNumber" placeholder="Enter Number" />
+           
             <InputField label="License Validity Date" field="licenseValidity" placeholder="DD/MM/YYYY" />
+             <InputField label="Issued State" field="issuedstate" placeholder="Enter issued state" />
           </Section>
 
           {/* Account Credentials */}
           <Section title="Account Credentials" sectionKey="account">
+            <InputField label="Enter Mobile Number" field="mobile" placeholder="Enter Mobile No" />
+
             <InputField label="Create Password" field="password" placeholder="Enter Password" />
             <InputField label="Confirm Password" field="confirmPassword" placeholder="Confirm Password" />
           </Section>
@@ -282,33 +287,34 @@ iconTextContainer: {
 },
 
 headerText: {
-  fontSize: 18,
+     fontSize: Fonts.size.PageHeading,
+
   fontWeight: 'bold',
-  marginLeft: 10, // spacing between icon and text
+  marginLeft: 10,
+  color:'#7416B2'
 },
 
 
   scroll: { flex: 1, marginTop: 10 },
-  section: { marginBottom: 10, backgroundColor: '#fff', borderRadius: 5 },
+  section: { marginBottom: 10, borderRadius: 5 },
   sectionHeader: {
-    backgroundColor: '#8B5CF6',
+    backgroundColor: '#7416B2',
     paddingHorizontal: 16,
     paddingVertical: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
+  borderRadius:10,
   },
-  sectionTitle: { color: '#fff', fontWeight: 'bold', fontSize: 14 },
+  sectionTitle: { color: '#fff', fontWeight: 'bold',  fontSize: Fonts.size.PageSubheading,},
   sectionBody: { padding: 15 },
   inputContainer: { marginBottom: 15 },
-  label: { fontSize: 13, color: '#333', marginBottom: 5 },
+  label: { fontSize: Fonts.size.PageSubheading, color: '#333', marginBottom: 10 },
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 4,
     padding: 10,
-    fontSize: 13,
+   fontSize: Fonts.size.PageSubheading,
     backgroundColor: '#F8F8F8',
   },
   picker: {
@@ -341,7 +347,7 @@ headerText: {
     marginBottom: 15,
     backgroundColor: '#F8F8F8',
   },
-  uploadText: { fontSize: 12, color: '#777', marginTop: 5 },
+  uploadText: {fontSize: Fonts.size.PageSubheading, color: '#777', marginTop: 5 },
   agreement: { marginTop: 20, marginBottom: 15 },
   checkboxRow: { flexDirection: 'row', alignItems: 'center' },
   checkbox: {
@@ -356,15 +362,15 @@ headerText: {
     backgroundColor: '#fff',
   },
   checkedBox: { backgroundColor: '#8B5CF6', borderColor: '#8B5CF6' },
-  agreeText: { fontSize: 13, color: '#333' },
+  agreeText: { fontSize: Fonts.size.PageSubheading, color: '#333' },
   submitButton: {
-    backgroundColor: '#8B5CF6',
+    backgroundColor: '#7416B2',
     paddingVertical: 14,
     borderRadius: 4,
     alignItems: 'center',
     marginBottom: 25,
   },
-  submitText: { color: '#fff', fontWeight: 'bold', fontSize: 14 },
+  submitText: { color: '#fff', fontWeight: 'bold', fontSize: Fonts.size.PageSubheading },
 });
 
 export default RegistrationForm;
