@@ -50,7 +50,7 @@ export default function App() {
         );
         navigation.navigate('MainApp')
       } else {
-        navigation.navigate('Login2');
+        navigation.navigate('LoginAccoundScreen');
       }
     } catch (error) {
       console.error('Error checking login status:', error);

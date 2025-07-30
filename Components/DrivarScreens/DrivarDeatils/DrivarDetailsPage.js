@@ -1,351 +1,335 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   Image,
+  TouchableOpacity,
   StatusBar,
-  Dimensions,Modal,TextInput
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-const { width } = Dimensions.get('window');
+import LinearGradient from 'react-native-linear-gradient';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import CustomHeader from '../../../Header'; // Adjust this import path as needed
+import Fonts from '../../Fonts/Fonts';
 
 const DriverDetailsScreen = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-const [reason, setReason] = useState('');
-
-    const handleModalSubmit = () => {
-    console.log('Submitted Reason:', reason);
-    setModalVisible(false);
-    setReason('');
-  };
-
-  const driver = {
-    name: 'Selva Kumar',
-    id: 'AK0215',
-    contact: '9345655447',
-    email: 'Selvakumar@gmail.com',
-    gender: 'Male',
-    dob: '03/06/2002',
-    age: 22,
-    address: 'No 3/2, 1 street, Samiyar Thottam, Vyasarpadi, Chennai - 39',
-    driverType: 'FullTime',
-    experience: '20 years',
-    licenseNumber: 'MH12 20010149313',
-    licenseType: 'International Driving Permit (IDP)',
-    licenseValidity: '08/04/2050',
-    issuedState: '454242',
-    password: 'selva201',
-  };
-
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#ffffff', '#C3DFFF']}
+      start={{x: -0, y: 0.3}}
+      end={{x: 0, y: 0}}
+      style={styles.topBackground}>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+      <View style={styles.container}>
+        <CustomHeader />
 
-      <View style={styles.topBar}>
-        <TouchableOpacity>
-          <Icon name="arrow-back-ios" size={20} color="#000" />
-        </TouchableOpacity>
-        <Text style={styles.screenTitle}>Driver Details</Text>
-        <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.editBtn}>
-          <Icon name="edit" size={20} color="#000" />
-        </TouchableOpacity>
+    <ScrollView
+  contentContainerStyle={styles.scrollContainer}
+  showsVerticalScrollIndicator={false} // Hides the vertical scrollbar
+>
+
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Driver Details</Text>
+            <TouchableOpacity style={styles.editButton}>
+              <Icon name="edit" size={20} color="#6B21A8" />
+              <Text style={styles.editText}>Edit</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Summary Boxes */}
+          <View style={styles.summaryContainer}>
+            <View style={[styles.summaryBox, {backgroundColor: '#FEF3C7'}]}>
+              <Text style={styles.summaryTitle}>Earnings</Text>
+              <Text style={[styles.summaryValue, {color: '#F59E0B'}]}>20K</Text>
+            </View>
+            <View style={[styles.summaryBox, {backgroundColor: '#DBEAFE'}]}>
+              <Text style={styles.summaryTitle}>Completed</Text>
+              <Text style={[styles.summaryValue, {color: '#3B82F6'}]}>150</Text>
+            </View>
+            <View style={[styles.summaryBox, {backgroundColor: '#FEE2E2'}]}>
+              <Text style={styles.summaryTitle}>Rejected</Text>
+              <Text style={[styles.summaryValue, {color: '#EF4444'}]}>50</Text>
+            </View>
+          </View>
+
+          {/* Card 1 - Basic Info */}
+          <View style={styles.card}>
+            <View style={styles.profileHeader}>
+              <Image
+                source={require('../../Assets/profile.png')}
+                style={styles.profileImage}
+              />
+              <View>
+                <Text style={styles.name}>Selva Kumar</Text>
+                <Text style={styles.id}>ID no : AK0215</Text>
+              </View>
+              <View style={styles.statusBadge}>
+                <Text style={styles.statusText}>🟢 ON DUTY</Text>
+              </View>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>Contact No: </Text>
+              <Text style={styles.value}>12345654347</Text>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>Email ID: </Text>
+              <Text style={styles.value}>Selvakumar@gmail.com</Text>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>Gender: </Text>
+              <Text style={styles.value}>Male</Text>
+            </View>
+            <View style={styles.inlineRow}>
+              <View style={styles.labelValueGroup}>
+                <Text style={styles.label}>Date of Birth: </Text>
+                <Text style={styles.value}>03/06/2002</Text>
+              </View>
+              <View style={styles.labelValueGroup}>
+                <Text style={styles.label}>Age: </Text>
+                <Text style={styles.value}>22</Text>
+              </View>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>Address: </Text>
+              <Text style={styles.value}>
+                No 32/1, Samiyar Thottam, Vyasarpadi, Chennai - 39
+              </Text>
+            </View>
+          </View>
+
+          {/* Card 2 - Driver License */}
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Driver License</Text>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>Driver Type: </Text>
+              <Text style={styles.value}>FullTime</Text>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>License Number: </Text>
+              <Text style={styles.value}>MH12 2010149131</Text>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>License Type: </Text>
+              <Text style={styles.value}>
+                International Driving Permit (IDP)
+              </Text>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>License Validity: </Text>
+              <Text style={styles.value}>08/04/2030</Text>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>Issued State: </Text>
+              <Text style={styles.value}>454642</Text>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>Years of Experience: </Text>
+              <Text style={styles.value}>20 years</Text>
+            </View>
+          </View>
+
+          {/* Card 3 - Account Credential */}
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Account Credential</Text>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>E-mail ID: </Text>
+              <Text style={styles.value}>Selvakumar@gmail.com</Text>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>Password: </Text>
+              <Text style={styles.value}>selva201</Text>
+            </View>
+            <View style={styles.inlineRow}>
+              <Text style={styles.label}>Confirm Password: </Text>
+              <Text style={styles.value}>selva201</Text>
+            </View>
+          </View>
+
+          {/* Card 4 - Documents */}
+          <View style={styles.card}>
+            <View style={styles.docRow}>
+              {[
+                'Driver License',
+                'ID Proof',
+                'Medical Fitness',
+                'Profile Image',
+              ].map((item, index) => (
+                <View key={index} style={styles.docCard}>
+                  <Icon name="picture-as-pdf" size={30} color="#8B5CF6" />
+                  <Text style={styles.docTitle}>{item}</Text>
+                  <Text style={styles.docSubtitle}>Document name</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        </ScrollView>
       </View>
-
-      <ScrollView
-        style={styles.content}
-        contentContainerStyle={{ paddingBottom: 120 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.statsRow}>
-          <View style={[styles.statCard, { backgroundColor: '#fef3c7' }]}>  
-            <Text style={styles.statValue}>20K</Text>
-            <Text style={styles.statLabel}>Earnings</Text>
-          </View>
-          <View style={[styles.statCard, { backgroundColor: '#dbeafe' }]}>  
-            <Text style={styles.statValue}>150</Text>
-            <Text style={styles.statLabel}>Completed</Text>
-          </View>
-          <View style={[styles.statCard, { backgroundColor: '#fee2e2' }]}>  
-            <Text style={styles.statValue}>50</Text>
-            <Text style={styles.statLabel}>Rejected</Text>
-          </View>
-        </View>
-
-        <View style={styles.card}>
-          <View style={styles.rowCenter}>
-            <Image
-              source={require('../../Assets/profile.png')}
-              style={styles.avatar}
-            />
-            <View style={styles.profileInfo}>
-              <Text style={styles.name}>{driver.name}</Text>
-              <Text style={styles.id}>ID no : {driver.id}</Text>
-            </View>
-            <View style={styles.statusBadge}>
-              <Text style={styles.statusText}>ON DUTY</Text>
-            </View>
-          </View>
-          <Text style={styles.label}>Contact No : <Text style={styles.value}>{driver.contact}</Text></Text>
-          <Text style={styles.label}>Email ID : <Text style={styles.value}>{driver.email}</Text></Text>
-          <Text style={styles.label}>Gender : <Text style={styles.value}>{driver.gender}</Text>   Date of Birth : <Text style={styles.value}>{driver.dob}</Text>   Age : <Text style={styles.value}>{driver.age}</Text></Text>
-          <Text style={styles.label}>Address : <Text style={styles.value}>{driver.address}</Text></Text>
-          <Text style={styles.label}>Driver Type : <Text style={styles.value}>{driver.driverType}</Text></Text>
-          <Text style={styles.label}>Years of Experience : <Text style={styles.value}>{driver.experience}</Text></Text>
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Driver License</Text>
-          <Text style={styles.label}>License Number : <Text style={styles.value}>{driver.licenseNumber}</Text></Text>
-          <Text style={styles.label}>License Type : <Text style={styles.value}>{driver.licenseType}</Text></Text>
-          <Text style={styles.label}>License Validity Date : <Text style={styles.value}>{driver.licenseValidity}</Text></Text>
-          <Text style={styles.label}>Issued State : <Text style={styles.value}>{driver.issuedState}</Text></Text>
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Account Credentials</Text>
-          <Text style={styles.label}>E-mail ID : <Text style={styles.value}>{driver.email}</Text></Text>
-          <Text style={styles.label}>Password : <Text style={styles.value}>{driver.password}</Text></Text>
-          <Text style={styles.label}>Confirm Password : <Text style={styles.value}>{driver.password}</Text></Text>
-        </View>
-
-        <View style={styles.docGrid}>
-          {['Driver License', 'ID Proof', 'Medical Fitness', 'Profile Image'].map((title, index) => (
-            <View key={index} style={styles.docCard}>
-              <MaterialCommunityIcons name="file-pdf-box" size={40} color="#ef4444" />
-              <Text style={styles.docTitle}>{title}</Text>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
-
-        <Modal
-        visible={modalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Note</Text>
-            <Text style={styles.modalDescription}>
-              Want to update your driver details?{"\n"}Click 'OK' and the admin will contact you.
-            </Text>
-            <Text style={styles.modalLabel}>Enter Reason</Text>
-            <TextInput
-              style={styles.modalInput}
-              placeholder="Enter Reason"
-              value={reason}
-              onChangeText={setReason}
-              multiline
-            />
-            <View style={styles.modalButtons}>
-              <TouchableOpacity style={styles.modalCancel} onPress={() => setModalVisible(false)}>
-                <Text style={styles.cancelText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.modalOk} onPress={handleModalSubmit}>
-                <Text style={styles.okText}>OK</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-    </View>
+    </LinearGradient>
   );
 };
 
+export default DriverDetailsScreen;
+
 const styles = StyleSheet.create({
+  topBackground: {
+    paddingTop: hp('1%'),
+    paddingBottom: hp('2%'),
+    paddingHorizontal: wp('4%'),
+    height: hp('100%'),
+  },
   container: {
     flex: 1,
+    backgroundColor: 'transparent',
+  },
+  scrollContainer: {
+    paddingBottom: 100,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '5%',
+  },
+  headerText: {
+    fontSize: Fonts.size.PageHeading,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  editButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
-  },
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 20,
-    marginBottom: 12,
-    paddingHorizontal: 12,
-  },
-  screenTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#111',
-  },
-  editBtn: {
-    backgroundColor: '#f3f4f6',
-    padding: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.1,
+    shadowRadius: 1.41,
+    elevation: 2,
   },
-  content: {
-    paddingHorizontal: 12,
+  editText: {
+    marginLeft: 4,
+    color: '#6B21A8',
+    fontWeight: '600',
+    fontSize: Fonts.size.PageSubheading,
   },
-  statsRow: {
+  summaryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    marginBottom: 20,
   },
-  statCard: {
+  summaryBox: {
     flex: 1,
-    alignItems: 'center',
-    paddingVertical: 10,
-    marginHorizontal: 4,
+    padding: 12,
     borderRadius: 10,
+    marginHorizontal: 4,
+    alignItems: 'center',
   },
-  statValue: {
-    fontSize: 16,
-    fontWeight: 'bold',
+  summaryTitle: {
+    fontSize: Fonts.size.PageSubheading,
+    fontWeight: '600',
+    color: '#000000',
   },
-  statLabel: {
-    fontSize: 12,
-    color: '#555',
+  summaryValue: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginTop: 6,
   },
   card: {
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 14,
-    marginBottom: 14,
-    elevation: 2,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#e9d5ff',
+    elevation: 3,
   },
-  rowCenter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
-  profileInfo: {
-    flex: 1,
-  },
-  name: {
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  id: {
-    fontSize: 12,
-    color: '#555',
-  },
-  statusBadge: {
-    backgroundColor: '#dcfce7',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  statusText: {
-    fontSize: 11,
-    color: '#16a34a',
-    fontWeight: 'bold',
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
+  cardTitle: {
+    fontSize: Fonts.size.PageHeading,
+    fontWeight: '700',
+    color: '#000000',
     marginBottom: 8,
   },
+  profileHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  profileImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 12,
+  },
+  name: {
+    fontSize: Fonts.size.PageHeading,
+    fontWeight: '600',
+  },
+  id: {
+    fontSize: Fonts.size.PageHeading,
+    color: '#6B7280',
+  },
+  statusBadge: {
+    marginLeft: 'auto',
+    backgroundColor: '#DCFCE7',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  statusText: {
+    color: '#22C55E',
+    fontWeight: '600',
+    fontSize: Fonts.size.PageSubheading,
+  },
+  inlineRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 6,
+  },
   label: {
-    fontSize: 13,
-    color: '#333',
-    marginBottom: 4,
+    fontWeight: '600',
+    color: '#374151',
+    fontSize: Fonts.size.PageHeading,
   },
   value: {
-    fontWeight: 'bold',
-    color: '#111',
+    color: '#4B5563',
+    fontSize: Fonts.size.PageHeading,
   },
-  docGrid: {
+  labelValueGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: wp('5%'),
+  },
+  docRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 10,
-    marginBottom: 80,
   },
   docCard: {
-    width: width / 2 - 20,
-    backgroundColor: '#f9fafb',
-    padding: 14,
+    width: '47%',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    padding: 12,
+    borderRadius: 10,
+    marginBottom: 12,
     alignItems: 'center',
-    borderRadius: 12,
-    marginBottom: 10,
   },
   docTitle: {
-    fontSize: 13,
-    fontWeight: 'bold',
-    color: '#111',
     marginTop: 6,
-  },
-   modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContainer: {
-    width: '85%',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    elevation: 5,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
+    fontSize: Fonts.size.PageHeading,
     textAlign: 'center',
-    marginBottom: 10,
   },
-  modalDescription: {
-    fontSize: 14,
-    color: '#444',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  modalLabel: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 6,
-  },
-  modalInput: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    height: 80,
-    padding: 10,
-    textAlignVertical: 'top',
-    marginBottom: 16,
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  modalCancel: {
-    flex: 1,
-    backgroundColor: '#f3f4f6',
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  cancelText: {
-    color: '#111',
-    fontWeight: 'bold',
-  },
-  modalOk: {
-    flex: 1,
-    backgroundColor: '#6d28d9',
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginLeft: 10,
-  },
-  okText: {
-    color: '#fff',
-    fontWeight: 'bold',
+  docSubtitle: {
+    fontSize: Fonts.size.PageSubheading,
+    color: '#6B7280',
   },
 });
-
-export default DriverDetailsScreen;

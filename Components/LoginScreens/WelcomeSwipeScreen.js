@@ -21,6 +21,7 @@ import LottieView from 'lottie-react-native';
 import { useSelector } from 'react-redux';
 import { combineSlices } from '@reduxjs/toolkit';
 
+
 const { width, height } = Dimensions.get('window');
 const SWIPE_THRESHOLD = width * 0.3; 
 
@@ -267,7 +268,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   welcomeText: {
-    fontSize: 24,
+     fontSize: Fonts.size.BookingConformation,
     fontWeight: '400',
     color: '#333333',
     marginBottom: 5,
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   brandName: {
-    fontSize: 28,
+        fontSize: Fonts.size.BookingConformation,
     fontWeight: 'bold',
     color: '#7416B2',
     marginBottom: 20,
@@ -284,7 +285,8 @@ const styles = StyleSheet.create({
   },
   brandAccent: { color: '#7416B2' },
   subtitle: {
-    fontSize: 18,
+           fontSize: Fonts.size.PageHeading,
+
     fontWeight: '600',
     color: '#333333',
     marginBottom: 15,
@@ -292,7 +294,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   description: {
-    fontSize: 14,
+              fontSize: Fonts.size.PageHeading,
     color: '#666666',
     textAlign: 'center',
     marginBottom: 40,
@@ -353,7 +355,7 @@ const styles = StyleSheet.create({
   },
   vendorButtonText: {
     color: '#FFFFFF',
-    fontSize: 16,
+              fontSize: Fonts.size.PageSubheading,
     fontWeight: '600',
     fontFamily: Fonts?.family?.regular || 'System',
     flex: 1,

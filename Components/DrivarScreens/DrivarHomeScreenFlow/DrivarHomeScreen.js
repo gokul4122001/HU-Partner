@@ -18,10 +18,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import CustomHeader from '../../../DrivarHeader'; 
+import Fonts from '../../Fonts/Fonts';
+
 
 const { width } = Dimensions.get('window');
 
-const AmbulanceDashboard = () => {
+const AmbulanceDashboard = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
   const [selectedTab, setSelectedTab] = useState('Driver');
   const [currentDriverIndex, setCurrentDriverIndex] = useState(0);
@@ -100,26 +103,13 @@ const AmbulanceDashboard = () => {
         style={styles.headerBackground}
         resizeMode="cover"
       >
-        <View style={styles.header}>
-          <View style={styles.headerTop}>
-            <View style={styles.welcomeSection}>
-              <View style={styles.logoContainer}>
-                <MaterialCommunityIcons name="ambulance" size={24} color="#8b5cf6" />
-              </View>
-              <View style={styles.welcomeText}>
-                <Text style={styles.hiText}>Hi, Welcome</Text>
-                <Text style={styles.companyText}>Akash Ambulance</Text>
-              </View>
-            </View>
-            <View style={styles.headerIcons}>
-              <TouchableOpacity style={styles.iconButton}>
-                <MaterialIcons name="notifications-none" size={24} color="#fff" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.iconButton}>
-                <MaterialIcons name="account-balance-wallet" size={24} color="#fff" />
-              </TouchableOpacity>
-            </View>
-          </View>
+        <View style={{top:'2%',padding:10}}>
+        <CustomHeader
+          username="Akash Ambulance"
+          onNotificationPress={() => console.log('Notification pressed')}
+          onWalletPress={() => console.log('Wallet pressed')}
+        
+        />
         </View>
 
         <View style={styles.earningsCard}>
@@ -167,10 +157,20 @@ const AmbulanceDashboard = () => {
           <Text style={styles.cardTitle}>Ambulance & Driver</Text>
           <Text style={styles.cardSubtitle}>Add ambulance vehicles and drivers first to view the application status.</Text>
           <View style={styles.actionButtonsContainer}>
-            <TouchableOpacity style={styles.driverButton} onPress={() => setSelectedTab('Driver')}>
-              <MaterialIcons name="person" size={24} color="#fff" />
-              <Text style={styles.buttonText}>Driver</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+  style={styles.driverButton}
+  onPress={() => {
+    setSelectedTab('Driver');
+   navigation.navigate('DrivarAddStackScreen', {
+  screen: 'ServiceHomeScreen',
+});
+
+  }}
+>
+  <MaterialIcons name="person" size={24} color="#fff" />
+  <Text style={styles.buttonText}>Driver</Text>
+</TouchableOpacity>
+
             <TouchableOpacity style={styles.ambulanceButton} onPress={() => setSelectedTab('Ambulance')}>
               <MaterialCommunityIcons name="ambulance" size={24} color="#fff" />
               <Text style={styles.buttonText}>Ambulance</Text>
@@ -182,6 +182,7 @@ const AmbulanceDashboard = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f8fafc' },
   headerBackground: {
@@ -191,21 +192,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 24,
     overflow: 'hidden',
   },
-  header: { paddingTop: 44, paddingHorizontal: 16 },
-  headerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  welcomeSection: { flexDirection: 'row', alignItems: 'center' },
-  logoContainer: {
-    width: 40, height: 40, borderRadius: 20,
-    backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', marginRight: 12,
-  },
-  hiText: { fontSize: 14, color: '#e5e7eb', marginBottom: 2 },
-  companyText: { fontSize: 16, fontWeight: '600', color: '#fff' },
-  headerIcons: { flexDirection: 'row' },
-  iconButton: { marginLeft: 16 },
+ 
   earningsCard: {
     backgroundColor: 'rgba(255,255,255,0.1)',
     alignItems: 'center',
@@ -213,7 +200,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 12,
   },
-  earningsTitle: { fontSize: 16, color: '#000000', marginBottom: 8 },
+  earningsTitle: { fontSize: Fonts.size.BookingConformation, color: '#000000', marginBottom: 8,fontWeight:'500' },
   earningsAmount: { fontSize: 32, fontWeight: 'bold', color: '#7518AA' },
   content: { flex: 1, paddingHorizontal: 16 },
   searchContainer: {
@@ -222,7 +209,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 10,
     marginTop: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -231,9 +218,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   searchIcon: { marginRight: 8 },
-  searchInput: { flex: 1, fontSize: 16, color: '#374151' },
+  searchInput: { flex: 1, fontSize: Fonts.size.PageSubheading,  color: '#000000' },
   performanceSection: { marginTop: 24, marginBottom: 24 },
-  sectionTitle: { fontSize: 16, fontWeight: 'bold', color: '#1f2937', marginBottom: 16 },
+  sectionTitle: { fontSize: Fonts.size.PageHeading,  fontWeight: 'bold', color: '#1f2937', marginBottom: 16 },
   driverCarousel: { paddingLeft: 10 },
   driverCard: {
     backgroundColor: '#fff',
@@ -250,8 +237,8 @@ const styles = StyleSheet.create({
   },
   driverInfo: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
   driverImage: { width: 64, height: 64, borderRadius: 32, marginRight: 16 },
-  driverName: { fontSize: 18, fontWeight: '600', color: '#1f2937', marginBottom: 4 },
-  driverId: { fontSize: 14, color: '#6b7280' },
+  driverName: { fontSize: Fonts.size.PageHeading, fontWeight: '600', color: '#1f2937', marginBottom: 4 },
+  driverId: { fontSize: Fonts.size.PageHeading, color: '#6b7280' },
   statsContainer: { flexDirection: 'row', justifyContent: 'space-between' },
   statCard: {
     flex: 1,
@@ -260,10 +247,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 4,
   },
-  statLabel: { fontSize: 13, marginBottom: 4, textAlign: 'center' },
-  statValue: { fontSize: 20, fontWeight: 'bold' },
+  statLabel: {fontSize: Fonts.size.PageSubheading,marginBottom: 4, textAlign: 'center' },
+  statValue: { fontSize: Fonts.size.PageSubheading, fontWeight: 'bold' },
   ratingContainer: { flexDirection: 'row', alignItems: 'center' },
-  ratingValue: { fontSize: 20, fontWeight: 'bold', marginLeft: 4 },
+  ratingValue: { fontSize: Fonts.size.PageSubheading, fontWeight: 'bold', marginLeft: 4 },
   paginationDots: { flexDirection: 'row', justifyContent: 'center', marginTop: 12 },
   dot: { width: 8, height: 8, borderRadius: 4, marginHorizontal: 4 },
   activeDot: { backgroundColor: '#8b5cf6' },
@@ -279,8 +266,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
-  cardTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 8, color: '#1f2937' },
-  cardSubtitle: { fontSize: 13, color: '#6b7280', marginBottom: 16 },
+  cardTitle: { fontSize: Fonts.size.PageHeading, fontWeight: 'bold', marginBottom: 8, color: '#1f2937' },
+  cardSubtitle: {fontSize: Fonts.size.PageSubheading, color: '#6b7280', marginBottom: 16 },
   actionButtonsContainer: { flexDirection: 'row', justifyContent: 'space-between' },
   driverButton: {
     flexDirection: 'row',
@@ -300,7 +287,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flex: 0.48,
   },
-  buttonText: { color: '#fff', marginLeft: 8, fontWeight: '600', fontSize: 15 },
+  buttonText: { color: '#fff', marginLeft: 8, fontWeight: '600', fontSize: Fonts.size.PageSubheading,},
 });
 
 export default AmbulanceDashboard;

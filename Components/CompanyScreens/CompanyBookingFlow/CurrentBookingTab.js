@@ -14,6 +14,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Colors from '../../Colors/Colors';
+import Fonts from '../../Fonts/Fonts';
+
 
 const CurrentBookingTab = () => {
   const navigation = useNavigation(); // ✅ Fixed navigation access
@@ -49,7 +51,7 @@ const CurrentBookingTab = () => {
   };
 
   const handleViewDetails = () => {
-    navigation.navigate('BookingDetailsScreen'); // ✅ Navigates correctly
+    navigation.navigate('BookingDetailsScreen'); 
   };
 
   const handleReject = () => {
@@ -169,8 +171,14 @@ const CardContent = ({ booking }) => (
       <Text style={styles.locationLabel}>Pickup: {booking.pickup}</Text>
       <Text style={styles.locationLabel}>Drop: {booking.drop}</Text>
     </View>
+    <View style={{   flexDirection: 'row', justifyContent: 'space-between'}}>
     <Text style={styles.customerText}>Name: {booking.name}</Text>
     <Text style={styles.customerText}>Contact: {booking.contact}</Text>
+    </View>
+     <View style={{   flexDirection: 'row', justifyContent: 'space-between'}}>
+    <Text style={styles.customerText}>Date: {booking.date}</Text>
+    <Text style={styles.customerText}>Time: {booking.time}</Text>
+    </View> 
     <View style={styles.amountRow}>
       <Text style={styles.amountLabel}>Total Amount</Text>
       <Text style={styles.amountText}>{booking.amount}</Text>
@@ -196,8 +204,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   ambulanceImage: {
-    width: 60,
-    height: 60,
+    width: 70,
+    height: 70,
     resizeMode: 'contain',
     marginRight: 12,
   },
@@ -207,11 +215,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   bookingType: {
-    fontSize: 16,
+    fontSize: Fonts.size.PageHeading,
     fontWeight: 'bold',
   },
   bookingCategory: {
-    fontSize: 14,
+    fontSize: Fonts.size.PageSubheading,
     color: 'red',
     fontWeight: 'bold',
     backgroundColor: '#FFEDED',
@@ -220,7 +228,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   bookingSize: {
-    fontSize: 13,
+    fontSize: Fonts.size.PageHeading,
     color: 'gray',
     marginTop: 4,
   },
@@ -228,11 +236,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   locationLabel: {
-    fontSize: 14,
+    fontSize: Fonts.size.PageSubheading,
     marginBottom: 4,
   },
   customerText: {
-    fontSize: 14,
+    fontSize: Fonts.size.PageSubheading,
     fontWeight: '600',
     marginBottom: 4,
   },
@@ -267,6 +275,7 @@ const styles = StyleSheet.create({
   rejectButtonText: {
     color: 'red',
     fontWeight: 'bold',
+    fontSize: Fonts.size.PageSubheading,
   },
   acceptButton: {
     flex: 1,
@@ -274,10 +283,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     padding: 12,
     alignItems: 'center',
+
   },
   acceptButtonText: {
     color: 'white',
     fontWeight: 'bold',
+     fontSize: Fonts.size.PageSubheading,
   },
   otpButton: {
     flex: 1,
@@ -291,6 +302,7 @@ const styles = StyleSheet.create({
   otpButtonText: {
     color: Colors.statusBar,
     fontWeight: 'bold',
+     fontSize: Fonts.size.PageSubheading,
   },
   trackLocationButton: {
     flex: 1,
@@ -305,6 +317,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     marginLeft: 6,
+     fontSize: Fonts.size.PageSubheading,
   },
   modalBackground: {
     flex: 1,

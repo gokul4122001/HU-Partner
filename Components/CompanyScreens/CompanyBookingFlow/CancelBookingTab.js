@@ -155,6 +155,7 @@ marginTop:10,
   },
   bookingInfo: {
     flex: 1,
+    left:10
   },
   bookingTopRow: {
     flexDirection: 'row',
@@ -169,7 +170,7 @@ marginTop:10,
     marginRight: wp('3%'),
   },
   bookingCategory: {
-     fontSize:  Fonts.size.PageHeading,
+     fontSize:  Fonts.size.PageSubheading,
     color: '#C91C1C',
     fontWeight: '600',
     borderWidth:1,
@@ -180,7 +181,7 @@ marginTop:10,
     marginRight: wp('3%'),
   },
   bookingSize: {
-    fontSize: hp('1.4%'),
+    fontSize:  Fonts.size.PageSubheading,
     color: Colors.statusBar,
   },
   locationContainer: {
@@ -200,14 +201,14 @@ marginTop:10,
     marginRight: wp('2%'),
   },
   locationLabel: {
-  fontSize:  Fonts.size.PageHeading,
+  fontSize:  Fonts.size.PageSubheading,
     color: '#666',
     fontWeight: '600',
     marginRight: wp('2%'),
     minWidth: wp('15%'),
   },
   locationText: {
-  fontSize:  Fonts.size.PageHeading,
+  fontSize:  Fonts.size.PageSubheading,
     color: '#333',
     flex: 1,
   },
@@ -217,7 +218,7 @@ marginTop:10,
     marginBottom: hp('2%'),
   },
   customerText: {
-  fontSize:  Fonts.size.PageHeading,
+  fontSize:  Fonts.size.PageSubheading,
     color: '#333',
     fontWeight: '600',
   },
@@ -249,13 +250,13 @@ marginTop:10,
     paddingHorizontal: wp('4%'),
     paddingVertical: hp('1.5%'),
     borderRadius: 6,
-   
     marginRight: wp('2%'),
     alignItems: 'center',
+    backgroundColor:'#E3E6FF'
   },
   viewDetailsText: {
-   fontSize:  Fonts.size.PageHeading,
-    color:Colors.statusBar,
+   fontSize:  Fonts.size.PageSubheading,
+    color:'#1824AA',
     fontWeight: '600'
   },
   trackButton: {
@@ -269,7 +270,7 @@ marginTop:10,
    backgroundColor:Colors.statusBar
   },
   trackButtonText: {
-    fontSize:  Fonts.size.PageHeading,
+    fontSize:  Fonts.size.PageSubheading,
     color: 'white',
     fontWeight: '600',
     marginLeft: wp('1%'),

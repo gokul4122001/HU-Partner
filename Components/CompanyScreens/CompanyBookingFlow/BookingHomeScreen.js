@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   StatusBar,
   ScrollView,
-  Image,
   Modal,
   FlatList,
   Platform,
@@ -23,7 +22,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Colors from '../../Colors/Colors';
 import Fonts from '../../Fonts/Fonts';
-import CustomHeader from '../../../Header'; 
+import CustomHeader from '../../../Header';
 import CurrentBookingTab from './CurrentBookingTab';
 import ScheduleBookingTab from './ScheduleBookingTab';
 import CompleteBookingTab from './CompleteBookingTab';
@@ -35,7 +34,6 @@ const BookingListScreen = ({ navigation }) => {
   const [selectedDateFilter, setSelectedDateFilter] = useState('Today');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [customDate, setCustomDate] = useState(new Date());
-  const [showServiceModal, setShowServiceModal] = useState(false);
 
   const tabs = [
     { id: 'current', label: 'Current Booking', key: 'current' },
@@ -52,33 +50,6 @@ const BookingListScreen = ({ navigation }) => {
     { id: 5, label: 'Select Date', value: 'selectDate', icon: 'calendar' },
   ];
 
-  const serviceOptions = [
-    {
-      id: 1,
-      title: 'Ambulance',
-      image: require('../../Assets/HomeAmbulance.png'),
-      description: 'Emergency medical transport',
-    },
-    {
-      id: 2,
-      title: 'Lab',
-      image: require('../../Assets/lap.png'),
-      description: 'Laboratory tests and diagnostics',
-    },
-    {
-      id: 3,
-      title: 'Physiotherapy',
-      image: require('../../Assets/phisiotherapy.png'),
-      description: 'Physical therapy and rehabilitation',
-    },
-    {
-      id: 4,
-      title: 'Home Care Nursing',
-      image: require('../../Assets/Homecarenursing.png'),
-      description: 'Professional nursing care at home',
-    },
-  ];
-
   const handleTabChange = (tabKey) => {
     setActiveTab(tabKey);
   };
@@ -86,15 +57,9 @@ const BookingListScreen = ({ navigation }) => {
   const handleDateFilterSelect = (option) => {
     setSelectedDateFilter(option.label);
     setShowDateDropdown(false);
-
     if (option.value === 'selectDate') {
       setShowDatePicker(true);
     }
-  };
-
-  const handleServiceSelect = (service) => {
-    console.log('Selected service:', service);
-    setShowServiceModal(false);
   };
 
   const renderTabButton = (tab) => (
@@ -154,47 +119,6 @@ const BookingListScreen = ({ navigation }) => {
     </Modal>
   );
 
-  const renderServiceModal = () => (
-    <Modal
-      visible={showServiceModal}
-      transparent={true}
-      animationType="slide"
-      onRequestClose={() => setShowServiceModal(false)}
-    >
-      <View style={styles.serviceModalOverlay}>
-        <View style={styles.serviceModalContainer}>
-          <View style={styles.serviceModalHeader}>
-            <Text style={styles.serviceModalTitle}>Service</Text>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowServiceModal(false)}
-            >
-              <Icons name="close" size={20} color="#fff" />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.servicesGrid}>
-            {serviceOptions.map((service, index) => (
-              <TouchableOpacity
-                key={service.id}
-                style={[
-                  styles.serviceCard,
-                  index % 2 === 0 ? styles.serviceCardLeft : styles.serviceCardRight,
-                ]}
-                onPress={() => handleServiceSelect(service)}
-              >
-                <View style={styles.serviceIconContainer}>
-                  <Image source={service.image} style={styles.serviceIconImage} />
-                </View>
-                <Text style={styles.serviceTitle}>{service.title}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      </View>
-    </Modal>
-  );
-
   const renderTabContent = () => {
     switch (activeTab) {
       case 'current':
@@ -219,12 +143,13 @@ const BookingListScreen = ({ navigation }) => {
         end={{ x: 0, y: 0 }}
         style={styles.headerBackground}
       >
+       
         <CustomHeader
           username="Janmani Kumar"
           onNotificationPress={() => console.log('Notification Pressed')}
           onWalletPress={() => console.log('Wallet Pressed')}
         />
-
+    
         <View style={styles.sectionHeader}>
           <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -232,7 +157,6 @@ const BookingListScreen = ({ navigation }) => {
             </TouchableOpacity>
             <Text style={styles.sectionTitle}>Booking List</Text>
           </View>
-
           <View style={styles.inlineDateDropdownContainer}>
             <TouchableOpacity
               style={styles.dateDropdownButton}
@@ -259,7 +183,6 @@ const BookingListScreen = ({ navigation }) => {
       </View>
 
       {renderDateDropdownModal()}
-      {renderServiceModal()}
 
       {showDatePicker && (
         <DateTimePicker
@@ -284,6 +207,7 @@ const styles = StyleSheet.create({
   headerBackground: {
     paddingBottom: hp('1.2%'),
     paddingHorizontal: wp('4%'),
+    paddingTop:'2%'
   },
   content: { flex: 1, backgroundColor: '#F5F5F5' },
   tabContainer: {
@@ -307,7 +231,7 @@ const styles = StyleSheet.create({
   activeTabButton: { backgroundColor: Colors.statusBar || '#007AFF' },
   tabButtonText: { fontSize: Fonts.size.PageHeading, color: '#666', fontWeight: '600' },
   activeTabButtonText: { color: 'white' },
-  tabContent: { flex: 1, backgroundColor: '#fff', paddingBottom: hp('12%') },
+  tabContent: { flex: 1, backgroundColor: '#fff'},
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -370,78 +294,6 @@ const styles = StyleSheet.create({
   selectedDropdownItemText: {
     color: Colors.statusBar || '#007AFF',
     fontWeight: '600',
-  },
-  serviceModalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  serviceModalContainer: {
-    backgroundColor: 'white',
-    borderRadius: 16,
-    margin: wp('5%'),
-    paddingVertical: hp('3%'),
-    paddingHorizontal: wp('4%'),
-    minHeight: hp('30%'),
-    minWidth: wp('85%'),
-    elevation: 10,
-  },
-  serviceModalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: hp('3%'),
-    paddingBottom: hp('1%'),
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
-  },
-  serviceModalTitle: {
-    fontSize: Fonts.size.PageHeading,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  closeButton: {
-    padding: wp('1%'),
-    borderRadius: wp('6%'),
-    backgroundColor: '#7518AA',
-  },
-  servicesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginBottom: hp('3%'),
-  },
-  serviceCard: {
-    width: wp('37%'),
-    borderRadius: 12,
-    padding: wp('4%'),
-    marginBottom: hp('2%'),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  serviceCardLeft: { marginRight: wp('2%') },
-  serviceCardRight: { marginLeft: wp('2%') },
-  serviceIconContainer: {
-    width: wp('15%'),
-    height: wp('15%'),
-    borderRadius: wp('7.5%'),
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: hp('1%'),
-  },
-  serviceIconImage: {
-    width: 110,
-    height: 110,
-    resizeMode: 'contain',
-  },
-  serviceTitle: {
-    fontSize: Fonts.size.PageHeading,
-    fontWeight: '600',
-    color: '#333',
-    textAlign: 'center',
-    lineHeight: hp('2.2%'),
-    marginTop: hp('2%'),
   },
 });
 

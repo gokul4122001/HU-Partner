@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 4,
     justifyContent: 'space-between',
+    left:10
   },
   bookingType: {
     fontSize: Fonts.size.PageHeading,
@@ -165,8 +166,9 @@ const styles = StyleSheet.create({
     marginRight: wp('3%'),
   },
   bookingSize: {
-    fontSize: hp('1.4%'),
+    fontSize: Fonts.size.PageSubheading,
     color: Colors.statusBar,
+     left:10
   },
   locationContainer: {
     marginBottom: hp('2%'),
@@ -175,6 +177,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginBottom: hp('1%'),
+    
   },
   locationDot: {
     width: 8,
@@ -185,14 +188,14 @@ const styles = StyleSheet.create({
     marginRight: wp('2%'),
   },
   locationLabel: {
-    fontSize: Fonts.size.PageHeading,
+     fontSize: Fonts.size.PageSubheading,
     color: '#666',
     fontWeight: '600',
     marginRight: wp('2%'),
     minWidth: wp('15%'),
   },
   locationText: {
-    fontSize: Fonts.size.PageHeading,
+    fontSize: Fonts.size.PageSubheading,
     color: '#333',
     flex: 1,
   },
@@ -202,7 +205,7 @@ const styles = StyleSheet.create({
     marginBottom: hp('2%'),
   },
   customerText: {
-    fontSize: Fonts.size.PageHeading,
+      fontSize: Fonts.size.PageSubheading,
     color: '#333',
     fontWeight: '600',
   },
@@ -236,10 +239,11 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginRight: wp('2%'),
     alignItems: 'center',
+    backgroundColor:'#E1FFE8'
   },
   viewDetailsText: {
-    fontSize: Fonts.size.PageHeading,
-    color: Colors.statusBar,
+      fontSize: Fonts.size.PageSubheading,
+    color:'#1C7C09',
     fontWeight: '600',
   },
   trackButton: {
@@ -253,7 +257,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.statusBar,
   },
   trackButtonText: {
-    fontSize: Fonts.size.PageHeading,
+      fontSize: Fonts.size.PageSubheading,
     color: 'white',
     fontWeight: '600',
     marginLeft: wp('1%'),

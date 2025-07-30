@@ -23,9 +23,6 @@ const CustomHeader = ({ username = 'Akash Ambulance', onNotificationPress, onWal
         <TouchableOpacity onPress={onNotificationPress}>
           <Ionicons name="notifications-outline" size={24} color="#000000" style={styles.icon} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={onWalletPress}>
-          <MaterialCommunityIcons name="wallet-outline" size={24} color="#B04FE8" style={styles.icon} />
-        </TouchableOpacity>
       </View>
     </View>
   );

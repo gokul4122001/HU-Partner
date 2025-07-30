@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useSelector } from 'react-redux';
-
+  
 // ✅ Company Flow
 import CompanyHomeStackScreen from '../../Components/Navigations/CompanyStackNavigation/CompanyHomeStackNavigationScreen';
 import AmbulanceAddStackScreen from '../../Components/Navigations/CompanyStackNavigation/CompanyAmbulanceAddstackScreen';
@@ -57,7 +57,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               <Icon
                 name={iconMap[route.name]}
                 size={20}
-                color={isFocused ? '#000' : '#888'}
+                color={isFocused ? '#ffff' : '#7518AA'}
               />
               {isFocused && <Text style={styles.label}>{route.name}</Text>}
             </View>
@@ -142,10 +142,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 10,
-    borderRadius: 30,
+    borderRadius: 10,
   },
   activeButton: {
-    backgroundColor: '#eee',
+    backgroundColor: '#7518AA',
   },
   tabContent: {
     flexDirection: 'row',
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   label: {
     marginLeft: 6,
     fontSize: 14,
-    color: '#000',
+    color: '#ffff',
     fontWeight: '500',
   },
 });

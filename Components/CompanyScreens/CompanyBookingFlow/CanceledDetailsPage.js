@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   topBackground: {
-  
+   paddingTop: hp('1%'),
     paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
     height: hp('100%'),

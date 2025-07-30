@@ -305,7 +305,7 @@ headerText: {
     justifyContent: 'space-between',
   borderRadius:10,
   },
-  sectionTitle: { color: '#fff', fontWeight: 'bold',  fontSize: Fonts.size.PageSubheading,},
+  sectionTitle: { color: '#fff', fontWeight: 'bold',  fontSize: Fonts.size.PageSubheading,alignContent:'center'},
   sectionBody: { padding: 15 },
   inputContainer: { marginBottom: 15 },
   label: { fontSize: Fonts.size.PageSubheading, color: '#333', marginBottom: 10 },

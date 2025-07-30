@@ -6,14 +6,16 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
+  Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
-import CustomHeader from '../../../Header'; // adjust path as needed
+import CustomHeader from '../../../Header'; // Adjust if needed
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Fonts from '../../Fonts/Fonts';
 
 const AmbulanceDetailsScreen = ({ navigation }) => {
   return (
@@ -41,16 +43,18 @@ const AmbulanceDetailsScreen = ({ navigation }) => {
             <Icon name="arrow-back" size={24} color="#000" />
           </TouchableOpacity>
           <Text style={styles.titleText}>Ambulance Details</Text>
-         <TouchableOpacity style={styles.editIcon1} onPress={() => console.log('Edit Pressed')}>
-  <Icon name="edit" size={20} color="#7B3F98" />
-  <Text style={styles.editText}>Edit</Text>
-</TouchableOpacity>
-
+          <TouchableOpacity style={styles.editIcon1} onPress={() => console.log('Edit Pressed')}>
+            <Icon name="edit" size={20} color="#7B3F98" />
+            <Text style={styles.editText}>Edit</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.card}>
           <View style={styles.row}>
-            <Text style={styles.emoji}>🚑</Text>
+            <Image
+              source={require('../../Assets/ambualnce.png')}
+              style={styles.ambulanceIcon}
+            />
             <View>
               <Text style={styles.cardTitle}>Advanced Life Support</Text>
               <Text style={styles.cardSubtitle}>Small ( Omni, etc )</Text>
@@ -127,10 +131,10 @@ export default AmbulanceDetailsScreen;
 
 const styles = StyleSheet.create({
   topBackground: {
-     paddingTop: hp('1%'),
-      paddingBottom: hp('2%'),
-      paddingHorizontal: wp('4%'),
-      height: hp('100%'),
+    paddingTop: hp('1%'),
+    paddingBottom: hp('2%'),
+    paddingHorizontal: wp('4%'),
+    height: hp('100%'),
   },
   scrollView: {
     paddingHorizontal: 16,
@@ -148,13 +152,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginRight: 24,
   },
-  editIcon: {
+  editIcon1: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#ffffff',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 10,
   },
   editText: {
     color: '#7B3F98',
     marginLeft: 4,
+  },
+  ambulanceIcon: {
+    width: 70,
+    height: 70,
+    resizeMode: 'contain',
+    marginRight: 10,
   },
   card: {
     backgroundColor: '#fff',
@@ -167,10 +181,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
-  },
-  emoji: {
-    fontSize: 36,
-    marginRight: 12,
   },
   cardTitle: {
     fontSize: 16,
@@ -229,37 +239,32 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   deleteButton: {
-    flex: 1,
+    width: wp('42%'),
+    height: hp('6.5%'),
     backgroundColor: '#fff',
     borderColor: '#ccc',
     borderWidth: 1,
-    padding: 16,
     borderRadius: 12,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 8,
   },
   deleteText: {
     color: '#333',
     fontWeight: '600',
+    fontSize: Fonts.size.PageSubheading,
   },
   editButton: {
-    flex: 1,
+    width: wp('42%'),
+    height: hp('6.5%'),
     backgroundColor: '#7B3F98',
-    padding: 16,
     borderRadius: 12,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 8,
+    left:5
   },
   editBtnText: {
     color: '#fff',
     fontWeight: '600',
+    fontSize: Fonts.size.PageSubheading,
   },
-  editIcon1: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  backgroundColor: '#fffff', // light purple shade (you can change)
-  paddingVertical: 6,
-  paddingHorizontal: 12,
-  borderRadius: 10,
-},
 });

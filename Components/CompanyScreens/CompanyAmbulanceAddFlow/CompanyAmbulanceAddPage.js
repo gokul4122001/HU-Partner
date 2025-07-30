@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
-  SafeAreaView,
+  SafeAreaView,Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CustomHeader from '../../../Header'; // adjust path if needed
@@ -24,19 +24,19 @@ const AmbulanceList = ({ navigation }) => {
       id: 'AMB01',
       vehicleNo: 'TN50ZX541',
       registrationNo: 'ADSV234540',
-      regDateTime: '07/04/2025 ● 05:10 PM',
+      regDateTime: '07/04/2025 & 05:10 PM',
     },
     {
       id: 'AMB02',
       vehicleNo: 'TN22ZX789',
       registrationNo: 'QWER567890',
-      regDateTime: '08/04/2025 ● 10:15 AM',
+      regDateTime: '08/04/2025 & 10:15 AM',
     },
     {
       id: 'AMB03',
       vehicleNo: 'TN33ZX123',
       registrationNo: 'ZXCV098765',
-      regDateTime: '09/04/2025 ● 12:45 PM',
+      regDateTime: '09/04/2025 & 12:45 PM',
     },
   ];
 
@@ -44,7 +44,11 @@ const AmbulanceList = ({ navigation }) => {
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <View style={styles.ambulanceIcon}>
-          <Text style={styles.ambulanceEmoji}>🚑</Text>
+         <Image
+  source={require('../../Assets/ambualnce.png')}
+  style={styles.ambulanceIcon}
+/>
+
         </View>
         <View style={styles.headerText}>
           <Text style={styles.serviceType}>Advanced Life Support</Text>
@@ -73,7 +77,7 @@ const AmbulanceList = ({ navigation }) => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.viewDetailsButton}>
+      <TouchableOpacity style={styles.viewDetailsButton}  onPress={() => navigation.navigate('Company3')}>
         <Text style={styles.viewDetailsText}>View Details</Text>
       </TouchableOpacity>
     </View>
@@ -164,13 +168,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   ambulanceIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#F0F0F0',
+    width: 70,
+    height: 70,
+   
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 5,
   },
   ambulanceEmoji: {
     fontSize: 20,

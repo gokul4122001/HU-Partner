@@ -5,348 +5,285 @@ import {
   ScrollView,
   StyleSheet,
   SafeAreaView,
-  TouchableOpacity,
-  Dimensions,
+  Dimensions,Image,TouchableOpacity
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import LinearGradient from 'react-native-linear-gradient';
+import CustomHeader from '../../../Header'; // ✅ Adjust path if needed
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 const { width } = Dimensions.get('window');
+import Fonts from '../../Fonts/Fonts';
+import Colors from '../../../DrivarHeader';
 
 const AkashAmbulanceApp = () => {
-  const ambulanceBookings = [
+ const currentBookings = [
     {
-      id: "AM801",
-      vehicle: "TN0352541",
-      pickup: "No.3/1, 1 Street west mambalam chennai-33",
-      drop: "No.3/1, 1 Street vyasarpadi chennai-33",
-      name: "Jeeventh Kumar",
-      contact: "9444666447",
-      date: "05/04/2025",
-      time: "10:00 AM",
-      amount: 1800
+      id: '1',
+      type: 'Patient Transfer',
+   date:'14/12/2002',
+   time:'12:20',
+      size: 'Small (Omni, etc)',
+      pickup: 'No 3/1, I Street west mambalam chennai -33',
+      drop: 'No 3/1, I Street vyasarpadi chennai -33',
+      name: 'Jeswanth Kumar',
+      contact: '934566547',
+      amount: '₹ 1,800',
+      status: 'active',
+      vehicleNo:'123',
+      ambulanceid:'123'
     },
     {
-      id: "AM801",
-      vehicle: "TN0352541",
-      pickup: "No.3/1, 1 Street west mambalam chennai-33",
-      drop: "No.3/1, 1 Street vyasarpadi chennai-33",
-      name: "Jeeventh Kumar",
-      contact: "9444666447",
-      date: "05/04/2025",
-      time: "10:00 AM",
-      amount: 1800
+      id: '2',
+      type: 'Patient Transfer',
+      date:'14/12/2002',
+   time:'12:20',
+      size: 'Small (Omni, etc)',
+      pickup: 'No 3/1, I Street west mambalam chennai -33',
+      drop: 'No 3/1, I Street vyasarpadi chennai -33',
+      name: 'Jeswanth Kumar',
+      contact: '934566547',
+      amount: '₹ 1,800',
+      status: 'active',
+         vehicleNo:'123',
+      ambulanceid:'123'
     },
-    {
-      id: "AM801",
-      vehicle: "TN0352541",
-      pickup: "No.3/1, 1 Street west mambalam chennai-33",
-      drop: "No.3/1, 1 Street vyasarpadi chennai-33",
-      name: "Jeeventh Kumar",
-      contact: "9444666447",
-      date: "05/04/2025",
-      time: "10:00 AM",
-      amount: 1800
-    }
   ];
 
-  const handleBackPress = () => {
-    // Handle back navigation
-    console.log('Back pressed');
-  };
-
-  const handlePhoneCall = (phoneNumber) => {
-    // Handle phone call
-    console.log('Calling:', phoneNumber);
-  };
-
-  const renderAmbulanceCard = (booking, index) => (
-    <View key={index} style={styles.cardContainer}>
-      {/* Ambulance Header */}
-      <View style={styles.cardHeader}>
-        <View style={styles.ambulanceInfo}>
-          <View style={styles.ambulanceIcon}>
-            <Text style={styles.ambulanceEmoji}>🚑</Text>
+  const renderBookingCard = (booking) => (
+    <View key={booking.id} style={styles.bookingCard}>
+      <View style={styles.bookingHeader}>
+        <View style={styles.ambulanceContainer}>
+          <Image
+            source={require('../../Assets/ambualnce.png')}
+            style={styles.ambulanceImage}
+          />
+        </View>
+        <View style={styles.bookingInfo}>
+          <View style={styles.bookingTopRow}>
+            <Text style={styles.bookingType}>{booking.type}</Text>
+          
           </View>
-          <View style={styles.ambulanceDetails}>
-            <Text style={styles.ambulanceTitle}>Advanced Life Support</Text>
-            <Text style={styles.ambulanceSubtitle}>Small ( 2mins, etc )</Text>
-          </View>
+          <Text style={styles.bookingSize}>{booking.size}</Text>
+        </View>
+      </View>
+           <View style={styles.customerInfo}>
+        <Text style={styles.customerText}>Ambulance Id No : {booking.ambulanceid}</Text>
+        <Text style={styles.customerText}>Vehicle No : {booking.vehicleNo}</Text>
+      </View>
+
+
+      <View style={styles.locationContainer}>
+        <View style={styles.locationRow}>
+          <View style={styles.locationDot} />
+          <Text style={styles.locationLabel}>Pickup :</Text>
+          <Text style={styles.locationText}>{booking.pickup}</Text>
+        </View>
+        <View style={styles.locationRow}>
+          <View style={[styles.locationDot, { backgroundColor: '#ff4444' }]} />
+          <Text style={styles.locationLabel}>Drop :</Text>
+          <Text style={styles.locationText}>{booking.drop}</Text>
         </View>
       </View>
 
-      {/* Booking Details */}
-      <View style={styles.bookingDetails}>
-        <View style={styles.detailRow}>
-          <View style={styles.detailItem}>
-            <Text style={styles.detailLabel}>Ambulance ID No:</Text>
-            <Text style={styles.detailValue}>{booking.id}</Text>
-          </View>
-          <View style={styles.detailItem}>
-            <Text style={styles.detailLabel}>Vehicle no:</Text>
-            <Text style={styles.detailValue}>{booking.vehicle}</Text>
-          </View>
-        </View>
+      <View style={styles.customerInfo}>
+        <Text style={styles.customerText}>Name : {booking.name}</Text>
+        <Text style={styles.customerText}>Contact : {booking.contact}</Text>
+      </View>
 
-       <View style={styles.locationContainer}>
-  <View style={styles.locationRow}>
-    <Icon name="place" size={16} color="#ef4444" />
-    <Text style={styles.locationText}>
-      <Text style={styles.locationLabel}>Pickup: </Text>
-      <Text style={styles.locationAddress}>{booking.pickup}</Text>
-    </Text>
-  </View>
+       <View style={styles.customerInfo}>
+        <Text style={styles.customerText}>Date : {booking.date}</Text>
+        <Text style={styles.customerText}>Time : {booking.time}</Text>
+      </View>
 
-  <View style={styles.locationRow}>
-    <Icon name="place" size={16} color="#ef4444" />
-    <Text style={styles.locationText}>
-      <Text style={styles.locationLabel}>Drop: </Text>
-      <Text style={styles.locationAddress}>{booking.drop}</Text>
-    </Text>
-  </View>
-</View>
-
-
-        <View style={styles.detailRow}>
-          <View style={styles.detailItem}>
-            <Text style={styles.detailLabel}>Name:</Text>
-            <Text style={styles.detailValue}>{booking.name}</Text>
-          </View>
-          <View style={styles.contactItem}>
-            <Text style={styles.detailLabel}>Contact:</Text>
-            <Text style={styles.detailValue}>{booking.contact}</Text>
-        
-          </View>
-        </View>
-
-        <View style={styles.detailRow}>
-          <View style={styles.detailItem}>
-            <Text style={styles.detailLabel}>Date:</Text>
-            <Text style={styles.detailValue}>{booking.date}</Text>
-          </View>
-          <View style={styles.detailItem}>
-            <Text style={styles.detailLabel}>Time:</Text>
-            <Text style={styles.detailValue}>{booking.time}</Text>
-          </View>
-        </View>
-
-        <View style={styles.totalContainer}>
-          <Text style={styles.totalLabel}>Total Amount</Text>
-          <Text style={styles.totalAmount}>₹ {booking.amount.toLocaleString()}</Text>
+      <View style={styles.amountSection}>
+        <View style={styles.amountRow}>
+          <Text style={styles.amountLabel}>Total Amount</Text>
+          <Text style={styles.amountText}>{booking.amount}</Text>
         </View>
       </View>
+
+  
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-            <Icon name="arrow-back" size={24} color="#ffffff" />
-          </TouchableOpacity>
-          <View style={styles.headerText}>
-            <Text style={styles.welcomeText}>Hi, Welcome</Text>
-            <Text style={styles.appTitle}>Akash Ambulance</Text>
-          </View>
-          <View style={styles.profileIcon}>
-            <Text style={styles.profileText}>A</Text>
-          </View>
-        </View>
-        <View style={styles.pageTitle}>
+    <LinearGradient colors={['#ffffff', '#C3DFFF']} start={{ x: -0, y: 0.3 }} end={{ x: 0, y: 0 }} style={styles.topBackground}>
+      <SafeAreaView style={styles.safeArea}>
+        <CustomHeader
+          username="Akash Ambulance"
+          onNotificationPress={() => console.log('Notification pressed')}
+          onWalletPress={() => console.log('Wallet pressed')}
+        />
+        <View style={styles.pageTitleWrapper}>
           <Text style={styles.pageTitleText}>Ambulance Details</Text>
         </View>
-      </View>
-
-      {/* Ambulance Bookings List */}
    <ScrollView
-  style={styles.content}
-  contentContainerStyle={{ paddingBottom: 100 }}
-  showsVerticalScrollIndicator={false}
->
-
-        <View style={styles.bookingsList}>
-          {ambulanceBookings.map((booking, index) => renderAmbulanceCard(booking, index))}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      style={styles.container1}
+      contentContainerStyle={{ paddingBottom: hp('10%'), flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+    >
+      {currentBookings.map(renderBookingCard)}
+    </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  topBackground: {
+     paddingTop: hp('1%'),
+        paddingBottom: hp('2%'),
+        paddingHorizontal: wp('4%'),
+        height: hp('100%'),
+  },
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: '#e9d5ff',
   },
-  header: {
-    backgroundColor: '#9333ea',
+  pageTitleWrapper: {
     paddingHorizontal: 16,
-    paddingVertical: 16,
-  },
-  headerContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  backButton: {
-    padding: 4,
-  },
-  headerText: {
-    flex: 1,
-    marginLeft: 12,
-  },
-  welcomeText: {
-    color: '#ffffff',
-    fontSize: 12,
-    opacity: 0.9,
-  },
-  appTitle: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  profileIcon: {
-    width: 32,
-    height: 32,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  profileText: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  pageTitle: {
-    marginTop: 16,
+    paddingBottom: 10,
   },
   pageTitleText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  content: {
-    flex: 1,
-  },
-  bookingsList: {
-    padding: 16,
-  },
-  cardContainer: {
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    marginBottom: 16,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
-    borderWidth: 1,
-    borderColor: '#e9d5ff',
-  },
-  cardHeader: {
-    marginBottom: 16,
-  },
-  ambulanceInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ambulanceIcon: {
-    width: 48,
-    height: 48,
-    backgroundColor: '#fef2f2',
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  ambulanceEmoji: {
-    fontSize: 20,
-  },
-  ambulanceDetails: {
-    flex: 1,
-  },
-  ambulanceTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1f2937',
-  },
-  ambulanceSubtitle: {
-    fontSize: 12,
-    color: '#6b7280',
-    marginTop: 2,
-  },
-  bookingDetails: {
-    gap: 12,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  detailItem: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  contactItem: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  detailLabel: {
-    fontSize: 12,
-    color: '#6b7280',
-  },
-  detailValue: {
-    fontSize: 12,
-    fontWeight: '500',
-    marginLeft: 8,
-    color: '#1f2937',
-  },
-  phoneIcon: {
-    marginLeft: 4,
-  },
- locationContainer: {
-  paddingVertical: 10,
-},
-locationRow: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginVertical: 4,
-},
-locationText: {
-  marginLeft: 6,
-  flexShrink: 1,
-},
-locationLabel: {
-  fontWeight: 'bold',
-  color: '#111',
-},
-locationAddress: {
-  color: '#555',
-},
+    color: '#000',
+       fontSize:  Fonts.size.PageHeading,
 
-  totalContainer: {
+    fontWeight: '600',
+  },
+   container1: {
+    flex: 1,
+    paddingHorizontal: wp('1%'),
+  },
+  bookingCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: wp('4%'),
+    marginBottom: hp('2%'),
+marginTop:10,
+    // iOS Shadow
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+
+    // Android Shadow
+    elevation: 7,
+  
+  
+  },
+  bookingHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: hp('2%'),
+  },
+  ambulanceContainer: {
+    width: wp('15%'),
+    height: wp('15%'),
+    borderRadius: wp('7.5%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: wp('3%'),
+  },
+  ambulanceImage: {
+    width: 100,
+    height: 200,
+    resizeMode: 'contain',
+  },
+  bookingInfo: {
+    flex: 1,
+    left:10
+  },
+  bookingTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+    justifyContent:'space-between'
+  },
+  bookingType: {
+    fontSize:  Fonts.size.PageHeading,
+    fontWeight: 'bold',
+    color: '#333',
+    marginRight: wp('3%'),
+  },
+  bookingCategory: {
+     fontSize:  Fonts.size.PageHeading,
+    color: '#C91C1C',
+    fontWeight: '600',
+    borderWidth:1,
+    padding:5,
+    borderRadius:10,
+    backgroundColor:'#FAF0FF',
+    borderColor:'#FAF0FF',
+    marginRight: wp('3%'),
+  },
+  bookingSize: {
+    fontSize: hp('1.4%'),
+    color: Colors.statusBar,
+  },
+  locationContainer: {
+    marginBottom: hp('2%'),
+  },
+  locationRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: hp('1%'),
+  },
+  locationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#4CAF50',
+    marginTop: 6,
+    marginRight: wp('2%'),
+  },
+  locationLabel: {
+  fontSize:  Fonts.size.PageHeading,
+    color: '#666',
+    fontWeight: '600',
+    marginRight: wp('2%'),
+    minWidth: wp('15%'),
+  },
+  locationText: {
+  fontSize:  Fonts.size.PageSubheading,
+    color: '#333',
+    flex: 1,
+  },
+  customerInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: hp('2%'),
+  },
+  customerText: {
+  fontSize:  Fonts.size.PageSubheading,
+    color: '#333',
+    fontWeight: '600',
+  },
+  amountSection: {
+    marginBottom: hp('2%'),
+  },
+  amountRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#f3f4f6',
   },
-  totalLabel: {
-    fontSize: 14,
+  amountLabel: {
+    fontSize:  Fonts.size.PageHeading,
+    color: '#666',
     fontWeight: '600',
-    color: '#1f2937',
   },
-  totalAmount: {
-    fontSize: 20,
+  amountText: {
+    fontSize:  Fonts.size.PageHeading,
     fontWeight: 'bold',
-    color: '#9333ea',
+    color: '#333',
   },
+ 
+  
 });
 
 export default AkashAmbulanceApp;
