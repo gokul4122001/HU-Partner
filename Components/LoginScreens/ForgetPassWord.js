@@ -22,7 +22,7 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import Fonts from '../Fonts/Fonts';
 import Colors from '../Colors/Colors';
-import { sendOtp } from '../APICall/LoginApi';
+import { sendOtp } from '../APICall/CompanyLogin/LoginApi';
 import LottieView from 'lottie-react-native'; // <- added
 
 const { width, height } = Dimensions.get('window');
@@ -32,24 +32,37 @@ const Toast = ({ visible, message, backgroundColor }) => {
   useEffect(() => {
     if (visible) {
       Animated.sequence([
-        Animated.timing(slideAnim, { toValue: 0, duration: 300, useNativeDriver: true }),
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
         Animated.delay(2000),
-        Animated.timing(slideAnim, { toValue: -100, duration: 300, useNativeDriver: true }),
+        Animated.timing(slideAnim, {
+          toValue: -100,
+          duration: 300,
+          useNativeDriver: true,
+        }),
       ]).start();
     }
   }, [visible]);
 
   return (
     <Animated.View
-      style={[styles.toastContainer, { backgroundColor: backgroundColor || 'black', transform: [{ translateY: slideAnim }] }]}
+      style={[
+        styles.toastContainer,
+        {
+          backgroundColor: backgroundColor || 'black',
+          transform: [{ translateY: slideAnim }],
+        },
+      ]}
     >
       <Text style={styles.toastText}>{message}</Text>
     </Animated.View>
   );
 };
 
-const LoginScreen = ({navigation}) => {
-
+const LoginScreen = ({ navigation }) => {
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [showModal, setShowModal] = useState(false);
   const [phoneInput, setPhoneInput] = useState('');
@@ -72,7 +85,7 @@ const LoginScreen = ({navigation}) => {
     Keyboard.dismiss();
     setIsLoading(true);
 
-        navigation.navigate('WelcomeSwipe');
+    navigation.navigate('WelcomeSwipe');
 
     // Validation
     if (!phoneInput.trim()) {
@@ -104,7 +117,9 @@ const LoginScreen = ({navigation}) => {
     } catch (error) {
       let errorMsg = 'Login failed';
       if (error.response) {
-        errorMsg = error.response.data?.message || `Server error (${error.response.status})`;
+        errorMsg =
+          error.response.data?.message ||
+          `Server error (${error.response.status})`;
       } else if (error.request) {
         errorMsg = 'No response from server';
       }
@@ -115,29 +130,49 @@ const LoginScreen = ({navigation}) => {
   };
 
   const renderCountryItem = ({ item }) => (
-    <TouchableOpacity style={styles.countryItem} onPress={() => handleCountrySelect(item)}>
-      <Image source={{ uri: `https://flagcdn.com/w80/${item.code}.png` }} style={styles.modalFlag} resizeMode="contain" />
-      <Text style={styles.countryText}>{item.name} ({item.dial_code})</Text>
+    <TouchableOpacity
+      style={styles.countryItem}
+      onPress={() => handleCountrySelect(item)}
+    >
+      <Image
+        source={{ uri: `https://flagcdn.com/w80/${item.code}.png` }}
+        style={styles.modalFlag}
+        resizeMode="contain"
+      />
+      <Text style={styles.countryText}>
+        {item.name} ({item.dial_code})
+      </Text>
     </TouchableOpacity>
   );
 
-  const handleCountrySelect = (item) => {
+  const handleCountrySelect = item => {
     setSelectedCountry(item);
     setShowModal(false);
   };
 
   return (
-    <LinearGradient 
-      colors={['#E6F3FF', '#F0F8FF', '#FFFFFF']} 
-      start={{ x: 0, y: 0 }} 
-      end={{ x: 0, y: 1 }} 
+    <LinearGradient
+      colors={['#E6F3FF', '#F0F8FF', '#FFFFFF']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
       style={styles.gradientContainer}
     >
-      <StatusBar barStyle="dark-content" backgroundColor="#7416B2" translucent />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="#7416B2"
+        translucent
+      />
       <SafeAreaView style={styles.container}>
-        <Toast visible={toastVisible} message={toastMessage} backgroundColor={toastColor} />
-        
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollContainer}>
+        <Toast
+          visible={toastVisible}
+          message={toastMessage}
+          backgroundColor={toastColor}
+        />
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollContainer}
+        >
           {/* Top Half - Illustration */}
           <View style={styles.illustrationContainer}>
             <LottieView
@@ -150,16 +185,15 @@ const LoginScreen = ({navigation}) => {
 
           {/* Bottom Half - Login Content */}
           <View style={styles.loginContainer}>
-           <View style={styles.loginTitleRow}>
-  <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backIcon}>
-    <Icons name="arrow-back-ios" size={20} color="#000000" />
-  </TouchableOpacity>
-  <Text style={styles.title}>
-    Forget Password
-  </Text>
-</View>
-
-          
+            <View style={styles.loginTitleRow}>
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={styles.backIcon}
+              >
+                <Icons name="arrow-back-ios" size={20} color="#000000" />
+              </TouchableOpacity>
+              <Text style={styles.title}>Forget Password</Text>
+            </View>
 
             {/* Mobile Number Input */}
             <View style={styles.inputGroup}>
@@ -193,15 +227,15 @@ const LoginScreen = ({navigation}) => {
                   style={styles.eyeButton}
                   onPress={() => setShowPassword(!showPassword)}
                 >
-                  <Icons 
-                    name={showPassword ? "visibility" : "visibility-off"} 
-                    size={20} 
-                    color="#A0A0A0" 
+                  <Icons
+                    name={showPassword ? 'visibility' : 'visibility-off'}
+                    size={20}
+                    color="#A0A0A0"
                   />
                 </TouchableOpacity>
               </View>
             </View>
-               <View style={styles.inputGroup}>
+            <View style={styles.inputGroup}>
               <Text style={styles.inputLabel}> Confirm New Password</Text>
               <View style={styles.passwordContainer}>
                 <TextInput
@@ -217,10 +251,10 @@ const LoginScreen = ({navigation}) => {
                   style={styles.eyeButton}
                   onPress={() => setShowPassword(!showPassword)}
                 >
-                  <Icons 
-                    name={showPassword ? "visibility" : "visibility-off"} 
-                    size={20} 
-                    color="#A0A0A0" 
+                  <Icons
+                    name={showPassword ? 'visibility' : 'visibility-off'}
+                    size={20}
+                    color="#A0A0A0"
                   />
                 </TouchableOpacity>
               </View>
@@ -228,30 +262,39 @@ const LoginScreen = ({navigation}) => {
 
             {/* Remember Me and Forgot Password */}
             <View style={styles.optionsRow}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.rememberMeContainer}
                 onPress={() => setRememberMe(!rememberMe)}
               >
-                <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
-                  {rememberMe && <Icons name="check" size={14} color="#FFFFFF" />}
+                <View
+                  style={[
+                    styles.checkbox,
+                    rememberMe && styles.checkboxChecked,
+                  ]}
+                >
+                  {rememberMe && (
+                    <Icons name="check" size={14} color="#FFFFFF" />
+                  )}
                 </View>
                 <Text style={styles.rememberMeText}>Remember me</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => navigation.navigate('WelcomeSwipe')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('WelcomeSwipe')}
+              >
                 <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
               </TouchableOpacity>
             </View>
 
             {/* Login Button */}
-            <TouchableOpacity 
-              onPress={handleLogin} 
+            <TouchableOpacity
+              onPress={handleLogin}
               activeOpacity={0.8}
               disabled={isLoading}
               style={styles.loginButtonContainer}
             >
-              <LinearGradient 
-                colors={['#8B5CF6', '#7C3AED']} 
+              <LinearGradient
+                colors={['#8B5CF6', '#7C3AED']}
                 style={styles.loginButton}
               >
                 <Text style={styles.loginButtonText}>
@@ -266,12 +309,15 @@ const LoginScreen = ({navigation}) => {
         <Modal visible={showModal} animationType="slide">
           <SafeAreaView style={styles.modalContainer}>
             <Text style={styles.modalTitle}>Select Country</Text>
-            <FlatList 
-              data={countries} 
-              keyExtractor={(item, index) => index.toString()} 
-              renderItem={renderCountryItem} 
+            <FlatList
+              data={countries}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={renderCountryItem}
             />
-            <TouchableOpacity onPress={() => setShowModal(false)} style={styles.closeButton}>
+            <TouchableOpacity
+              onPress={() => setShowModal(false)}
+              style={styles.closeButton}
+            >
               <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>
           </SafeAreaView>
@@ -288,9 +334,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-   
-  },
+  header: {},
   backButton: {
     width: 40,
     height: 40,
@@ -306,7 +350,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
- 
+
   loginContainer: {
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 30,
@@ -317,15 +361,15 @@ const styles = StyleSheet.create({
     minHeight: height * 0.55,
   },
   loginTitleRow: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginBottom: 10,
-  gap: 5,
-},
-backIcon: {
-  padding: 4,
-  marginRight: 5,
-},
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    gap: 5,
+  },
+  backIcon: {
+    padding: 4,
+    marginRight: 5,
+  },
 
   title: {
     fontSize: 24,
@@ -333,8 +377,7 @@ backIcon: {
     color: '#7416B2',
     marginBottom: 10,
     fontFamily: Fonts?.family?.regular || 'System',
-    top:2
-
+    top: 2,
   },
   titleAccent: {
     color: '#7416B2',
@@ -346,7 +389,7 @@ backIcon: {
     marginBottom: 30,
     lineHeight: 25,
     fontFamily: Fonts?.family?.regular || 'System',
-    top:5
+    top: 5,
   },
   inputGroup: {
     marginBottom: 20,

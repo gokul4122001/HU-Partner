@@ -12,17 +12,15 @@ import {
   Platform,
 } from 'react-native';
 import Icons from 'react-native-vector-icons/Ionicons';
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
 import Colors from '../../Colors/Colors';
 import Fonts from '../../Fonts/Fonts';
-import CustomHeader from '../../../Header';
+import CustomHeader from '../../../DrivarHeader';
 import CurrentBookingTab from './DrivarCurrentBookingTab';
 import ScheduleBookingTab from './DrivarScheduleBookingTab';
 import CompleteBookingTab from './DrivarCompleteBookingTab';

@@ -42,7 +42,7 @@ export default function App() {
       const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
       const token = await AsyncStorage.getItem('token');
 
-      if (isLoggedIn === 'true' && token) {
+      if (isLoggedIn === 'true' && token ) {
         dispatch(
           setAuthDetails({
             access_token: token,
@@ -58,11 +58,11 @@ export default function App() {
   };
 
   useEffect(() => {
-    // Infinite slow rotation
+   
     Animated.loop(
       Animated.timing(rotation, {
         toValue: 1,
-        duration: 10000, // slower spin (10 seconds per full circle)
+        duration: 10000,
         useNativeDriver: true,
         easing: Easing.linear,
       }),

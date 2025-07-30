@@ -15,7 +15,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Fonts from '../../Fonts/Fonts';
-import CustomHeader from '../../../Header'; 
+import CustomHeader from '../../../DrivarHeader'; 
 
 const PaymentBillsScreen = ({ navigation }) => {
   const paymentData = [

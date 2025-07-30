@@ -8,14 +8,14 @@ import {
   Dimensions,Image,TouchableOpacity
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import CustomHeader from '../../../Header'; // ✅ Adjust path if needed
+import CustomHeader from '../../../DrivarHeader'; // ✅ Adjust path if needed
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 const { width } = Dimensions.get('window');
 import Fonts from '../../Fonts/Fonts';
-import Colors from '../../../DrivarHeader';
+import Colors from '../../Colors/Colors';
 
 const AkashAmbulanceApp = () => {
  const currentBookings = [

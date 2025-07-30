@@ -21,7 +21,7 @@ import {
 import Fonts from '../../Fonts/Fonts';
 import Colors from '../../Colors/Colors';
 import { useDispatch, useSelector } from 'react-redux';
-import { UserProfileAPI } from '../APICall/ProfileApi';
+import { UserProfileAPI } from '../../APICall/ProfileApiCall/ProfileApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setClear } from '../../redux/slice/authSlice';
 
@@ -29,7 +29,7 @@ const ProfileScreen = ({ navigation }) => {
   const [isLogoutPopupVisible, setIsLogoutPopupVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const token = useSelector(state => state.auth.token);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const menuItems = [
     {
@@ -70,9 +70,8 @@ const ProfileScreen = ({ navigation }) => {
     },
   ];
 
- 
   const handleMenuPress = item => {
-    setSelectedItem(item.id); 
+    setSelectedItem(item.id);
     console.log(`Pressed: ${item.title}`);
 
     switch (item.title) {
@@ -99,13 +98,13 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     setIsLogoutPopupVisible(false);
 
     await AsyncStorage.removeItem('isLoggedIn');
     await AsyncStorage.removeItem('token');
-    dispatch(setClear())
-    navigation.navigate("LoginAccoundScreen")
+    dispatch(setClear());
+    navigation.navigate('LoginAccoundScreen');
     // Add your logout logic here
     console.log('User logged out');
     // Example: navigation.reset({ index: 0, routes: [{ name: 'Login' }] });

@@ -28,12 +28,13 @@ export default function App() {
           <Stack.Screen name="Header" component={Header} />
           <Stack.Screen name="MainApp" component={BottomTabs} />
           <Stack.Screen name="Login1" component={Login1} />
+              <Stack.Screen name="Services" component={Services} />
+           <Stack.Screen name="Servicesform" component={Servicesform} />
           <Stack.Screen name="LoginAccoundScreen" component={LoginAccoundScreen} />
+                    <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
           <Stack.Screen name="Login8" component={Login8} />
-          <Stack.Screen name="Services" component={Services} />
-          <Stack.Screen name="Servicesform" component={Servicesform} />
           <Stack.Screen name="WelcomeSwipe" component={WelcomeSwipe} />
-          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

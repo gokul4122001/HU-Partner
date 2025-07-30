@@ -18,7 +18,7 @@ import {
 } from 'react-native-responsive-screen';
 import Colors from '../../Colors/Colors';
 import Fonts from '../../Fonts/Fonts';
-import CustomHeader from '../../../Header'; // adjust path as needed
+import CustomHeader from '../../../DrivarHeader'; 
 
 
 const TermsAndConditionsScreen = ({ navigation }) => {

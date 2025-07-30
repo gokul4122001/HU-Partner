@@ -26,7 +26,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Colors from '../../Colors/Colors';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Fonts from '../../Fonts/Fonts';
-import CustomHeader from '../../../Header'; 
+import CustomHeader from '../../../DrivarHeader'; 
 
 
 const BookingDetailsScreen = ({ navigation }) => {

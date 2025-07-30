@@ -12,12 +12,15 @@ import {
   Modal,
   TextInput,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import logo from '../../Assets/logos.png';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fonts from '../../Fonts/Fonts';
 import Colors from '../../Colors/Colors';
@@ -26,8 +29,8 @@ import {
   EmergencyAPI,
   AddEmergencyContactAPI,
   EditEmergencyContactAPI,
-  DeleteEmergencyContactAPI
-} from '../APICall/EmergencyFlowApiCall';
+  DeleteEmergencyContactAPI,
+} from '../../APICall/ProfileApiCall/EmergencyFlowApiCall';
 import { useSelector } from 'react-redux';
 
 const EmergencyContactScreen = ({ navigation }) => {
@@ -41,7 +44,7 @@ const EmergencyContactScreen = ({ navigation }) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-    const token = useSelector(state => state.auth.token);
+  const token = useSelector(state => state.auth.token);
 
   const fetchContacts = async () => {
     try {
@@ -66,7 +69,7 @@ const EmergencyContactScreen = ({ navigation }) => {
     await fetchContacts();
   };
 
-  const handleEditContact = (contact) => {
+  const handleEditContact = contact => {
     setEmergencyContact({ name: contact.name, contactNumber: contact.mobile });
     setEditingContactId(contact.id);
     setIsEmergencyModalVisible(true);
@@ -87,29 +90,28 @@ const EmergencyContactScreen = ({ navigation }) => {
     try {
       setIsLoading(true);
 
-
       if (editingContactId) {
         // Update existing contact
         const updatedContact = {
           id: editingContactId,
           name: emergencyContact.name,
-          mobile: emergencyContact.contactNumber
+          mobile: emergencyContact.contactNumber,
         };
 
         await EditEmergencyContactAPI(token, updatedContact);
         await fetchContacts(); // Refresh the list after update
-        
+
         Alert.alert('Success', 'Contact updated successfully');
       } else {
         // Add new contact
         const newContact = {
           name: emergencyContact.name,
-          mobile: emergencyContact.contactNumber
+          mobile: emergencyContact.contactNumber,
         };
 
         await AddEmergencyContactAPI(token, newContact);
         await fetchContacts(); // Refresh the list after add
-        
+
         Alert.alert('Success', 'Contact added successfully');
       }
 
@@ -118,13 +120,16 @@ const EmergencyContactScreen = ({ navigation }) => {
       setEditingContactId(null);
     } catch (error) {
       console.error('Error saving contact:', error);
-      Alert.alert('Error', error.response?.data?.message || 'Failed to save contact');
+      Alert.alert(
+        'Error',
+        error.response?.data?.message || 'Failed to save contact',
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDeleteContact = async (contactId) => {
+  const handleDeleteContact = async contactId => {
     Alert.alert(
       'Delete Contact',
       'Are you sure you want to delete this contact?',
@@ -160,12 +165,19 @@ const EmergencyContactScreen = ({ navigation }) => {
     setEditingContactId(null);
   };
 
-  const renderContactItem = (contact) => (
+  const renderContactItem = contact => (
     <View key={contact.id} style={styles.contactItem}>
       <View style={styles.contactContent}>
-        <View style={[styles.avatarContainer, { backgroundColor: contact.color || '#4F7DB6' }]}>
+        <View
+          style={[
+            styles.avatarContainer,
+            { backgroundColor: contact.color || '#4F7DB6' },
+          ]}
+        >
           <Text style={styles.avatarText}>
-            {contact.name && contact.name.length > 0 ? contact.name.charAt(0).toUpperCase() : '?'}
+            {contact.name && contact.name.length > 0
+              ? contact.name.charAt(0).toUpperCase()
+              : '?'}
           </Text>
         </View>
 
@@ -176,15 +188,13 @@ const EmergencyContactScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.contactActions}>
-        <TouchableOpacity 
-          style={styles.editButton} 
+        <TouchableOpacity
+          style={styles.editButton}
           onPress={() => handleEditContact(contact)}
         >
           <Icon name="edit" size={16} color="#7518AA" />
           <Text style={styles.editText}>Edit</Text>
         </TouchableOpacity>
-        
-      
       </View>
     </View>
   );
@@ -193,28 +203,47 @@ const EmergencyContactScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.statusBar} />
 
-      <LinearGradient colors={['#ffffff', '#C3DFFF']} start={{ x: 0, y: 0.3 }} end={{ x: 0, y: 0 }} style={styles.topBackground}>
+      <LinearGradient
+        colors={['#ffffff', '#C3DFFF']}
+        start={{ x: 0, y: 0.3 }}
+        end={{ x: 0, y: 0 }}
+        style={styles.topBackground}
+      >
         <View style={styles.header}>
           <Image source={logo} style={styles.logo} />
           <View style={styles.greetingContainer}>
             <Text style={styles.greeting}>Hi, Welcome</Text>
             <Text style={styles.userName}>Janmani Kumar</Text>
           </View>
-          <TouchableOpacity style={[styles.notificationButton, { right: hp('2%') }]}>
+          <TouchableOpacity
+            style={[styles.notificationButton, { right: hp('2%') }]}
+          >
             <Icon name="notifications-on" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.notificationButton, { backgroundColor: 'red' }]}>
-            <MaterialCommunityIcons name="alarm-light-outline" size={24} color="white" />
+          <TouchableOpacity
+            style={[styles.notificationButton, { backgroundColor: 'red' }]}
+          >
+            <MaterialCommunityIcons
+              name="alarm-light-outline"
+              size={24}
+              color="white"
+            />
           </TouchableOpacity>
         </View>
 
         <View style={styles.titleSection}>
           <View style={styles.titleRow}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={styles.backButton}
+            >
               <Icon name="chevron-left" size={30} color="#000" />
             </TouchableOpacity>
             <Text style={styles.pageTitle}>Emergency Contact</Text>
-            <TouchableOpacity style={styles.addContactButton} onPress={handleAddContact}>
+            <TouchableOpacity
+              style={styles.addContactButton}
+              onPress={handleAddContact}
+            >
               <Icon name="add" size={16} color="#FFFFFF" />
               <Text style={styles.addContactText}>Add Contact</Text>
             </TouchableOpacity>
@@ -226,10 +255,7 @@ const EmergencyContactScreen = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 50 }}
           refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-            />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
           {isLoading && contacts.length === 0 ? (
@@ -241,17 +267,14 @@ const EmergencyContactScreen = ({ navigation }) => {
               {contacts.map(renderContactItem)}
             </View>
           ) : (
-         <View style={styles.emptyState}>
-  <LottieView
-    source={require('../../Assets/lottie/NoData.json')} // 👈 use your local Lottie JSON
-    autoPlay
-    loop
-    style={styles.lottie}
-  />
-  
-  
-</View>
-
+            <View style={styles.emptyState}>
+              <LottieView
+                source={require('../../Assets/lottie/NoData.json')} // 👈 use your local Lottie JSON
+                autoPlay
+                loop
+                style={styles.lottie}
+              />
+            </View>
           )}
         </ScrollView>
       </LinearGradient>
@@ -269,7 +292,10 @@ const EmergencyContactScreen = ({ navigation }) => {
               <Text style={styles.modalTitle}>
                 {editingContactId ? 'Edit Contact' : 'Add Emergency Contact'}
               </Text>
-              <TouchableOpacity onPress={handleCancelEmergencyContact} style={styles.closeButton}>
+              <TouchableOpacity
+                onPress={handleCancelEmergencyContact}
+                style={styles.closeButton}
+              >
                 <Icon name="close" size={24} color="#6B7280" />
               </TouchableOpacity>
             </View>
@@ -288,7 +314,7 @@ const EmergencyContactScreen = ({ navigation }) => {
                   placeholder="Enter Name"
                   placeholderTextColor="#9CA3AF"
                   value={emergencyContact.name}
-                  onChangeText={(text) =>
+                  onChangeText={text =>
                     setEmergencyContact(prev => ({ ...prev, name: text }))
                   }
                 />
@@ -302,8 +328,11 @@ const EmergencyContactScreen = ({ navigation }) => {
                   placeholderTextColor="#9CA3AF"
                   keyboardType="phone-pad"
                   value={emergencyContact.contactNumber}
-                  onChangeText={(text) =>
-                    setEmergencyContact(prev => ({ ...prev, contactNumber: text }))
+                  onChangeText={text =>
+                    setEmergencyContact(prev => ({
+                      ...prev,
+                      contactNumber: text,
+                    }))
                   }
                 />
               </View>
@@ -405,7 +434,7 @@ const styles = StyleSheet.create({
     fontSize: Fonts.size.PageHeading,
     color: '#4a4a4a',
     fontWeight: '700',
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   addContactButton: {
     flexDirection: 'row',
@@ -422,7 +451,7 @@ const styles = StyleSheet.create({
     fontSize: Fonts.size.PageSubSubHeading,
     fontWeight: '500',
     marginLeft: 4,
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   content: {
     flex: 1,
@@ -468,7 +497,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   contactInfo: {
     flex: 1,
@@ -478,12 +507,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#1F2937',
     marginBottom: 4,
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   contactNumber: {
     fontSize: Fonts.size.PageHeading,
     color: '#6B7280',
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   editButton: {
     flexDirection: 'row',
@@ -495,7 +524,7 @@ const styles = StyleSheet.create({
     color: '#7518AA',
     fontSize: Fonts.size.PageHeading,
     marginLeft: 4,
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   deleteButton: {
     flexDirection: 'row',
@@ -508,7 +537,7 @@ const styles = StyleSheet.create({
     color: '#FF0000',
     fontSize: Fonts.size.PageHeading,
     marginLeft: 4,
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   emptyState: {
     alignItems: 'center',
@@ -516,39 +545,38 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
     paddingHorizontal: 32,
   },
-  
-lottie: {
-  width: 200,
-  height: 200,
-top:'50%'
 
-},
- emptyStateTitle: {
-  fontSize: 20,
-  fontWeight: 'bold',
-  color: '#374151',
-  marginBottom: 8,
-},
+  lottie: {
+    width: 200,
+    height: 200,
+    top: '50%',
+  },
+  emptyStateTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#374151',
+    marginBottom: 8,
+  },
 
-emptyStateText: {
-  fontSize: 14,
-  color: '#6B7280',
-  textAlign: 'center',
-  marginBottom: 20,
-},
+  emptyStateText: {
+    fontSize: 14,
+    color: '#6B7280',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
 
-addFirstContactButton: {
-  backgroundColor: '#2563EB',
-  paddingVertical: 12,
-  paddingHorizontal: 20,
-  borderRadius: 8,
-},
+  addFirstContactButton: {
+    backgroundColor: '#2563EB',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
 
-addFirstContactText: {
-  color: '#FFFFFF',
-  fontSize: 16,
-  fontWeight: '600',
-},
+  addFirstContactText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
 
   topBackground: {
     paddingTop: hp('4%'),
@@ -573,13 +601,13 @@ addFirstContactText: {
     fontSize: Fonts.size.TopHeading,
     color: 'black',
     opacity: 0.9,
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   userName: {
     fontSize: Fonts.size.TopSubheading,
     fontWeight: 'bold',
     color: 'black',
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   notificationButton: {
     width: wp('10%'),
@@ -613,7 +641,7 @@ addFirstContactText: {
     fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
     color: '#1F2937',
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   closeButton: {
     padding: 4,
@@ -623,7 +651,7 @@ addFirstContactText: {
     color: '#6B7280',
     marginBottom: 24,
     lineHeight: 20,
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   formContainer: {
     marginBottom: 32,
@@ -636,7 +664,7 @@ addFirstContactText: {
     fontWeight: '500',
     color: '#374151',
     marginBottom: 8,
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   textInput: {
     borderWidth: 1,
@@ -666,7 +694,7 @@ addFirstContactText: {
     fontSize: Fonts.size.PageHeading,
     fontWeight: '500',
     color: '#6B7280',
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   saveButton: {
     flex: 1,
@@ -680,7 +708,7 @@ addFirstContactText: {
     fontSize: Fonts.size.PageHeading,
     fontWeight: '500',
     color: '#FFFFFF',
-    fontFamily: Fonts.family.regular
+    fontFamily: Fonts.family.regular,
   },
   loadingContainer: {
     flex: 1,

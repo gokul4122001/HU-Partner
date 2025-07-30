@@ -22,9 +22,9 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import Fonts from '../Fonts/Fonts';
 import Colors from '../Colors/Colors';
-import { sendOtp } from '../APICall/LoginApi';
+import { sendOtp } from '../APICall/CompanyLogin/LoginApi';
 import LottieView from 'lottie-react-native';
-import { login } from '../CompanyScreens/APICall/LoginApi';
+import { login } from '../APICall/CompanyLogin/LoginApi';
 import { useDispatch } from 'react-redux';
 import { setAuthDetails } from '../redux/slice/authSlice';
 
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-      fontSize: Fonts.size.BookingConformation,
+    fontSize: Fonts.size.BookingConformation,
     fontWeight: 'bold',
     color: '#7416B2',
     marginBottom: 10,
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
     color: '#7416B2',
   },
   subtitle: {
-      fontSize: Fonts.size.PageHeading,
+    fontSize: Fonts.size.PageHeading,
     color: '#666666',
     textAlign: 'center',
     marginBottom: 30,
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   inputLabel: {
-     fontSize: Fonts.size.PageHeading,
+    fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
     color: '#333333',
     marginBottom: 10,
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingVertical: 14,
-     fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
     backgroundColor: '#FFFFFF',
     color: '#333333',
     fontFamily: Fonts?.family?.regular || 'System',
@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 14,
-      fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
     color: '#333333',
     fontFamily: Fonts?.family?.regular || 'System',
   },
@@ -447,12 +447,12 @@ const styles = StyleSheet.create({
     borderColor: '#8B5CF6',
   },
   rememberMeText: {
-         fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
     color: '#666666',
     fontFamily: Fonts?.family?.regular || 'System',
   },
   forgotPasswordText: {
-      fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
     color: '#FF4444',
     fontWeight: '600',
     fontFamily: Fonts?.family?.regular || 'System',
@@ -475,7 +475,7 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     color: '#FFFFFF',
-       fontSize: Fonts.size.PageHeading,
+    fontSize: Fonts.size.PageHeading,
 
     fontWeight: '600',
     fontFamily: Fonts?.family?.regular || 'System',

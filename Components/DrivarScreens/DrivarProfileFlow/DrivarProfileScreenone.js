@@ -24,7 +24,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import CustomHeader from '../../../Header'; // adjust path as needed
+import CustomHeader from '../../../DrivarHeader'; // adjust path as needed
 import Fonts from '../../Fonts/Fonts';
 const { width, height } = Dimensions.get('window');
 

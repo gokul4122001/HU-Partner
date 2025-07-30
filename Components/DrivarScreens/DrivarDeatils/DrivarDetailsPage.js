@@ -14,7 +14,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import CustomHeader from '../../../Header'; // Adjust this import path as needed
+import CustomHeader from '../../../DrivarHeader'; // Adjust this import path as needed
 import Fonts from '../../Fonts/Fonts';
 
 const DriverDetailsScreen = () => {

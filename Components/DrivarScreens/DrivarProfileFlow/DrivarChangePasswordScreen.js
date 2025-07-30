@@ -20,7 +20,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fonts from '../../Fonts/Fonts';
 import Colors from '../../Colors/Colors';
-import CustomHeader from '../../../Header';
+import CustomHeader from '../../../DrivarHeader';
 
 const ChangePasswordScreen = ({ navigation }) => {
   const [passwords, setPasswords] = useState({
