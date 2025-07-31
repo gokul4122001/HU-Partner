@@ -149,7 +149,7 @@ const RegistrationForm = ({ navigation }) => {
 
         <ScrollView
           style={styles.scrollView}
-          contentContainerStyle={{ paddingBottom: 100 }}
+          contentContainerStyle={{ paddingBottom: 110 }}
           showsVerticalScrollIndicator={false}
         >
           <ExpandableSection
@@ -271,7 +271,8 @@ const styles = StyleSheet.create({
     color: '#7518AA',
       fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
-  left:10
+  left:10,
+  alignItems:'center'
  
   },
   placeholder: {

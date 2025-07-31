@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Screens
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import BottomTabs from './Components/Navigations/BottomNavigationScreen';
 import Login1 from './Components/LoginScreens/HomeScreenLogin';
 import LoginAccoundScreen from './Components/LoginScreens/LoginAccoundScreen.js';
@@ -20,6 +22,7 @@ const Stack = createNativeStackNavigator();
 //hi
 export default function App() {
   return (
+       <SafeAreaProvider>
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
@@ -38,5 +41,6 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
+    </SafeAreaProvider>
   );
 }

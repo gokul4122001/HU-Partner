@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -16,15 +16,17 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Colors from '../../Colors/Colors';
 import Fonts from '../../Fonts/Fonts';
 
-
 const CurrentBookingTab = () => {
-  const navigation = useNavigation(); // ✅ Fixed navigation access
-
+  const navigation = useNavigation();
   const [accepted, setAccepted] = useState(false);
   const [otpSubmitted, setOtpSubmitted] = useState(false);
   const [otpModalVisible, setOtpModalVisible] = useState(false);
   const [otp, setOtp] = useState(['', '', '', '']);
   const [showCards, setShowCards] = useState(true);
+
+  const otpInputsRef = Array(4)
+    .fill()
+    .map(() => useRef(null));
 
   const firstBooking = {
     id: '1',
@@ -44,6 +46,15 @@ const CurrentBookingTab = () => {
   const handleEnterOTP = () => setOtpModalVisible(true);
   const handleTrackLocation = () => Alert.alert('Track Location', 'Tracking screen logic here');
 
+  const handleOtpChange = (text, index) => {
+    const updatedOtp = [...otp];
+    updatedOtp[index] = text;
+    setOtp(updatedOtp);
+    if (text && index < 3) {
+      otpInputsRef[index + 1].current.focus();
+    }
+  };
+
   const handleOtpSubmit = () => {
     setOtpModalVisible(false);
     setOtpSubmitted(true);
@@ -51,7 +62,7 @@ const CurrentBookingTab = () => {
   };
 
   const handleViewDetails = () => {
-    navigation.navigate('BookingDetailsScreen'); 
+    navigation.navigate('BookingDetailsScreen');
   };
 
   const handleReject = () => {
@@ -121,15 +132,12 @@ const CurrentBookingTab = () => {
             {otp.map((digit, index) => (
               <TextInput
                 key={index}
+                ref={otpInputsRef[index]}
                 style={styles.otpInputBox}
                 maxLength={1}
                 keyboardType="number-pad"
                 value={digit}
-                onChangeText={(text) => {
-                  const updatedOtp = [...otp];
-                  updatedOtp[index] = text;
-                  setOtp(updatedOtp);
-                }}
+                onChangeText={(text) => handleOtpChange(text, index)}
               />
             ))}
           </View>
@@ -171,14 +179,14 @@ const CardContent = ({ booking }) => (
       <Text style={styles.locationLabel}>Pickup: {booking.pickup}</Text>
       <Text style={styles.locationLabel}>Drop: {booking.drop}</Text>
     </View>
-    <View style={{   flexDirection: 'row', justifyContent: 'space-between'}}>
-    <Text style={styles.customerText}>Name: {booking.name}</Text>
-    <Text style={styles.customerText}>Contact: {booking.contact}</Text>
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <Text style={styles.customerText}>Name: {booking.name}</Text>
+      <Text style={styles.customerText}>Contact: {booking.contact}</Text>
     </View>
-     <View style={{   flexDirection: 'row', justifyContent: 'space-between'}}>
-    <Text style={styles.customerText}>Date: {booking.date}</Text>
-    <Text style={styles.customerText}>Time: {booking.time}</Text>
-    </View> 
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      <Text style={styles.customerText}>Date: {booking.date}</Text>
+      <Text style={styles.customerText}>Time: {booking.time}</Text>
+    </View>
     <View style={styles.amountRow}>
       <Text style={styles.amountLabel}>Total Amount</Text>
       <Text style={styles.amountText}>{booking.amount}</Text>
@@ -283,12 +291,11 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     padding: 12,
     alignItems: 'center',
-
   },
   acceptButtonText: {
     color: 'white',
     fontWeight: 'bold',
-     fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
   },
   otpButton: {
     flex: 1,
@@ -302,7 +309,7 @@ const styles = StyleSheet.create({
   otpButtonText: {
     color: Colors.statusBar,
     fontWeight: 'bold',
-     fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
   },
   trackLocationButton: {
     flex: 1,
@@ -317,7 +324,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     marginLeft: 6,
-     fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
   },
   modalBackground: {
     flex: 1,

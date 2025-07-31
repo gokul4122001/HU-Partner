@@ -3,7 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useSelector } from 'react-redux';
-  
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 // ✅ Company Flow
 import CompanyHomeStackScreen from '../../Components/Navigations/CompanyStackNavigation/CompanyHomeStackNavigationScreen';
 import AmbulanceAddStackScreen from '../../Components/Navigations/CompanyStackNavigation/CompanyAmbulanceAddstackScreen';
@@ -11,7 +12,7 @@ import ProfileStackScreen from '../../Components/Navigations/CompanyStackNavigat
 import DrivarAddStackScreen from '../../Components/Navigations/CompanyStackNavigation/CompanyDrivarAddStackScreen';
 import BoookingStackScreen from '../../Components/Navigations/CompanyStackNavigation/CompanyBookingstackNavigation';
 
-// ✅ Drivar Flow
+// ✅ Driver Flow
 import DrivarHomeScreen from './DrivarStackNavigations/DrivarNavigation/DrivarCompanyHomeStackNavigationScreen';
 import DrivarBookingScreen from './DrivarStackNavigations/DrivarNavigation/DrivarBookingstackNavigation';
 import DrivarAmbulance from './DrivarStackNavigations/DrivarNavigation/DrivarAmbulanceDetailsstackScreen';
@@ -22,6 +23,8 @@ const Tab = createBottomTabNavigator();
 
 // ✅ Custom Tab Bar Component
 const CustomTabBar = ({ state, descriptors, navigation }) => {
+  const insets = useSafeAreaInsets();
+
   const iconMap = {
     Home: 'home',
     Booking: 'calendar',
@@ -31,7 +34,15 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
   };
 
   return (
-    <View style={styles.tabBar}>
+    <View
+      style={[
+        styles.tabBar,
+        {
+          paddingBottom: insets.bottom || 10,
+          height: 70 + (insets.bottom || 10),
+        },
+      ]}
+    >
       {state.routes.map((route, index) => {
         const isFocused = state.index === index;
 
@@ -57,7 +68,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               <Icon
                 name={iconMap[route.name]}
                 size={20}
-                color={isFocused ? '#ffff' : '#7518AA'}
+                color={isFocused ? '#fff' : '#7518AA'}
               />
               {isFocused && <Text style={styles.label}>{route.name}</Text>}
             </View>
@@ -126,7 +137,6 @@ export default BottomTabs;
 const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
-    height: 70,
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -154,8 +164,7 @@ const styles = StyleSheet.create({
   label: {
     marginLeft: 6,
     fontSize: 14,
-    color: '#ffff',
+    color: '#fff',
     fontWeight: '500',
   },
 });
-

@@ -108,7 +108,7 @@ const AmbulanceList = ({ navigation }) => {
         {/* Content */}
         <ScrollView
           style={styles.scrollView}
-          contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={{ paddingBottom: 50 }}
           showsVerticalScrollIndicator={false}
         >
           {ambulanceData.map((item, index) => (
