@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     position: 'absolute',
-    bottom: '15%',
+    bottom: '7%',
     color: '#ffff',
     fontSize: Fonts.size.PageHeading,
     textAlign: 'center',

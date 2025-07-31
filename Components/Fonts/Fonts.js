@@ -2,8 +2,8 @@ const Fonts = {
   // Font sizes
   size: {
     
-    TopHeading: 11,
-    TopSubheading:12,
+    TopHeading: 12,
+    TopSubheading:13,
     PageHeading: 13,
     PageSubheading: 11,
     PageSubSubHeading:9,

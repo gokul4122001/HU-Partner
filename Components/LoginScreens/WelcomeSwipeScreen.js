@@ -110,7 +110,7 @@ const WelcomeScreen = ({ navigation }) => {
             useNativeDriver: true,
           }).start(() => {
             // Show success feedback briefly
-            showToast('Swipe Successful! Navigating...', '#4CAF50');
+            showToast(' Successfully Login! ...', '#4CAF50');
             
             // Wait a moment then navigate
             setTimeout(() => {
@@ -185,7 +185,7 @@ const WelcomeScreen = ({ navigation }) => {
             <Text style={styles.subtitle}>Become a Ambulance Partner</Text>
 
             <Text style={styles.description}>
-              We can work together for better health care delivery
+          By working together, we can make health care better.
             </Text>
 
             <View style={styles.vendorButtonContainer}>
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   scrollContainer: { flex: 1 },
   illustrationContainer: {
-    height: height * 0.55,
+  height: height * 0.50,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -269,10 +269,9 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
      fontSize: Fonts.size.BookingConformation,
-    fontWeight: '400',
-    color: '#333333',
+    fontWeight: '600',
+    color: '#000000',
     marginBottom: 5,
-    fontFamily: Fonts?.family?.regular || 'System',
     textAlign: 'center',
   },
   brandName: {
@@ -288,9 +287,9 @@ const styles = StyleSheet.create({
            fontSize: Fonts.size.PageHeading,
 
     fontWeight: '600',
-    color: '#333333',
+    color: '#0C0B0B',
     marginBottom: 15,
-    fontFamily: Fonts?.family?.regular || 'System',
+
     textAlign: 'center',
   },
   description: {
@@ -336,23 +335,40 @@ const styles = StyleSheet.create({
     fontFamily: Fonts?.family?.regular || 'System',
   },
   swipeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    width: '100%',
-    paddingHorizontal: 10,
-    zIndex: 2,
-  },
-  iconCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    marginRight: 10,
-  },
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  width: '100%',
+  paddingHorizontal: 10,
+  zIndex: 2,
+  height: 20, // 👈 Set a fixed height here
+},
+
+ vendorButton: {
+  height: 60, // 👈 Ensure button height matches swipeContainer
+  paddingHorizontal: 10,
+  borderRadius: 30,
+  alignItems: 'center',
+  justifyContent: 'center',
+  shadowColor: '#8B5CF6',
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.3,
+  shadowRadius: 4.65,
+  elevation: 8,
+  overflow: 'hidden',
+  position: 'relative',
+},
+
+iconCircle: {
+  width: 40,
+  height: 40,
+  borderRadius: 20,
+  backgroundColor: '#fff',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflow: 'hidden',
+  marginRight: 10,
+},
   vendorButtonText: {
     color: '#FFFFFF',
               fontSize: Fonts.size.PageSubheading,

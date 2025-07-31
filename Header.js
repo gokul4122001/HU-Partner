@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import Fonts from '../HU-Partner/Components/Fonts/Fonts';
 const CustomHeader = ({ username = 'Akash Ambulance', onNotificationPress, onWalletPress }) => {
   return (
     <View style={styles.headerContainer}>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    padding: 8,
     paddingTop: 30, 
    
   },
@@ -50,11 +50,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   welcomeText: {
-    fontSize: 14,
+
+    fontSize: Fonts.size.TopHeading,
     color: '#444',
   },
   usernameText: {
-    fontSize: 16,
+       fontSize: Fonts.size.TopSubheading,
     fontWeight: 'bold',
     color: '#000',
   },

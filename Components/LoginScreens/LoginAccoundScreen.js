@@ -10,11 +10,11 @@ import {
   StatusBar,
   Image,
   Keyboard,
-  Modal,
-  FlatList,
-  Animated,
-  Dimensions,
   ScrollView,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  Animated,
 } from 'react-native';
 import { countries } from './CountryJson';
 
@@ -22,11 +22,11 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import Fonts from '../Fonts/Fonts';
 import Colors from '../Colors/Colors';
-import { sendOtp } from '../APICall/CompanyLogin/LoginApi';
-import LottieView from 'lottie-react-native';
 import { login } from '../APICall/CompanyLogin/LoginApi';
+import LottieView from 'lottie-react-native';
 import { useDispatch } from 'react-redux';
 import { setAuthDetails } from '../redux/slice/authSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
@@ -66,8 +66,6 @@ const Toast = ({ visible, message, backgroundColor }) => {
 };
 
 const LoginScreen = ({ navigation }) => {
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
-  const [showModal, setShowModal] = useState(false);
   const [phoneInput, setPhoneInput] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -77,6 +75,23 @@ const LoginScreen = ({ navigation }) => {
   const [toastColor, setToastColor] = useState('#000');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const loadCredentials = async () => {
+      try {
+        const savedPhone = await AsyncStorage.getItem('rememberedPhone');
+        const savedPassword = await AsyncStorage.getItem('rememberedPassword');
+        if (savedPhone && savedPassword) {
+          setPhoneInput(savedPhone);
+          setPassword(savedPassword);
+          setRememberMe(true);
+        }
+      } catch (err) {
+        console.error('Error loading remembered credentials', err);
+      }
+    };
+    loadCredentials();
+  }, []);
 
   const showToast = (message, color) => {
     setToastMessage(message);
@@ -89,7 +104,6 @@ const LoginScreen = ({ navigation }) => {
     Keyboard.dismiss();
     setIsLoading(true);
 
-    // Validation
     if (!phoneInput.trim()) {
       showToast('Please enter mobile number', '#FF4C4C');
       setIsLoading(false);
@@ -102,7 +116,6 @@ const LoginScreen = ({ navigation }) => {
       return;
     }
 
-    // Phone number validation
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(phoneInput)) {
       showToast('Enter valid 10 digit mobile number', '#FF4C4C');
@@ -116,9 +129,17 @@ const LoginScreen = ({ navigation }) => {
         setAuthDetails({
           access_token: res.access_token,
           user_type: res.user_type,
-        }),
+        })
       );
-      // Your login API call here
+
+      if (rememberMe) {
+        await AsyncStorage.setItem('rememberedPhone', phoneInput);
+        await AsyncStorage.setItem('rememberedPassword', password);
+      } else {
+        await AsyncStorage.removeItem('rememberedPhone');
+        await AsyncStorage.removeItem('rememberedPassword');
+      }
+
       showToast('Login Successful', '#28a745');
       setTimeout(() => {
         navigation.navigate('WelcomeSwipe');
@@ -138,27 +159,6 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const renderCountryItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.countryItem}
-      onPress={() => handleCountrySelect(item)}
-    >
-      <Image
-        source={{ uri: `https://flagcdn.com/w80/${item.code}.png` }}
-        style={styles.modalFlag}
-        resizeMode="contain"
-      />
-      <Text style={styles.countryText}>
-        {item.name} ({item.dial_code})
-      </Text>
-    </TouchableOpacity>
-  );
-
-  const handleCountrySelect = item => {
-    setSelectedCountry(item);
-    setShowModal(false);
-  };
-
   return (
     <LinearGradient
       colors={['#E6F3FF', '#F0F8FF', '#FFFFFF']}
@@ -166,154 +166,124 @@ const LoginScreen = ({ navigation }) => {
       end={{ x: 0, y: 1 }}
       style={styles.gradientContainer}
     >
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="#7416B2"
-        translucent
-      />
-      <SafeAreaView style={styles.container}>
-        <Toast
-          visible={toastVisible}
-          message={toastMessage}
-          backgroundColor={toastColor}
-        />
-
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.scrollContainer}
+      <StatusBar barStyle="dark-content" backgroundColor="#7416B2" translucent />
+      <SafeAreaView style={{ flex: 1 }}>
+        <Toast visible={toastVisible} message={toastMessage} backgroundColor={toastColor} />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+          style={{ flex: 1 }}
         >
-          {/* Top Half - Illustration */}
-          <View style={styles.illustrationContainer}>
-            <LottieView
-              source={require('../Assets/lottie/register.json')}
-              autoPlay
-              loop
-              style={{ width: width * 0.8, height: height * 0.4 }}
-            />
-          </View>
-
-          {/* Bottom Half - Login Content */}
-          <View style={styles.loginContainer}>
-            <View style={styles.loginTitleRow}>
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={styles.backIcon}
-              >
-                <Icons name="arrow-back-ios" size={20} color="#000000" />
-              </TouchableOpacity>
-              <Text style={styles.title}>
-                Login your <Text style={styles.titleAccent}>account</Text>
-              </Text>
-            </View>
-
-            <Text style={styles.subtitle}>
-              Your username and password credentials will be sent to you mobile
-              number
-            </Text>
-
-            {/* Mobile Number Input */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Mobile Number</Text>
-              <TextInput
-                style={styles.textInput}
-                value={phoneInput}
-                onChangeText={setPhoneInput}
-                placeholder="Enter Mobile number"
-                placeholderTextColor="#A0A0A0"
-                keyboardType="phone-pad"
-                maxLength={10}
-                editable={!isLoading}
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flexGrow: 1 }}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.illustrationContainer}>
+              <LottieView
+                source={require('../Assets/lottie/register.json')}
+                autoPlay
+                loop
+                style={{ width: width * 0.8, height: height * 0.4 }}
               />
             </View>
 
-            {/* Password Input */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Password</Text>
-              <View style={styles.passwordContainer}>
+            <View style={styles.loginContainer}>
+              <View style={styles.loginTitleRow}>
+                <TouchableOpacity
+                  onPress={() => navigation.goBack()}
+                  style={styles.backIcon}
+                >
+                  <Icons name="arrow-back-ios" size={18} color="#000000" />
+                </TouchableOpacity>
+                <Text style={styles.title}>
+                  Login your <Text style={styles.titleAccent}>account</Text>
+                </Text>
+              </View>
+
+              <Text style={styles.subtitle}>
+                Your username and password credentials will be sent to your mobile number
+              </Text>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Mobile Number</Text>
                 <TextInput
-                  style={styles.passwordInput}
-                  value={password}
-                  onChangeText={setPassword}
-                  placeholder="••••••••••"
+                  style={styles.textInput}
+                  value={phoneInput}
+                  onChangeText={setPhoneInput}
+                  placeholder="Enter Mobile number"
                   placeholderTextColor="#A0A0A0"
-                  secureTextEntry={!showPassword}
+                  keyboardType="phone-pad"
+                  maxLength={10}
                   editable={!isLoading}
                 />
-                <TouchableOpacity
-                  style={styles.eyeButton}
-                  onPress={() => setShowPassword(!showPassword)}
-                >
-                  <Icons
-                    name={showPassword ? 'visibility' : 'visibility-off'}
-                    size={20}
-                    color="#A0A0A0"
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.inputLabel}>Password</Text>
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={styles.passwordInput}
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder="***********"
+                    placeholderTextColor="#A0A0A0"
+                    secureTextEntry={!showPassword}
+                    editable={!isLoading}
                   />
+                  <TouchableOpacity
+                    style={styles.eyeButton}
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    <Icons
+                      name={showPassword ? 'visibility' : 'visibility-off'}
+                      size={20}
+                      color="#A0A0A0"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={styles.optionsRow}>
+                <TouchableOpacity
+                  style={styles.rememberMeContainer}
+                  onPress={() => setRememberMe(!rememberMe)}
+                >
+                  <View
+                    style={[styles.checkbox, rememberMe && styles.checkboxChecked]}
+                  >
+                    {rememberMe && (
+                      <Icons name="check" size={14} color="#FFFFFF" />
+                    )}
+                  </View>
+                  <Text style={styles.rememberMeText}>Remember me</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ForgetPassword')}
+                >
+                  <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
                 </TouchableOpacity>
               </View>
-            </View>
 
-            {/* Remember Me and Forgot Password */}
-            <View style={styles.optionsRow}>
               <TouchableOpacity
-                style={styles.rememberMeContainer}
-                onPress={() => setRememberMe(!rememberMe)}
+                onPress={handleLogin}
+                activeOpacity={0.8}
+                disabled={isLoading}
+                style={styles.loginButtonContainer}
               >
-                <View
-                  style={[
-                    styles.checkbox,
-                    rememberMe && styles.checkboxChecked,
-                  ]}
+                <LinearGradient
+                  colors={['#8B5CF6', '#7C3AED']}
+                  style={styles.loginButton}
                 >
-                  {rememberMe && (
-                    <Icons name="check" size={14} color="#FFFFFF" />
-                  )}
-                </View>
-                <Text style={styles.rememberMeText}>Remember me</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => navigation.navigate('ForgetPassword')}
-              >
-                <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
+                  <Text style={styles.loginButtonText}>
+                    {isLoading ? 'Logging In...' : 'Log In'}
+                  </Text>
+                </LinearGradient>
               </TouchableOpacity>
             </View>
-
-            {/* Login Button */}
-            <TouchableOpacity
-              onPress={handleLogin}
-              activeOpacity={0.8}
-              disabled={isLoading}
-              style={styles.loginButtonContainer}
-            >
-              <LinearGradient
-                colors={['#8B5CF6', '#7C3AED']}
-                style={styles.loginButton}
-              >
-                <Text style={styles.loginButtonText}>
-                  {isLoading ? 'Logging In...' : 'Log In'}
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-
-        {/* Country Selection Modal */}
-        <Modal visible={showModal} animationType="slide">
-          <SafeAreaView style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Select Country</Text>
-            <FlatList
-              data={countries}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={renderCountryItem}
-            />
-            <TouchableOpacity
-              onPress={() => setShowModal(false)}
-              style={styles.closeButton}
-            >
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
-          </SafeAreaView>
-        </Modal>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -323,26 +293,12 @@ const styles = StyleSheet.create({
   gradientContainer: {
     flex: 1,
   },
-  container: {
-    flex: 1,
-  },
-  header: {},
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scrollContainer: {
-    flex: 1,
-  },
   illustrationContainer: {
-    height: height * 0.45,
+    height: height * 0.40,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-
   loginContainer: {
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 30,
@@ -362,7 +318,6 @@ const styles = StyleSheet.create({
     padding: 4,
     marginRight: 5,
   },
-
   title: {
     fontSize: Fonts.size.BookingConformation,
     fontWeight: 'bold',
@@ -375,11 +330,10 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: Fonts.size.PageHeading,
-    color: '#666666',
+    color: '#2A2C2D',
     textAlign: 'center',
     marginBottom: 30,
     lineHeight: 25,
-    fontFamily: Fonts?.family?.regular || 'System',
     top: 5,
   },
   inputGroup: {
@@ -387,10 +341,9 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: Fonts.size.PageHeading,
-    fontWeight: '600',
-    color: '#333333',
+    fontWeight: '500',
+    color: '#4F4C4C',
     marginBottom: 10,
-    fontFamily: Fonts?.family?.regular || 'System',
   },
   textInput: {
     borderWidth: 1,
@@ -400,7 +353,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     fontSize: Fonts.size.PageSubheading,
     backgroundColor: '#FFFFFF',
-    color: '#333333',
+    color: '#4F4C4C',
     fontFamily: Fonts?.family?.regular || 'System',
   },
   passwordContainer: {
@@ -476,7 +429,6 @@ const styles = StyleSheet.create({
   loginButtonText: {
     color: '#FFFFFF',
     fontSize: Fonts.size.PageHeading,
-
     fontWeight: '600',
     fontFamily: Fonts?.family?.regular || 'System',
   },
@@ -495,48 +447,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
-    fontFamily: Fonts?.family?.regular || 'System',
-  },
-  // Modal styles
-  modalContainer: {
-    flex: 1,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-  },
-  modalTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginVertical: 20,
-    fontFamily: Fonts?.family?.regular || 'System',
-  },
-  countryItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderColor: '#eee',
-  },
-  modalFlag: {
-    width: 50,
-    height: 36,
-    marginRight: 15,
-    borderRadius: 6,
-  },
-  countryText: {
-    fontSize: 16,
-    fontFamily: Fonts?.family?.regular || 'System',
-  },
-  closeButton: {
-    backgroundColor: '#8B5CF6',
-    padding: 15,
-    marginVertical: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
     fontFamily: Fonts?.family?.regular || 'System',
   },
 });
