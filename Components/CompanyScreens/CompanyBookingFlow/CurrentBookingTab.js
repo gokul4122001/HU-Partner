@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     color: '#000',
-  },
+  },  
   otpBoxFilled: {
     backgroundColor: '#5C1D9E',
     color: '#fff',

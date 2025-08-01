@@ -172,7 +172,7 @@ const BookingDetailsScreen = ({ navigation }) => {
               <Text style={styles.value}>₹ 350</Text>
             </View>
           </View>
-
+  
                    <View style={styles.divider} />
 
           {/* Price Details */}

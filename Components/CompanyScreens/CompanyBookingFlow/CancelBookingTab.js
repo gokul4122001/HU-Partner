@@ -156,7 +156,7 @@ const CurrentBookingCardScreen = () => {
     style={[styles.rejectButton, { marginRight: 8 }]}
     onPress={() => Alert.alert('Completed', 'Booking marked as completed')}
   >
-    <Text style={styles.rejectText}>Cancelled</Text>
+    <Text style={styles.rejectText}>Cancelled</Text>  
   </TouchableOpacity>
   <TouchableOpacity
     style={styles.acceptButton}

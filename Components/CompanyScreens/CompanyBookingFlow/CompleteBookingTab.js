@@ -158,7 +158,7 @@ const CurrentBookingCardScreen = () => {
   >
     <Text style={styles.rejectText}>Completed</Text>
   </TouchableOpacity>
-  <TouchableOpacity
+  <TouchableOpacity  
     style={styles.acceptButton}
     onPress={() => navigation.navigate('Completebookingdetails')}
   >

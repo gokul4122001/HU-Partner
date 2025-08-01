@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icons from 'react-native-vector-icons/Ionicons';
 
-import {
+import {  
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';

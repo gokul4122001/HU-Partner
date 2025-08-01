@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Colors from '../../Colors/Colors';
-import {
+import {  
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';

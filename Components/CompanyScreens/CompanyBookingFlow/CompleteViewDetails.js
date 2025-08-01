@@ -79,7 +79,7 @@ const BookingDetailsScreen = ({ navigation }) => {
 
 
           {/* Ambulance Card */}
-          <View style={styles.driverCard1}>
+          <View style={styles.driverCard1}>  
   <Image
     source={require('../../Assets/ambualnce.png')}
     style={styles.driverImage}

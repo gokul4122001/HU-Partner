@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     borderStyle: 'dotted',
     marginVertical: 10,
   },
-  infoRow: {
+  infoRow: {  
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 6,

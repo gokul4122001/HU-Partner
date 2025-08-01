@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 6,
-    backgroundColor:'#ffffff'
+    backgroundColor:'#ffffff'  
   },
   changeLocationText: {
     color: '#4D2161',

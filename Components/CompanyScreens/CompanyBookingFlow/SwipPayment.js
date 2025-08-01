@@ -16,7 +16,7 @@ import {
   Animated,
   PanResponder,
   Dimensions
-} from 'react-native';
+} from 'react-native';  
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/Ionicons';

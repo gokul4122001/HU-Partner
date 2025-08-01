@@ -171,7 +171,7 @@ const BookingDetailsScreen = ({ navigation }) => {
             <View style={styles.infoRow}>
               <Text style={styles.label}>Assistance for the Patient</Text>
               <Text style={styles.value}>₹ 350</Text>
-            </View>
+            </View>  
 
                      <View style={styles.divider} />
             <View style={[styles.infoRow]}>
