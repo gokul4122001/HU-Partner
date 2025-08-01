@@ -75,6 +75,8 @@ const AmbulanceAssignmentScreen = ({ navigation }) => {
         </View>
       </View>
 
+         <View style={styles.divider} />
+
       <View style={styles.detailsSection}>
         <View style={styles.infoRow}>
           <Text style={styles.label}>Ambulance ID No: </Text>
@@ -83,21 +85,7 @@ const AmbulanceAssignmentScreen = ({ navigation }) => {
           <Text style={styles.value}>{item.vehicleNo}</Text>
         </View>
 
-        <View style={styles.locationRow}>
-          <View style={styles.locationDot} />
-          <View style={styles.locationInfo}>
-            <Text style={styles.locationLabel}>Pickup: </Text>
-            <Text style={styles.locationText}>{item.pickup}</Text>
-          </View>
-        </View>
-
-        <View style={styles.locationRow}>
-          <View style={[styles.locationDot, { backgroundColor: '#ef4444' }]} />
-          <View style={styles.locationInfo}>
-            <Text style={styles.locationLabel}>Drop: </Text>
-            <Text style={styles.locationText}>{item.drop}</Text>
-          </View>
-        </View>
+   
 
         <View style={styles.customerSection}>
           <View style={styles.infoRow}>
@@ -145,7 +133,7 @@ const AmbulanceAssignmentScreen = ({ navigation }) => {
         <Text style={styles.titleText}>Driver & Ambulance Assignment Details</Text>
       </View>
 
-      <ScrollView style={styles.content} contentContainerStyle={{ paddingBottom: 100 }}>
+      <ScrollView style={styles.content} contentContainerStyle={{ paddingBottom: 100 }} showsVerticalScrollIndicator={false}>
         {assignmentData.map(item => renderAssignmentCard(item))}
       </ScrollView>
     </LinearGradient>
@@ -158,6 +146,12 @@ const styles = StyleSheet.create({
     paddingTop: hp('1%'),
     paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
+  },
+    divider: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#aaa',
+    borderStyle: 'dotted',
+    marginVertical: 10,
   },
   titleRow: {
     flexDirection: 'row',
@@ -174,21 +168,26 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 10,
   },
-  assignmentCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    marginBottom: 16,
-    padding: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-  },
+ assignmentCard: {
+  backgroundColor: '#fff',
+  borderRadius: 12,
+  marginBottom: 16,
+  padding: 16,
+
+  // iOS Shadow
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.2,
+  shadowRadius: 6,
+
+  // Android Elevation
+  elevation: 6,
+},
+
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+   
   },
   ambulanceIcon: {
     alignItems: 'center',
@@ -225,36 +224,9 @@ const styles = StyleSheet.create({
     color: '#1f2937',
     fontWeight: '600',
   },
-  locationRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 12,
-  },
-  locationDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#10b981',
-    marginTop: 6,
-    marginRight: 12,
-  },
-  locationInfo: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  locationLabel: {
-     fontSize: Fonts.size.PageSubheading,
-    color: '#374151',
-    fontWeight: '500',
-  },
-  locationText: {
-       fontSize: Fonts.size.PageSubheading,
-    color: '#1f2937',
-    flex: 1,
-  },
+ 
   customerSection: {
-    marginTop: 8,
+    
   },
   amountSection: {
     flexDirection: 'row',

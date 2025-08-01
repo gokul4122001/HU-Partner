@@ -430,7 +430,7 @@ top:10
   },
   submitButton: {
     backgroundColor: '#7518AA',
-    paddingVertical: 10,
+    paddingVertical: 15,
     borderRadius: 8,
     alignItems: 'center',
   },

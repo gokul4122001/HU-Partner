@@ -1,374 +1,374 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   Image,
-  Modal,
-  TextInput,
   Alert,
+  ScrollView,
+  TextInput,
+  Modal,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import Colors from '../../Colors/Colors';
 import Fonts from '../../Fonts/Fonts';
 
-
-const CurrentBookingTab = () => {
-  const navigation = useNavigation(); // ✅ Fixed navigation access
-
+const CurrentBookingCardScreen = () => {
+  const navigation = useNavigation();
+  const [cardVisible, setCardVisible] = useState(true);
   const [accepted, setAccepted] = useState(false);
-  const [otpSubmitted, setOtpSubmitted] = useState(false);
+  const [rideStarted, setRideStarted] = useState(false);
+
   const [otpModalVisible, setOtpModalVisible] = useState(false);
   const [otp, setOtp] = useState(['', '', '', '']);
-  const [showCards, setShowCards] = useState(true);
-
-  const firstBooking = {
-    id: '1',
-    type: 'Patient Transfer',
-    category: 'Emergency',
-    size: 'Small (Omni, etc)',
-    pickup: 'No 3/1, I Street west mambalam chennai -33',
-    drop: 'No 3/1, I Street vyasarpadi chennai -33',
-    name: 'Jeswanth Kumar',
-    contact: '934566547',
-    amount: '₹ 1,800',
-    date: '09/04/2025',
-    time: '06:19 PM',
-  };
-
-  const handleAccept = () => setAccepted(true);
-  const handleEnterOTP = () => setOtpModalVisible(true);
-  const handleTrackLocation = () => Alert.alert('Track Location', 'Tracking screen logic here');
-
-  const handleOtpSubmit = () => {
-    setOtpModalVisible(false);
-    setOtpSubmitted(true);
-    Alert.alert('OTP Submitted', `Entered OTP: ${otp.join('')}`);
-  };
-
-  const handleViewDetails = () => {
-    navigation.navigate('BookingDetailsScreen'); 
-  };
+  const otpRefs = useRef([]);
 
   const handleReject = () => {
-    Alert.alert(
-      'Reject Booking',
-      'Are you sure you want to reject all bookings?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Reject',
-          style: 'destructive',
-          onPress: () => setShowCards(false),
-        },
-      ]
-    );
+    setCardVisible(false);
   };
 
-  const renderCard = (booking, type) => (
-    <View style={styles.bookingCard}>
-      <CardContent booking={booking} />
-      <View style={styles.actionButtons}>
-        {type === 'initial' && (
-          <>
-            <TouchableOpacity style={styles.rejectButton} onPress={handleReject}>
-              <Text style={styles.rejectButtonText}>Reject</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
-              <Text style={styles.acceptButtonText}>Accept</Text>
-            </TouchableOpacity>
-          </>
-        )}
-        {type === 'otp' && (
-          <>
-            <TouchableOpacity style={styles.otpButton} onPress={handleEnterOTP}>
-              <Text style={styles.otpButtonText}>Enter OTP</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.trackLocationButton} onPress={handleTrackLocation}>
-              <MaterialCommunityIcons name="map-marker" size={16} color="white" />
-              <Text style={styles.trackLocationText}>Track Location</Text>
-            </TouchableOpacity>
-          </>
-        )}
-        {type === 'view' && (
-          <>
-            <TouchableOpacity style={styles.rejectButton} onPress={handleViewDetails}>
-              <Text style={styles.rejectButtonText}>View Details</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.trackLocationButton} onPress={handleTrackLocation}>
-              <MaterialCommunityIcons name="map-marker" size={16} color="white" />
-              <Text style={styles.trackLocationText}>Track Location</Text>
-            </TouchableOpacity>
-          </>
-        )}
-      </View>
-    </View>
-  );
+  const handleAccept = () => {
+    setAccepted(true);
+  };
 
-  const renderOtpModal = () => (
-    <Modal visible={otpModalVisible} transparent animationType="slide">
-      <View style={styles.modalBackground}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Enter OTP</Text>
-          <Text style={styles.modalSubtitle}>
-            Enter OTP below. OTP is sent to the user mobile number
-          </Text>
-          <View style={styles.otpInputs}>
-            {otp.map((digit, index) => (
-              <TextInput
-                key={index}
-                style={styles.otpInputBox}
-                maxLength={1}
-                keyboardType="number-pad"
-                value={digit}
-                onChangeText={(text) => {
-                  const updatedOtp = [...otp];
-                  updatedOtp[index] = text;
-                  setOtp(updatedOtp);
-                }}
-              />
-            ))}
-          </View>
-          <TouchableOpacity style={styles.submitButton} onPress={handleOtpSubmit}>
-            <Text style={styles.submitButtonText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-  );
+  function truncateText(text, maxLength) {
+  if (text.length > maxLength) {
+    return text.slice(0, maxLength) + '...';
+  }
+  return text;
+}
+
+
+  const handleOtpChange = (index, value) => {
+    const updatedOtp = [...otp];
+    updatedOtp[index] = value;
+    setOtp(updatedOtp);
+    if (value && index < 3) {
+      otpRefs.current[index + 1].focus();
+    }
+  };
+
+  const submitOtp = () => {
+    if (otp.every(val => val !== '')) {
+      setOtpModalVisible(false);
+      setOtpVerified(true);
+    } else {
+      Alert.alert('Error', 'Please enter all OTP digits');
+    }
+  };
+
+  if (!cardVisible) return null;
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 16 }}>
-      {showCards && (
-        <>
-          {renderCard(firstBooking, 'initial')}
-          {accepted && renderCard(firstBooking, 'otp')}
-          {otpSubmitted && renderCard(firstBooking, 'view')}
-        </>
-      )}
-      {renderOtpModal()}
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.card}>
+        {/* Header */}
+        <View style={styles.headerRow}>
+          <Image
+            source={require('../../Assets/ambualnce.png')}
+            style={styles.image}
+          />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.title}>Patient Transfer</Text>
+            <Text style={styles.subtitle}>Small ( Omni, etc )</Text>
+          </View>
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>Emergency</Text>
+          </View>
+        </View>
+        <View style={styles.divider} />
+
+        {/* Locations */}
+   <View style={styles.locationContainer}>
+  <View style={[styles.row, { marginBottom: 10 }]}> {/* spacing here */}
+    <MaterialCommunityIcons
+      name="map-marker"
+      size={20}
+      color="#C91C1C"
+      style={{
+        borderWidth: 1,
+        padding: 3,
+        borderRadius: 20,
+        borderColor: '#FFEAEA',
+        backgroundColor: '#FFEAEA',
+      }}
+    />
+    <Text style={styles.locationText}>
+      <Text style={styles.boldLabel}>Pickup :</Text> No 3/1, 1 Street west mambalam chennai -33
+    </Text>
+  </View>
+
+  <View style={styles.row}>
+    <MaterialCommunityIcons
+      name="map-marker"
+      size={20}
+      color="#C91C1C"
+      style={{
+        borderWidth: 1,
+        padding: 3,
+        borderRadius: 20,
+        borderColor: '#FFEAEA',
+        backgroundColor: '#FFEAEA',
+      }}
+    />
+    <Text style={styles.locationText}>
+      <Text style={styles.boldLabel}>Drop :</Text> No 3/1, 1 Street vyasrapadi chennai -33
+    </Text>
+  </View>
+</View>
+
+
+        <View style={styles.divider} />
+
+        {/* Info */}
+     <View style={styles.infoRow}>
+  <View style={styles.column}>
+   <Text style={styles.infoText}>
+  <Text style={styles.boldLabel}>Name :</Text> {truncateText('Jeswanth', 7)}
+</Text>
+
+    <View style={{ marginVertical: 6 }} /> 
+    <Text style={styles.infoText}>
+      <Text style={styles.boldLabel}>Date :</Text> 09/04/2025
+    </Text>
+  </View>
+  <View style={styles.column}>
+    <Text style={styles.infoText}>
+      <Text style={styles.boldLabel}>Contact :</Text> 934566547
+    </Text>
+    <View style={{ marginVertical: 6 }} /> 
+    <Text style={styles.infoText}>
+      <Text style={styles.boldLabel}>Time :</Text> 05 : 10 PM
+    </Text>
+  </View>
+</View>
+
+
+        <View style={styles.divider} />
+
+        {/* Amount */}
+        <View style={styles.amountRow}>
+          <Text style={styles.totalLabel}>Total Amount</Text>
+          <Text style={styles.totalAmount}>₹ 1,800</Text>
+        </View>
+
+        {/* Buttons */}
+        <View style={styles.buttonRow}>
+         {!accepted ? (
+  <>
+    <TouchableOpacity style={styles.rejectButton} onPress={handleReject}>
+      <Text style={styles.rejectText}>Reject</Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
+      <Text style={styles.acceptText}>Accept</Text>
+    </TouchableOpacity>
+  </>
+) : !rideStarted ? (
+  <>
+    <TouchableOpacity
+      style={[styles.rejectButton, { marginRight: 8 }]}
+      onPress={() => navigation.navigate('BookingDetailsScreen')}
+    >
+      <Text style={styles.rejectText}>View Details</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.acceptButton}
+      onPress={() => setRideStarted(true)}
+    >
+      <Text style={styles.acceptText}>Start Ride</Text>
+    </TouchableOpacity>
+  </>
+) : (
+  <>
+    <TouchableOpacity
+      style={[styles.rejectButton, { marginRight: 8 }]}
+      onPress={() => navigation.navigate('BookingDetailsScreen')}
+    >
+      <Text style={styles.rejectText}>View Details</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.acceptButton}
+      onPress={() => navigation.navigate('TrackDrivar')}
+    >
+      <Text style={styles.acceptText}>Track Location</Text>
+    </TouchableOpacity>
+  </>
+)}
+
+        </View>
+      </View>
+
+      {/* OTP Modal */}
+     <Modal visible={otpModalVisible} transparent animationType="slide">
+  <View style={styles.modalOverlay}>
+    <View style={styles.modalContainer}>
+      <Text style={styles.modalTitle}>Enter OTP</Text>
+      <Text style={styles.modalSubtitle}>
+        Enter OTP in below and the otp as send to user mobile number
+      </Text>
+
+      <View style={styles.otpRow}>
+        {[0, 1, 2, 3].map((_, index) => (
+          <TextInput
+            key={index}
+            ref={(ref) => (otpRefs.current[index] = ref)}
+            value={otp[index]}
+            onChangeText={(value) => handleOtpChange(index, value)}
+            keyboardType="number-pad"
+            maxLength={1}
+            style={[
+              styles.otpBox,
+              otp[index] ? styles.otpBoxFilled : null,
+            ]}
+          />
+        ))}
+      </View>
+
+      <TouchableOpacity style={styles.submitBtn} onPress={submitOtp}>
+        <Text style={styles.submitText}>Submit</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</Modal>
+
     </ScrollView>
   );
 };
 
-const CardContent = ({ booking }) => (
-  <>
-    <View style={styles.bookingHeader}>
-      <Image source={require('../../Assets/ambualnce.png')} style={styles.ambulanceImage} />
-      <View style={styles.bookingInfo}>
-        <View style={styles.bookingTopRow}>
-          <Text style={styles.bookingType}>{booking.type}</Text>
-          <Text style={styles.bookingCategory}>{booking.category}</Text>
-        </View>
-        <Text style={styles.bookingSize}>{booking.size}</Text>
-      </View>
-    </View>
-    <View style={styles.locationContainer}>
-      <Text style={styles.locationLabel}>Pickup: {booking.pickup}</Text>
-      <Text style={styles.locationLabel}>Drop: {booking.drop}</Text>
-    </View>
-    <View style={{   flexDirection: 'row', justifyContent: 'space-between'}}>
-    <Text style={styles.customerText}>Name: {booking.name}</Text>
-    <Text style={styles.customerText}>Contact: {booking.contact}</Text>
-    </View>
-     <View style={{   flexDirection: 'row', justifyContent: 'space-between'}}>
-    <Text style={styles.customerText}>Date: {booking.date}</Text>
-    <Text style={styles.customerText}>Time: {booking.time}</Text>
-    </View> 
-    <View style={styles.amountRow}>
-      <Text style={styles.amountLabel}>Total Amount</Text>
-      <Text style={styles.amountText}>{booking.amount}</Text>
-    </View>
-  </>
-);
-
 const styles = StyleSheet.create({
-  bookingCard: {
+  container: { padding: 16 },
+  card: {
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 4,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  bookingHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
+  headerRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
+  image: { width: 50, height: 50, resizeMode: 'contain', marginRight: 12 },
+  title: {    fontSize:  Fonts.size.PageHeading, fontWeight: 'bold' },
+  subtitle: { color: '#7f8c8d', marginTop: 4,   fontSize:  Fonts.size.PageSubheading, },
+  badge: {
+    backgroundColor: '#FAF0FF',
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
   },
-  ambulanceImage: {
-    width: 70,
-    height: 70,
-    resizeMode: 'contain',
-    marginRight: 12,
-  },
-  bookingInfo: { flex: 1 },
-  bookingTopRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  bookingType: {
-    fontSize: Fonts.size.PageHeading,
-    fontWeight: 'bold',
-  },
-  bookingCategory: {
-    fontSize: Fonts.size.PageSubheading,
-    color: 'red',
-    fontWeight: 'bold',
-    backgroundColor: '#FFEDED',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 8,
-  },
-  bookingSize: {
-    fontSize: Fonts.size.PageHeading,
-    color: 'gray',
-    marginTop: 4,
-  },
-  locationContainer: {
+  badgeText: { color: '#C91C1C', fontWeight: 'bold',   fontSize:  Fonts.size.PageHeading, },
+  locationContainer: { marginVertical: 10 },
+  row: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 4 },
+  locationText: { flex: 1,    fontSize:  Fonts.size.PageHeading, marginLeft: 8, color: '#333',top:3 },
+  boldLabel: { fontWeight: 'bold',   fontSize:  Fonts.size.PageHeading,},
+  divider: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#aaa',
+    borderStyle: 'dotted',
     marginVertical: 10,
   },
-  locationLabel: {
-    fontSize: Fonts.size.PageSubheading,
-    marginBottom: 4,
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 6,
   },
-  customerText: {
-    fontSize: Fonts.size.PageSubheading,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
+  infoText: { fontSize: 14, color: '#444', },
   amountRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10,
-  },
-  amountLabel: {
-    fontSize: 14,
-    color: 'gray',
-  },
-  amountText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     marginTop: 12,
+    alignItems: 'center',
+  },
+  totalLabel: { fontSize: 16, fontWeight: 'bold' },
+  totalAmount: { fontSize: 20, fontWeight: 'bold', color: '#000' },
+  buttonRow: {
+    flexDirection: 'row',
+    marginTop: 16,
+    justifyContent: 'space-between',
   },
   rejectButton: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderColor: 'red',
     borderWidth: 1,
-    borderRadius: 6,
+    borderColor: '#7518AA',
     padding: 12,
+    borderRadius: 8,
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 8,
   },
-  rejectButtonText: {
-    color: 'red',
-    fontWeight: 'bold',
-    fontSize: Fonts.size.PageSubheading,
-  },
+  rejectText: { color: '#7518AA', fontWeight: 'bold', fontSize: 16 },
   acceptButton: {
     flex: 1,
-    backgroundColor: Colors.statusBar,
-    borderRadius: 6,
+    backgroundColor: '#7518AA',
     padding: 12,
+    borderRadius: 8,
     alignItems: 'center',
+  },
+  acceptText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
 
-  },
-  acceptButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-     fontSize: Fonts.size.PageSubheading,
-  },
-  otpButton: {
+  // OTP Modal styles
+   modalOverlay: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: Colors.statusBar,
-    borderRadius: 6,
-    padding: 12,
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  otpButtonText: {
-    color: Colors.statusBar,
-    fontWeight: 'bold',
-     fontSize: Fonts.size.PageSubheading,
-  },
-  trackLocationButton: {
-    flex: 1,
-    backgroundColor: Colors.statusBar,
-    borderRadius: 6,
-    padding: 12,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  trackLocationText: {
-    color: 'white',
-    fontWeight: 'bold',
-    marginLeft: 6,
-     fontSize: Fonts.size.PageSubheading,
-  },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: '#000000aa',
+    backgroundColor: 'rgba(0,0,0,0.4)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContainer: {
-    width: wp('85%'),
+    width: '90%',
     backgroundColor: '#fff',
-    borderRadius: 16,
+    borderRadius: 20,
     padding: 20,
     alignItems: 'center',
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 6,
+    color: '#5C1D9E', // deep purple
+    marginBottom: 10,
   },
   modalSubtitle: {
+    fontSize: 14,
+    color: '#333',
     textAlign: 'center',
-    marginBottom: 16,
-    color: 'gray',
+    marginBottom: 25,
   },
-  otpInputs: {
+  otpRow: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    marginBottom: 16,
+    justifyContent: 'space-between',
+    width: '80%',
+    marginBottom: 30,
   },
-  otpInputBox: {
+  otpBox: {
+    width: 60,
+    height: 60,
     borderWidth: 1,
-    borderColor: Colors.statusBar,
-    borderRadius: 8,
-    width: 50,
-    height: 50,
+    borderColor: '#ccc',
+    borderRadius: 10,
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 24,
+    color: '#000',
+  },  
+  otpBoxFilled: {
+    backgroundColor: '#5C1D9E',
+    color: '#fff',
+    borderColor: '#5C1D9E',
   },
-  submitButton: {
-    width: '100%',
-    backgroundColor: Colors.statusBar,
-    padding: 12,
-    borderRadius: 8,
+  submitBtn: {
+    width: '90%',
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: 'center',
+    justifyContent: 'center',
+     backgroundColor: '#5C1D9E',
   },
-  submitButtonText: {
+  submitText: {
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
   },
+  
 });
 
-export default CurrentBookingTab;
+export default CurrentBookingCardScreen;

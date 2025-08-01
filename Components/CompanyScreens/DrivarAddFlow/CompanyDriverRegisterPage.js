@@ -177,10 +177,12 @@ const RegistrationForm = ({ navigation }) => {
 
 
 
-        <ScrollView
-          style={styles.scroll}
-          contentContainerStyle={{ paddingBottom: 100 }}
-        >
+       <ScrollView
+  style={styles.scroll}
+  contentContainerStyle={{ paddingBottom: 100 }}
+  showsVerticalScrollIndicator={false}
+>
+
           {/* Basic Details */}
           <Section title="Basic Details" sectionKey="basic">
             <InputField label="Driver Name" field="driverName" placeholder="Enter Driver Name" />

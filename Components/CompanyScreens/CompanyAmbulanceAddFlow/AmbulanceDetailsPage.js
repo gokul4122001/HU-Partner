@@ -90,13 +90,13 @@ const AmbulanceDetailsScreen = ({ navigation }) => {
 
         <View style={styles.docRow}>
           <View style={styles.docCard}>
-            <Icon name="picture-as-pdf" size={40} color="#7B3F98" />
+            <Icon name="picture-as-pdf" size={40} color="#474747" />
             <Text style={styles.docLabel}>Ambulance RC Book</Text>
             <Text style={styles.docText}>Document name</Text>
           </View>
 
           <View style={styles.docCard}>
-            <Icon name="picture-as-pdf" size={40} color="#7B3F98" />
+            <Icon name="picture-as-pdf" size={40} color="#474747" />
             <Text style={styles.docLabel}>Ambulance License</Text>
             <Text style={styles.docText}>Document name</Text>
           </View>
@@ -104,7 +104,7 @@ const AmbulanceDetailsScreen = ({ navigation }) => {
 
         <View style={styles.docRow}>
           <View style={styles.docCard}>
-            <Icon name="picture-as-pdf" size={40} color="#7B3F98" />
+            <Icon name="picture-as-pdf" size={40} color="#474747" />
             <Text style={styles.docLabel}>Ambulance Image</Text>
             <Text style={styles.docText}>Document name</Text>
           </View>
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   deleteButton: {
     width: wp('42%'),
     height: hp('6.5%'),
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 12,
@@ -255,14 +255,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   deleteText: {
-    color: '#333',
+    color: '#4D2161',
     fontWeight: '600',
     fontSize: Fonts.size.PageSubheading,
   },
   editButton: {
     width: wp('42%'),
     height: hp('6.5%'),
-    backgroundColor: '#7B3F98',
+    backgroundColor: '#7518AA',
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',

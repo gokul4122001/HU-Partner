@@ -1,4 +1,3 @@
-// Your full BookingDetailsScreen.js file with updates
 import React, { useState } from 'react';
 import {
   View,
@@ -22,19 +21,17 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../../Colors/Colors';
 import Icons from 'react-native-vector-icons/Ionicons';
 import Fonts from '../../Fonts/Fonts';
-import CustomHeader from '../../../DrivarHeader'; 
-
+import CustomHeader from '../../../Header';
 
 const BookingDetailsScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentLocation, setCurrentLocation] = useState('');
   const [newDropLocation, setNewDropLocation] = useState('');
 
- const handleLocationChange = () => {
+  const handleLocationChange = () => {
     if (currentLocation.trim()) {
       setNewDropLocation(currentLocation.trim());
     }
@@ -47,11 +44,11 @@ const BookingDetailsScreen = ({ navigation }) => {
       <StatusBar barStyle="light-content" backgroundColor={Colors.statusBar} />
       <LinearGradient
         colors={['#ffffff', '#C3DFFF']}
-        start={{ x: 0, y: 0.3 }}
+        start={{ x: -0, y: 0.2 }}
         end={{ x: 0, y: 0 }}
         style={styles.topBackground}
       >
-     <CustomHeader
+        <CustomHeader
           username="Janmani Kumar"
           onNotificationPress={() => console.log('Notification Pressed')}
           onWalletPress={() => console.log('Wallet Pressed')}
@@ -70,82 +67,100 @@ const BookingDetailsScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <ScrollView style={styles.scrollContainer} contentContainerStyle={{ paddingBottom: 120 }}>
-          {/* Driver Card */}
+        <ScrollView
+          style={styles.scrollContainer}
+          contentContainerStyle={{ paddingBottom: 120 }}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Updated Driver Card */}
           <View style={styles.driverCard}>
             <Image
               source={{ uri: 'https://randomuser.me/api/portraits/men/41.jpg' }}
               style={styles.driverImage}
             />
             <View style={styles.driverInfo}>
-              <View style={styles.nameRow}>
-                <Text style={styles.driverName}>Dinesh Kumar</Text>
-                <Icon name="star" size={16} color="#FFD700" style={{ marginHorizontal: 4 }} />
-                <Text style={styles.rating}>4.3</Text>
-              </View>
-              <View style={styles.detailsRow}>
-                <View style={styles.vehicleBox}>
-                  <Text style={styles.vehicleText}>ID no: 1234567</Text>
-                </View>
-                <TouchableOpacity style={styles.callContainer}>
-                  <View style={styles.callIconCircle}>
-                    <Icon name="call" size={18} color="#7B2CBF" />
-                  </View>
-                  <Text style={styles.callText}>Call Customer</Text>
-                </TouchableOpacity>
-              </View>
+              <Text style={styles.driverName}>Selva Kumar</Text>
+              <Text style={styles.driverId}>ID no : AK0215</Text>
             </View>
+            <TouchableOpacity style={styles.callCustomerButton}>
+              <View style={styles.callIconBackground}>
+                <Icon name="call" size={18} color="#7B2CBF" />
+              </View>
+              <Text style={styles.callCustomerText}>Call Customer</Text>
+            </TouchableOpacity>
           </View>
+
+              <View style={styles.divider} />
+
 
           {/* Ambulance Card */}
-          <View style={styles.driverCard}>
-            <Image
-              source={require('../../Assets/ambualnce.png')}
-              style={styles.driverImage}
-            />
-            <View style={styles.driverInfo}>
-              <View style={styles.nameRow}>
-                <Text style={styles.driverName}>Patient Transfer</Text>
-                <MaterialCommunityIcons name="ambulance" size={18} color="#7B2CBF" style={{ marginHorizontal: 4 }} />
-                <Text style={styles.rating}>Small (Omni, etc)</Text>
-              </View>
-              <View style={styles.detailsRow}>
-                <View style={styles.vehicleBox}>
-                  <Text style={styles.vehicleText}>AM012D2313</Text>
-                </View>
-              </View>
-            </View>
-          </View>
+          <View style={styles.driverCard1}>
+  <Image
+    source={require('../../Assets/ambualnce.png')}
+    style={styles.driverImage}
+  />
+  <View style={styles.driverInfo}>
+    {/* Top Row: Patient Transfer + Vehicle ID */}
+    <View style={styles.topRow}>
+      <Text style={styles.driverName}>Patient Transfer</Text>
+      <Text style={styles.vehicleText1}>AM01D2313</Text>
+    </View>
+
+    {/* Middle Row: Ambulance icon + Type */}
+    <View style={styles.nameRow}>
+      <MaterialIcons name="ambulance" size={18} color="#7B2CBF" style={{ marginRight: 4 }} />
+      <Text style={styles.rating}>Small (Omni, etc)</Text>
+    </View>
+  </View>
+</View>
+
+
+              <View style={styles.divider} />
+
 
           {/* Pickup & Drop */}
-          <View style={styles.section}>
-            <View style={styles.locationRow}>
-              <MaterialIcons name="circle" size={10} color="#FF0000" />
-              <Text style={styles.locationLabel}>Pickup</Text>
-              <Text style={styles.locationValue}>
-                NO 3/1, I Street west mambalam chennai -33
-              </Text>
-            </View>
-            <View style={styles.locationRow}>
-              <MaterialIcons name="circle" size={10} color="#8E44AD" />
-              <Text style={styles.locationLabel}>Drop</Text>
-              <Text style={styles.locationValue}>
-                NO 3/1, I Street vyasarpadi chennai -33
-              </Text>
-            </View>
-               {newDropLocation !== '' && (
-              <View style={{ marginTop: 10,flexDirection:'row' }}>
-                <Text style={{ color: '#555' }}>Drop (Change By Driver):</Text>
-                <Text style={{ fontWeight: '600' }}>{newDropLocation}</Text>
-              </View>
-            )}
+       <View style={styles.section}>
+  {/* Pickup Section */}
+  <View style={styles.locationRow}>
+    <View style={styles.locationIconLabel}>
+     
+      <Text style={styles.locationHeading}>Pickup</Text>
+    </View>
+    <Text style={styles.locationValue}>
+       <MaterialIcons name="map-marker" size={18} color="#FF6B6B" />
+      NO 3/1, I Street west mambalam chennai -33
+    </Text>
+  </View>
 
-            
-          </View>
+  {/* Drop Section */}
+  <View style={[styles.locationRow, { marginTop: 12 }]}>
+    <View style={styles.locationIconLabel}>
+     
+      <Text style={styles.locationHeading}>Drop</Text>
+    </View>
+    <Text style={styles.locationValue}>
+       <MaterialIcons name="map-marker" size={18} color="#8E44AD" />
+      NO 3/1, I Street vyasarpadi chennai -33
+    </Text>
+  </View>
+
+  {/* Optional Changed Drop Location */}
+  {newDropLocation !== '' && (
+    <View style={{ marginTop: 10 }}>
+      <Text style={{ color: '#555' }}>Drop (Change By Driver):</Text>
+      <Text style={{ fontWeight: '600' }}>{newDropLocation}</Text>
+    </View>
+  )}
+</View>
+
+              <View style={styles.divider} />
+
 
           {/* Booking Date & Time */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Booking Date & Time</Text>
+       
+
             <View style={styles.infoRow}>
               <Text style={styles.label}>Booking Date</Text>
               <Text style={styles.value}>21 / 03 / 2025</Text>
@@ -156,12 +171,16 @@ const BookingDetailsScreen = ({ navigation }) => {
             </View>
           </View>
 
+                   <View style={styles.divider} />
+
           {/* Customer Details */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Customer Details</Text>
             <Text style={styles.value}>Name : Jeswanth Kumar</Text>
             <Text style={styles.value}>Mobile Number : 9345665447</Text>
           </View>
+
+                   <View style={styles.divider} />
 
           {/* Assistance */}
           <View style={styles.section}>
@@ -171,6 +190,8 @@ const BookingDetailsScreen = ({ navigation }) => {
               <Text style={styles.value}>₹ 350</Text>
             </View>
           </View>
+
+                   <View style={styles.divider} />
 
           {/* Emergency Card */}
           <View style={styles.emergencyCard}>
@@ -187,7 +208,7 @@ const BookingDetailsScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
 
-          {/* Price */}
+          {/* Price Details */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Price Details</Text>
             <View style={styles.infoRow}>
@@ -198,15 +219,16 @@ const BookingDetailsScreen = ({ navigation }) => {
               <Text style={styles.label}>Assistance for the Patient</Text>
               <Text style={styles.value}>₹ 350</Text>
             </View>
-            <View style={[styles.infoRow, { borderTopWidth: 1, borderColor: '#eee', paddingTop: 10 }]}>
+
+                     <View style={styles.divider} />
+            <View style={[styles.infoRow]}>
               <Text style={[styles.label, { fontSize: Fonts.size.PageHeading }]}>Total Price</Text>
-              <Text style={[styles.value, { fontSize: Fonts.size.PageHeading, color: '#7B2CBF' }]}>
-                ₹ 1,850
-              </Text>
+              <Text style={[styles.value, { fontSize: Fonts.size.PageHeading, color: '#7B2CBF' }]}>₹ 1,850</Text>
             </View>
+                     <View style={styles.divider} />
           </View>
 
-          {/* Enter OTP & Live Track Buttons */}
+          {/* Buttons */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
             <TouchableOpacity
               style={[styles.trackButton, { flex: 1, marginRight: 10, backgroundColor: '#F3F3F3' }]}
@@ -227,7 +249,7 @@ const BookingDetailsScreen = ({ navigation }) => {
         </ScrollView>
 
         {/* Modal */}
-     <Modal
+        <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
@@ -268,175 +290,13 @@ const BookingDetailsScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: '#F8F9FF',
-  },
-  scrollContainer: { 
-    paddingBottom: 30, 
-    paddingHorizontal: 10 
-  },
-  driverCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 14,
-    marginTop: 20,
-    borderRadius: 12,
-    elevation: 2,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-  },
-  driverImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  driverInfo: {
-    flex: 1,
-    marginLeft: 10,
-  },
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
-  driverName: {
-    fontWeight: 'bold',
-   fontSize:  Fonts.size.PageHeading,
-    color: '#333',
-  },
-  rating: {
-       fontSize:  Fonts.size.PageHeading,
-    color: '#333',
-    fontWeight: '600',
-  },
-  detailsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  vehicleBox: {
-    borderWidth: 1,
-    borderStyle: 'dotted',
-    borderColor: '#999',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 6,
-  },
-  vehicleText: {
-      fontSize:  Fonts.size.PageHeading,
-    color: '#333',
-  },
-  callContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  callIconCircle: {
-    backgroundColor: '#EDE9FE',
-    padding: 8,
-    borderRadius: 20,
-    marginRight: 6,
-  },
-  callText: {
-    fontSize:  Fonts.size.PageHeading,
-    color: '#7B2CBF',
-    fontWeight: '600',
-  },
+  container: { flex: 1, backgroundColor: '#F8F9FF' },
+  scrollContainer: { paddingBottom: 30 },
   topBackground: {
     paddingTop: hp('2%'),
     paddingBottom: hp('2%'),
     paddingHorizontal: wp('4%'),
     height: hp('100%'),
-  },
- 
-  section: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginTop: 16,
-    elevation: 2,
-  },
-  sectionTitle: { 
-    fontWeight: 'bold', 
-      fontSize:  Fonts.size.PageHeading,
-    marginBottom: 12 
-  },
-  locationRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 8,
-  },
-  locationLabel: { 
-    fontWeight: 'bold', 
-    marginHorizontal: 8, 
-     fontSize:  Fonts.size.PageHeading,
-  },
-  locationValue: { 
-    color: '#333', 
-    flex: 1, 
-     fontSize:  Fonts.size.PageHeading,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  label: { 
-    color: '#666' ,
-       fontSize:  Fonts.size.PageHeading,
-  },
-  value: { 
-    fontWeight: 'bold', 
-    color: '#333' ,
-       fontSize:  Fonts.size.PageHeading,
-  },
-  emergencyCard: {
-    marginTop: 16,
-    padding: 16,
-    backgroundColor: Colors.statusBar,
-    borderRadius: 12,
-  },
-  emergencyTitle: { 
-    fontWeight: 'bold', 
-      fontSize:  Fonts.size.PageHeading,
-    marginBottom: 6, 
-    color: '#ffff' 
-  },
-  emergencyDescription: { 
-      fontSize:  Fonts.size.PageHeading,
-    color: '#ffff' 
-  },
-  emergencyButton: {
-    marginTop: 12,
-    flexDirection: 'row',
-    backgroundColor: '#DBDBDB',
-    padding: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emergencyButtonText: { 
-    color: Colors.statusBar, 
-    fontWeight: 'bold', 
-    marginLeft: 8 ,
-       fontSize:  Fonts.size.PageHeading,
-  },
-  trackButton: {
-    flexDirection: 'row',
-    backgroundColor: Colors.statusBar,
-    paddingVertical: 14,
-    marginTop: 20,
-    marginBottom: 60,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  trackButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-      fontSize:  Fonts.size.PageHeading,
-    marginLeft: 8,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -451,7 +311,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitles: {
-  fontSize:  Fonts.size.PageHeading,
+    fontSize: Fonts.size.PageHeading,
     fontWeight: 'bold',
     marginLeft: 6,
     color: '#000',
@@ -462,14 +322,240 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 6,
+    backgroundColor:'#ffffff'  
   },
   changeLocationText: {
-    color: '#7B2CBF',
-   fontSize:  Fonts.size.PageHeading,
+    color: '#4D2161',
+    fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
   },
+  driverCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    backgroundColor: '#fff',
+    marginTop: 20,
+  },
+  driverImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 12,
+  },
+  driverInfo: {
+    flex: 1,
+  },
+    divider: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#aaa',
+    borderStyle: 'dotted',
+    marginVertical: 10,
+  },
+  driverName: {
+    fontWeight: 'bold',
+    fontSize: Fonts.size.PageHeading,
+    color: '#000',
+  },
+  driverId: {
+    fontSize: Fonts.size.PageHeading,
+    color: '#333',
+    marginTop: 4,
+  },
+  callCustomerButton: {
+    alignItems: 'center',
+  },
+  callIconBackground: {
+    backgroundColor: '#F2E8FF',
+    padding: 10,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  callCustomerText: {
+    color: '#7B2CBF',
+    fontWeight: 'bold',
+    fontSize: Fonts.size.PageHeading,
+    marginTop: 4,
+  },
+driverCard1: {
+  flexDirection: 'row',
+
+  padding: 14,
+  margin: 5,
+ 
+},
+driverImage: {
+  width: 60,
+  height: 60,
+  borderRadius: 30,
+  marginRight: 12,
+},
+driverInfo: {
+  flex: 1,
+  justifyContent: 'center',
+},
+topRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: 4,
+},
+driverName: {
+  fontSize: 16,
+  fontWeight: 'bold',
+  color: '#000',
+},
+vehicleText: {
+  fontSize: 13,
+  color: '#D00000',
+  backgroundColor: '#FFE9F0',
+  paddingHorizontal: 8,
+  paddingVertical: 4,
+  borderRadius: 6,
+},
+nameRow: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+rating: {
+  fontSize: 14,
+  color: '#555',
+},
+
+  nameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  rating: {
+    fontSize: Fonts.size.PageHeading,
+    color: '#333',
+    fontWeight: '600',
+  },
+  detailsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  vehicleBox: {
+    marginTop: 6,
+  },
+  vehicleText1: {
+    fontSize: 13,
+  color: '#D00000',
+  backgroundColor: '#FFE9F0',
+  paddingHorizontal: 8,
+  paddingVertical: 4,
+  borderRadius: 6,
+  },
+  section: {
+    backgroundColor: '#fff',
+    padding: 16,
+    marginTop: 10,
+  },
+  sectionTitle: {
+    fontWeight: 'bold',
+    fontSize: Fonts.size.PageHeading,
+    marginBottom: 12,
+  },
+ locationRow: {
+  marginBottom: 10,
+},
+
+locationIconLabel: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 4,
+},
+
+locationHeading: {
+  fontSize: 16,
+  fontWeight: 'bold',
+  marginLeft: 4,
+  color: '#333',
+},
+
+locationValue: {
+  fontSize: 14,
+  color: '#555',
+  paddingLeft: 22, // to align with text after the icon
+},
+
+  locationLabel: {
+    fontWeight: 'bold',
+    marginHorizontal: 8,
+    fontSize: Fonts.size.PageHeading,
+  },
+  locationValue: {
+    color: '#333',
+    flex: 1,
+    fontSize: Fonts.size.PageHeading,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  label: {
+    color: '#666',
+    fontSize: Fonts.size.PageHeading,
+  },
+  value: {
+    fontWeight: 'bold',
+    color: '#333',
+    fontSize: Fonts.size.PageHeading,
+  },
+  emergencyCard: {
+    marginTop: 16,
+    padding: 16,
+    backgroundColor: Colors.statusBar,
+    borderRadius: 12,
+  },
+  emergencyTitle: {
+    fontWeight: 'bold',
+    fontSize: Fonts.size.PageHeading,
+    marginBottom: 6,
+    color: '#fff',
+  },
+  emergencyDescription: {
+    fontSize: Fonts.size.PageHeading,
+    color: '#fff',
+  },
+  emergencyButton: {
+    marginTop: 12,
+    flexDirection: 'row',
+    backgroundColor: '#DBDBDB',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width:'40%',
+    alignSelf:'flex-end'
+  },
+  emergencyButtonText: {
+    color: Colors.statusBar,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    fontSize: Fonts.size.PageHeading,
+  },
+  trackButton: {
+    flexDirection: 'row',
+    backgroundColor: Colors.statusBar,
+    paddingVertical: 14,
+    marginTop: 20,
+    marginBottom: 60,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  trackButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: Fonts.size.PageHeading,
+    marginLeft: 8,
+  },
   // Modal Styles
-   modalOverlay: {
+  modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',

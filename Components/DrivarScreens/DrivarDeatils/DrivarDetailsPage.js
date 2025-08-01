@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  StatusBar,
+  StatusBar,Modal,TextInput 
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,7 +17,12 @@ import {
 import CustomHeader from '../../../DrivarHeader'; // Adjust this import path as needed
 import Fonts from '../../Fonts/Fonts';
 
+
 const DriverDetailsScreen = () => {
+const [modalVisible, setModalVisible] = useState(false);
+const [reason, setReason] = useState(''); 
+
+
   return (
     <LinearGradient
       colors={['#ffffff', '#C3DFFF']}
@@ -36,7 +41,7 @@ const DriverDetailsScreen = () => {
           <View style={styles.header}>
             <Text style={styles.headerText}>Driver Details</Text>
             <TouchableOpacity style={styles.editButton}>
-              <Icon name="edit" size={20} color="#6B21A8" />
+              <Icon name="edit" size={20} color="#6B21A8" onPress={() => setModalVisible(true)}/>
               <Text style={styles.editText}>Edit</Text>
             </TouchableOpacity>
           </View>
@@ -167,6 +172,57 @@ const DriverDetailsScreen = () => {
               ))}
             </View>
           </View>
+
+<Modal
+  visible={modalVisible}
+  transparent
+  animationType="fade"
+  onRequestClose={() => setModalVisible(false)}
+>
+  <View style={styles.modalOverlay}>
+    <View style={styles.modalContainer}>
+      <Text style={styles.modalTitle}>Note</Text>
+      <Text style={styles.modalMessage}>
+        Want to update your driver details?{'\n'}
+        Click 'OK' and admin team will get in{'\n'}
+        touch with you.
+      </Text>
+
+      <Text style={styles.modalLabel}>Enter Reason</Text>
+      <TextInput
+        style={styles.textInput}
+        placeholder="Enter Reason"
+        placeholderTextColor="#6B7280"
+        value={reason}
+        onChangeText={setReason}
+        multiline
+      />
+
+      <View style={styles.buttonRow}>
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => setModalVisible(false)}
+        >
+          <Text style={styles.cancelText}>Cancel</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.okButton}
+          onPress={() => {
+            // handle reason submit here
+            console.log('Submitted reason:', reason);
+            setModalVisible(false);
+          }}
+        >
+          <Text style={styles.okText}>OK</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </View>
+</Modal>
+
+
+
         </ScrollView>
       </View>
     </LinearGradient>
@@ -331,5 +387,74 @@ const styles = StyleSheet.create({
   docSubtitle: {
     fontSize: Fonts.size.PageSubheading,
     color: '#6B7280',
-  },
+  },modalOverlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0,0,0,0.5)',
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+modalContainer: {
+  width: '85%',
+  backgroundColor: '#fff',
+  borderRadius: 16,
+  padding: 20,
+  elevation: 10,
+},
+modalTitle: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  textAlign: 'center',
+  marginBottom: 10,
+},
+modalMessage: {
+  fontSize: 16,
+  color: '#374151',
+  textAlign: 'center',
+  marginBottom: 20,
+},
+modalLabel: {
+  fontSize: 16,
+  fontWeight: 'bold',
+  marginBottom: 6,
+},
+textInput: {
+  borderWidth: 1,
+  borderColor: '#e5e7eb',
+  borderRadius: 10,
+  padding: 12,
+  minHeight: 80,
+  textAlignVertical: 'top',
+  marginBottom: 20,
+  color: '#111827',
+},
+buttonRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+},
+cancelButton: {
+  flex: 1,
+  borderWidth: 1,
+  borderColor: '#ccc',
+  borderRadius: 10,
+  paddingVertical: 12,
+  alignItems: 'center',
+  marginRight: 8,
+},
+okButton: {
+  flex: 1,
+  borderRadius: 10,
+  paddingVertical: 12,
+  alignItems: 'center',
+  backgroundColor: '#6B21A8',
+  marginLeft: 8,
+},
+cancelText: {
+  color: '#000',
+  fontWeight: '600',
+},
+okText: {
+  color: '#fff',
+  fontWeight: '700',
+},
+
 });

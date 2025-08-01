@@ -205,14 +205,14 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
       fontSize: Fonts.size.PageHeading,
-    color: '#666',
+    color: '#000000',
     flex: 1,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   detailValue: {
      fontSize: Fonts.size.PageHeading,
-    color: '#333',
-    fontWeight: '600',
+    color: '#454242',
+   
     flex: 1,
   },
   viewDetailsButton: {

@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   scrollContainer: {
-    paddingBottom: 250,
+    paddingBottom: 100,
   },
   header: {
     flexDirection: 'row',

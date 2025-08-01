@@ -68,6 +68,9 @@ const AkashAmbulanceApp = () => {
           <Text style={styles.bookingSize}>{booking.size}</Text>
         </View>
       </View>
+
+    <View style={styles.divider} />
+
            <View style={styles.customerInfo}>
         <Text style={styles.customerText}>Ambulance Id No : {booking.ambulanceid}</Text>
         <Text style={styles.customerText}>Vehicle No : {booking.vehicleNo}</Text>
@@ -86,7 +89,7 @@ const AkashAmbulanceApp = () => {
           <Text style={styles.locationText}>{booking.drop}</Text>
         </View>
       </View>
-
+    <View style={styles.divider} />
       <View style={styles.customerInfo}>
         <Text style={styles.customerText}>Name : {booking.name}</Text>
         <Text style={styles.customerText}>Contact : {booking.contact}</Text>
@@ -96,6 +99,8 @@ const AkashAmbulanceApp = () => {
         <Text style={styles.customerText}>Date : {booking.date}</Text>
         <Text style={styles.customerText}>Time : {booking.time}</Text>
       </View>
+
+          <View style={styles.divider} />
 
       <View style={styles.amountSection}>
         <View style={styles.amountRow}>
@@ -142,6 +147,12 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
+    divider: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#aaa',
+    borderStyle: 'dotted',
+    marginVertical: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: '#e9d5ff',
@@ -180,7 +191,7 @@ marginTop:10,
   bookingHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: hp('2%'),
+    marginBottom: hp('1%'),
   },
   ambulanceContainer: {
     width: wp('15%'),

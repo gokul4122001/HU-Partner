@@ -7,12 +7,11 @@ import {
   SafeAreaView,
   StatusBar,
   ScrollView,
-  Modal,
-  FlatList,
   Platform,
 } from 'react-native';
 import Icons from 'react-native-vector-icons/Ionicons';
-import {
+
+import {  
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
@@ -20,7 +19,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Colors from '../../Colors/Colors';
 import Fonts from '../../Fonts/Fonts';
-import CustomHeader from '../../../DrivarHeader';
+import CustomHeader from '../../../Header';
 import CurrentBookingTab from './DrivarCurrentBookingTab';
 import ScheduleBookingTab from './DrivarScheduleBookingTab';
 import CompleteBookingTab from './DrivarCompleteBookingTab';
@@ -37,7 +36,7 @@ const BookingListScreen = ({ navigation }) => {
     { id: 'current', label: 'Current Booking', key: 'current' },
     { id: 'schedule', label: 'Schedule Booking', key: 'schedule' },
     { id: 'complete', label: 'Completed Booking', key: 'complete' },
-    { id: 'cancellation', label: 'Cancellation Booking', key: 'cancellation' },
+    { id: 'cancellation', label: 'Cancelled Booking', key: 'cancellation' },
   ];
 
   const dateFilterOptions = [
@@ -72,57 +71,41 @@ const BookingListScreen = ({ navigation }) => {
     </TouchableOpacity>
   );
 
-  const renderDateDropdownModal = () => (
-    <Modal
-      visible={showDateDropdown}
-      transparent={true}
-      animationType="fade"
-      onRequestClose={() => setShowDateDropdown(false)}
-    >
-      <TouchableOpacity
-        style={styles.modalOverlay}
-        activeOpacity={1}
-        onPress={() => setShowDateDropdown(false)}
-      >
-        <View style={styles.dropdownModal}>
-          <FlatList
-            data={dateFilterOptions}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={[
-                  styles.dropdownItem,
-                  selectedDateFilter === item.label && styles.selectedDropdownItem,
-                ]}
-                onPress={() => handleDateFilterSelect(item)}
-              >
-                <View style={styles.dropdownItemContent}>
-                  {item.icon && (
-                    <Icons name={item.icon} size={20} color="#666" style={styles.dropdownIcon} />
-                  )}
-                  <Text
-                    style={[
-                      styles.dropdownItemText,
-                      selectedDateFilter === item.label && styles.selectedDropdownItemText,
-                    ]}
-                  >
-                    {item.label}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      </TouchableOpacity>
-    </Modal>
-  );
+  const renderDateDropdownMenu = () => {
+    if (!showDateDropdown) return null;
+
+    return (
+      <View style={styles.dropdownMenuContainer}>
+        {dateFilterOptions.map((item, index) => (
+          <TouchableOpacity
+            key={item.id}
+            style={[
+              styles.dropdownMenuItem,
+              selectedDateFilter === item.label && styles.selectedDropdownItem,
+              index !== 0 && styles.dropdownSeparator,
+            ]}
+            onPress={() => handleDateFilterSelect(item)}
+          >
+            <Text
+              style={[
+                styles.dropdownMenuText,
+                selectedDateFilter === item.label && styles.selectedDropdownItemText,
+              ]}
+            >
+              {item.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'current':
-        return <CurrentBookingTab dateFilter={selectedDateFilter} />;
+        return <CurrentBookingTab  />;
       case 'schedule':
-        return <ScheduleBookingTab dateFilter={selectedDateFilter} />;
+        return <ScheduleBookingTab />;
       case 'complete':
         return <CompleteBookingTab dateFilter={selectedDateFilter} />;
       case 'cancellation':
@@ -141,13 +124,12 @@ const BookingListScreen = ({ navigation }) => {
         end={{ x: 0, y: 0 }}
         style={styles.headerBackground}
       >
-       
         <CustomHeader
           username="Janmani Kumar"
           onNotificationPress={() => console.log('Notification Pressed')}
           onWalletPress={() => console.log('Wallet Pressed')}
         />
-    
+
         <View style={styles.sectionHeader}>
           <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -155,15 +137,19 @@ const BookingListScreen = ({ navigation }) => {
             </TouchableOpacity>
             <Text style={styles.sectionTitle}>Booking List</Text>
           </View>
-          <View style={styles.inlineDateDropdownContainer}>
-            <TouchableOpacity
-              style={styles.dateDropdownButton}
-              onPress={() => setShowDateDropdown(true)}
-            >
-              <Text style={styles.dateDropdownText}>{selectedDateFilter}</Text>
-              <Icons name="chevron-down" size={20} color="#666" />
-            </TouchableOpacity>
-          </View>
+          {(activeTab === 'complete' || activeTab === 'cancellation') && (
+  <View style={styles.inlineDateDropdownContainer}>
+    <TouchableOpacity
+      style={styles.dateDropdownButton}
+      onPress={() => setShowDateDropdown(!showDateDropdown)}
+    >
+      <Text style={styles.dateDropdownText}>{selectedDateFilter}</Text>
+      <Icons name="chevron-down" size={20} color="#666" />
+    </TouchableOpacity>
+  </View>
+)}
+
+
         </View>
       </LinearGradient>
 
@@ -180,7 +166,7 @@ const BookingListScreen = ({ navigation }) => {
         <View style={styles.tabContent}>{renderTabContent()}</View>
       </View>
 
-      {renderDateDropdownModal()}
+      {renderDateDropdownMenu()}
 
       {showDatePicker && (
         <DateTimePicker
@@ -205,7 +191,7 @@ const styles = StyleSheet.create({
   headerBackground: {
     paddingBottom: hp('1.2%'),
     paddingHorizontal: wp('4%'),
-    paddingTop:'2%'
+    paddingTop: '2%',
   },
   content: { flex: 1, backgroundColor: '#F5F5F5' },
   tabContainer: {
@@ -218,10 +204,10 @@ const styles = StyleSheet.create({
   tabButton: {
     paddingHorizontal: wp('3%'),
     paddingVertical: hp('1.5%'),
-    marginRight: wp('2%'),
+    marginRight: wp('5%'),
     borderRadius: 10,
     backgroundColor: 'white',
-    minWidth: wp('35%'),
+    minWidth: wp('42%'),
     alignItems: 'center',
     elevation: 5,
     minHeight: wp('10%'),
@@ -229,7 +215,7 @@ const styles = StyleSheet.create({
   activeTabButton: { backgroundColor: Colors.statusBar || '#007AFF' },
   tabButtonText: { fontSize: Fonts.size.PageHeading, color: '#666', fontWeight: '600' },
   activeTabButtonText: { color: 'white' },
-  tabContent: { flex: 1, backgroundColor: '#fff'},
+  tabContent: { flex: 1, backgroundColor: '#fff' },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -246,12 +232,12 @@ const styles = StyleSheet.create({
   dateDropdownButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F8F9FA',
+    backgroundColor: '#ffffff',
     paddingHorizontal: wp('4%'),
     paddingVertical: hp('1%'),
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E8E8E8',
     minWidth: wp('25%'),
     justifyContent: 'space-between',
   },
@@ -261,33 +247,37 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginRight: wp('2%'),
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dropdownModal: {
-    backgroundColor: 'white',
+  dropdownMenuContainer: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? hp('20%') : hp('18%'),
+    right: wp('4%'),
+    backgroundColor: '#fff',
     borderRadius: 12,
-    margin: wp('5%'),
-    maxHeight: hp('40%'),
-    minWidth: wp('70%'),
-    elevation: 5,
+    elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    paddingVertical: hp('1%'),
+    zIndex: 999,
+    minWidth: wp('45%'),
   },
-  dropdownItem: {
-    paddingHorizontal: wp('4%'),
+  dropdownMenuItem: {
     paddingVertical: hp('1.5%'),
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    paddingHorizontal: wp('4%'),
   },
-  selectedDropdownItem: { backgroundColor: '#F0F8FF' },
-  dropdownItemContent: { flexDirection: 'row', alignItems: 'center' },
-  dropdownIcon: { marginRight: wp('3%') },
-  dropdownItemText: {
+  dropdownSeparator: {
+    borderTopWidth: 1,
+    borderTopColor: '#E5E5E5',
+    borderStyle: 'dashed',
+  },
+  dropdownMenuText: {
     fontSize: Fonts.size.PageHeading,
     color: '#333',
     fontWeight: '500',
+  },
+  selectedDropdownItem: {
+    backgroundColor: '#F0F8FF',
   },
   selectedDropdownItemText: {
     color: Colors.statusBar || '#007AFF',
