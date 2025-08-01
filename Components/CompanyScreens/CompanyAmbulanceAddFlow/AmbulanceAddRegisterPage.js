@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
       fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
   left:10,
-  alignItems:'center'
+top:10
  
   },
   placeholder: {

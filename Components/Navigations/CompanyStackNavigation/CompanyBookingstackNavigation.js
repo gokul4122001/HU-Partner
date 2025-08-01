@@ -16,7 +16,6 @@ const BoookingStackScreen = () => {
 
     <BookingStack.Navigator>
    
-
       <BookingStack.Screen
         name="BookingHomeScreen"
         component={BookingHomeScreen}

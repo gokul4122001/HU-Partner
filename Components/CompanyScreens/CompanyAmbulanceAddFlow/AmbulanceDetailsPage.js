@@ -43,10 +43,7 @@ const AmbulanceDetailsScreen = ({ navigation }) => {
             <Icon name="arrow-back" size={24} color="#000" />
           </TouchableOpacity>
           <Text style={styles.titleText}>Ambulance Details</Text>
-          <TouchableOpacity style={styles.editIcon1} onPress={() => console.log('Edit Pressed')}>
-            <Icon name="edit" size={20} color="#7B3F98" />
-            <Text style={styles.editText}>Edit</Text>
-          </TouchableOpacity>
+        
         </View>
 
         <View style={styles.card}>
@@ -60,6 +57,8 @@ const AmbulanceDetailsScreen = ({ navigation }) => {
               <Text style={styles.cardSubtitle}>Small ( Omni, etc )</Text>
             </View>
           </View>
+
+            <View style={styles.divider} />
 
           <View style={styles.detailItem}>
             <Text style={styles.label}>Ambulance Name :</Text>
@@ -145,8 +144,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 16,
   },
+    divider: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#aaa',
+    borderStyle: 'dotted',
+    marginVertical: 10,
+  },
   titleText: {
-    fontSize: 18,
+  fontSize: Fonts.size.PageHeading,
     fontWeight: 'bold',
     flex: 1,
     textAlign: 'center',
@@ -170,13 +175,15 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginRight: 10,
   },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginTop: 16,
-    elevation: 2,
-  },
+ card: {
+  backgroundColor: '#fff',
+  borderRadius: 12,
+  padding: 16,
+  marginTop: 16,
+  elevation: 2,
+  height: 350,    
+  width: '100%',   
+},
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -196,15 +203,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   label: {
-    fontSize: 13,
-    color: '#666',
+   fontSize: Fonts.size.PageHeading,
+    color: '#000000',
     fontWeight: '600',
     marginRight: 4,
   },
   value: {
-    fontSize: 14,
-    color: '#333',
-    fontWeight: '500',
+     fontSize: Fonts.size.PageHeading,
+    color: '#454242',
     flexShrink: 1,
   },
   docRow: {

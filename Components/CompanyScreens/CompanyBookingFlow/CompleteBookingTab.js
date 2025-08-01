@@ -1,267 +1,304 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   Image,
+  Alert,
+  ScrollView,
+  TextInput,
+  Modal,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import Colors from '../../Colors/Colors';
+import { useNavigation } from '@react-navigation/native';
 import Fonts from '../../Fonts/Fonts';
-import { useNavigation } from '@react-navigation/native'; // ✅ Import navigation hook
 
-const CurrentBookingTab = () => {
-  const navigation = useNavigation(); // ✅ Hook to access navigation
+const CurrentBookingCardScreen = () => {
+  const navigation = useNavigation();
+  const [cardVisible, setCardVisible] = useState(true);
+  const [accepted, setAccepted] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [otpModalVisible, setOtpModalVisible] = useState(false);
+  const [otp, setOtp] = useState(['', '', '', '']);
+  const otpRefs = useRef([]);
 
-  const currentBookings = [
-    {
-      id: '1',
-      type: 'Patient Transfer',
-      size: 'Small (Omni, etc)',
-      pickup: 'No 3/1, I Street west mambalam chennai -33',
-      drop: 'No 3/1, I Street vyasarpadi chennai -33',
-      name: 'Jeswanth Kumar',
-      contact: '934566547',
-      amount: '₹ 1,800',
-      status: 'active',
-    },
-    {
-      id: '2',
-      type: 'Patient Transfer',
-      size: 'Small (Omni, etc)',
-      pickup: 'No 3/1, I Street west mambalam chennai -33',
-      drop: 'No 3/1, I Street vyasarpadi chennai -33',
-      name: 'Jeswanth Kumar',
-      contact: '934566547',
-      amount: '₹ 1,800',
-      status: 'active',
-    },
-  ];
+  const handleReject = () => {
+    setCardVisible(false);
+  };
 
-  const renderBookingCard = (booking) => (
-    <View key={booking.id} style={styles.bookingCard}>
-      <View style={styles.bookingHeader}>
-        <View style={styles.ambulanceContainer}>
-          <Image
-            source={require('../../Assets/ambualnce.png')}
-            style={styles.ambulanceImage}
-          />
-        </View>
-        <View style={styles.bookingInfo}>
-          <View style={styles.bookingTopRow}>
-            <Text style={styles.bookingType}>{booking.type}</Text>
-          </View>
-          <Text style={styles.bookingSize}>{booking.size}</Text>
-        </View>
-      </View>
+  const handleAccept = () => {
+    setAccepted(true);
+  };
 
-      <View style={styles.locationContainer}>
-        <View style={styles.locationRow}>
-          <View style={styles.locationDot} />
-          <Text style={styles.locationLabel}>Pickup :</Text>
-          <Text style={styles.locationText}>{booking.pickup}</Text>
-        </View>
-        <View style={styles.locationRow}>
-          <View style={[styles.locationDot, { backgroundColor: '#ff4444' }]} />
-          <Text style={styles.locationLabel}>Drop :</Text>
-          <Text style={styles.locationText}>{booking.drop}</Text>
-        </View>
-      </View>
+  function truncateText(text, maxLength) {
+  if (text.length > maxLength) {
+    return text.slice(0, maxLength) + '...';
+  }
+  return text;
+}
 
-      <View style={styles.customerInfo}>
-        <Text style={styles.customerText}>Name : {booking.name}</Text>
-        <Text style={styles.customerText}>Contact : {booking.contact}</Text>
-      </View>
 
-      <View style={styles.amountSection}>
-        <View style={styles.amountRow}>
-          <Text style={styles.amountLabel}>Total Amount</Text>
-          <Text style={styles.amountText}>{booking.amount}</Text>
-        </View>
-      </View>
+  const handleOtpChange = (index, value) => {
+    const updatedOtp = [...otp];
+    updatedOtp[index] = value;
+    setOtp(updatedOtp);
+    if (value && index < 3) {
+      otpRefs.current[index + 1].focus();
+    }
+  };
 
-      <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.viewDetailsButton}>
-          <Text style={styles.viewDetailsText}>Completed</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.trackButton}
-          onPress={() => navigation.navigate('Completebookingdetails')}
-        >
-          <Text style={styles.trackButtonText}>View Details</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  const submitOtp = () => {
+    if (otp.every(val => val !== '')) {
+      setOtpModalVisible(false);
+      setOtpVerified(true);
+    } else {
+      Alert.alert('Error', 'Please enter all OTP digits');
+    }
+  };
+
+  if (!cardVisible) return null;
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={{ paddingBottom: hp('10%'), flexGrow: 1 }}
-      showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
-    >
-      {currentBookings.map(renderBookingCard)}
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.card}>
+        {/* Header */}
+        <View style={styles.headerRow}>
+          <Image
+            source={require('../../Assets/ambualnce.png')}
+            style={styles.image}
+          />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.title}>Patient Transfer</Text>
+            <Text style={styles.subtitle}>Small ( Omni, etc )</Text>
+          </View>
+         
+        </View>
+        <View style={styles.divider} />
+
+        {/* Locations */}
+   <View style={styles.locationContainer}>
+  <View style={[styles.row, { marginBottom: 10 }]}> {/* spacing here */}
+    <MaterialCommunityIcons
+      name="map-marker"
+      size={20}
+      color="#C91C1C"
+      style={{
+        borderWidth: 1,
+        padding: 3,
+        borderRadius: 20,
+        borderColor: '#FFEAEA',
+        backgroundColor: '#FFEAEA',
+      }}
+    />
+    <Text style={styles.locationText}>
+      <Text style={styles.boldLabel}>Pickup :</Text> No 3/1, 1 Street west mambalam chennai -33
+    </Text>
+  </View>
+
+  <View style={styles.row}>
+    <MaterialCommunityIcons
+      name="map-marker"
+      size={20}
+      color="#C91C1C"
+      style={{
+        borderWidth: 1,
+        padding: 3,
+        borderRadius: 20,
+        borderColor: '#FFEAEA',
+        backgroundColor: '#FFEAEA',
+      }}
+    />
+    <Text style={styles.locationText}>
+      <Text style={styles.boldLabel}>Drop :</Text> No 3/1, 1 Street vyasrapadi chennai -33
+    </Text>
+  </View>
+</View>
+
+
+        <View style={styles.divider} />
+
+        {/* Info */}
+     <View style={styles.infoRow}>
+  <View style={styles.column}>
+   <Text style={styles.infoText}>
+  <Text style={styles.boldLabel}>Name :</Text> {truncateText('Jeswanth', 7)}
+</Text>
+
+    <View style={{ marginVertical: 6 }} /> 
+    <Text style={styles.infoText}>
+      <Text style={styles.boldLabel}>Date :</Text> 09/04/2025
+    </Text>
+  </View>
+  <View style={styles.column}>
+    <Text style={styles.infoText}>
+      <Text style={styles.boldLabel}>Contact :</Text> 934566547
+    </Text>
+    <View style={{ marginVertical: 6 }} /> 
+    <Text style={styles.infoText}>
+      <Text style={styles.boldLabel}>Time :</Text> 05 : 10 PM
+    </Text>
+  </View>
+</View>
+
+
+        <View style={styles.divider} />
+
+        {/* Amount */}
+        <View style={styles.amountRow}>
+          <Text style={styles.totalLabel}>Total Amount</Text>
+          <Text style={styles.totalAmount}>₹ 1,800</Text>
+        </View>
+
+        {/* Buttons */}
+        <View style={styles.buttonRow}>
+  <TouchableOpacity
+    style={[styles.rejectButton, { marginRight: 8 }]}
+    onPress={() => Alert.alert('Completed', 'Booking marked as completed')}
+  >
+    <Text style={styles.rejectText}>Completed</Text>
+  </TouchableOpacity>
+  <TouchableOpacity
+    style={styles.acceptButton}
+    onPress={() => navigation.navigate('Completebookingdetails')}
+  >
+    <Text style={styles.acceptText}>View Details</Text>
+  </TouchableOpacity>
+</View>
+
+      </View>
+
+      {/* OTP Modal */}
+      <Modal visible={otpModalVisible} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 10 }}>Enter OTP</Text>
+            <View style={styles.otpRow}>
+              {[0, 1, 2, 3].map((_, index) => (
+                <TextInput
+                  key={index}
+                  ref={ref => otpRefs.current[index] = ref}
+                  value={otp[index]}
+                  onChangeText={(value) => handleOtpChange(index, value)}
+                  keyboardType="number-pad"
+                  maxLength={1}
+                  style={styles.otpBox}
+                />
+              ))}
+            </View>
+            <TouchableOpacity style={styles.submitBtn} onPress={submitOtp}>
+              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Submit OTP</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: wp('4%'),
-  },
-  bookingCard: {
+  container: { padding: 16 },
+  card: {
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: wp('4%'),
-    marginBottom: hp('2%'),
-    marginTop: 10,
+    padding: 16,
+    marginBottom: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 7,
-    borderLeftWidth: 4,
-    borderLeftColor: '#096B09',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  bookingHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: hp('2%'),
+  headerRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
+  image: { width: 50, height: 50, resizeMode: 'contain', marginRight: 12 },
+  title: {    fontSize:  Fonts.size.PageHeading, fontWeight: 'bold' },
+  subtitle: { color: '#7f8c8d', marginTop: 4,   fontSize:  Fonts.size.PageSubheading, },
+
+  locationContainer: { marginVertical: 10 },
+  row: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 4 },
+  locationText: { flex: 1,    fontSize:  Fonts.size.PageHeading, marginLeft: 8, color: '#333',top:3 },
+  boldLabel: { fontWeight: 'bold',   fontSize:  Fonts.size.PageHeading,},
+  divider: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#aaa',
+    borderStyle: 'dotted',
+    marginVertical: 10,
   },
-  ambulanceContainer: {
-    width: wp('15%'),
-    height: wp('15%'),
-    borderRadius: wp('7.5%'),
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: wp('3%'),
-  },
-  ambulanceImage: {
-    width: 100,
-    height: 200,
-    resizeMode: 'contain',
-  },
-  bookingInfo: {
-    flex: 1,
-  },
-  bookingTopRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-    justifyContent: 'space-between',
-    left:10
-  },
-  bookingType: {
-    fontSize: Fonts.size.PageHeading,
-    fontWeight: 'bold',
-    color: '#333',
-    marginRight: wp('3%'),
-  },
-  bookingSize: {
-    fontSize: Fonts.size.PageSubheading,
-    color: Colors.statusBar,
-     left:10
-  },
-  locationContainer: {
-    marginBottom: hp('2%'),
-  },
-  locationRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: hp('1%'),
-    
-  },
-  locationDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#4CAF50',
-    marginTop: 6,
-    marginRight: wp('2%'),
-  },
-  locationLabel: {
-     fontSize: Fonts.size.PageSubheading,
-    color: '#666',
-    fontWeight: '600',
-    marginRight: wp('2%'),
-    minWidth: wp('15%'),
-  },
-  locationText: {
-    fontSize: Fonts.size.PageSubheading,
-    color: '#333',
-    flex: 1,
-  },
-  customerInfo: {
+  infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: hp('2%'),
+    marginBottom: 6,
   },
-  customerText: {
-      fontSize: Fonts.size.PageSubheading,
-    color: '#333',
-    fontWeight: '600',
-  },
-  amountSection: {
-    marginBottom: hp('2%'),
-  },
+  infoText: { fontSize: 14, color: '#444', },
   amountRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 12,
     alignItems: 'center',
   },
-  amountLabel: {
-    fontSize: Fonts.size.PageHeading,
-    color: '#666',
-    fontWeight: '600',
-  },
-  amountText: {
-    fontSize: Fonts.size.PageHeading,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  actionButtons: {
+  totalLabel: { fontSize: 16, fontWeight: 'bold' },
+  totalAmount: { fontSize: 20, fontWeight: 'bold', color: '#000' },
+  buttonRow: {
     flexDirection: 'row',
+    marginTop: 16,
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
-  viewDetailsButton: {
+  rejectButton: {
     flex: 1,
-    paddingHorizontal: wp('4%'),
-    paddingVertical: hp('1.5%'),
-    borderRadius: 6,
-    marginRight: wp('2%'),
+    borderWidth: 1,
+    borderColor: '#E1FFE8',
+    padding: 12,
+    borderRadius: 8,
     alignItems: 'center',
+    marginRight: 8,
     backgroundColor:'#E1FFE8'
   },
-  viewDetailsText: {
-      fontSize: Fonts.size.PageSubheading,
-    color:'#1C7C09',
-    fontWeight: '600',
-  },
-  trackButton: {
+  rejectText: { color: '#1C7C09', fontWeight: 'bold', fontSize: 16 },
+  acceptButton: {
     flex: 1,
-    flexDirection: 'row',
+    backgroundColor: '#7518AA',
+    padding: 12,
+    borderRadius: 8,
     alignItems: 'center',
+  },
+  acceptText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
+
+  // OTP Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
-    paddingHorizontal: wp('4%'),
-    paddingVertical: hp('1.5%'),
+    alignItems: 'center',
+  },
+  modalContainer: {
+    backgroundColor: '#fff',
+    width: '80%',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  otpRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 20,
+  },
+  otpBox: {
+    borderWidth: 1,
+    borderColor: '#aaa',
     borderRadius: 6,
-    backgroundColor: Colors.statusBar,
+    width: 50,
+    height: 50,
+    textAlign: 'center',
+    fontSize: 18,
+    marginHorizontal: 5,
   },
-  trackButtonText: {
-      fontSize: Fonts.size.PageSubheading,
-    color: 'white',
-    fontWeight: '600',
-    marginLeft: wp('1%'),
+  submitBtn: {
+    backgroundColor: '#5A2FBA',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
   },
+  
 });
 
-export default CurrentBookingTab;
+export default CurrentBookingCardScreen;
