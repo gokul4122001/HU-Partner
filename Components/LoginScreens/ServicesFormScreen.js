@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,10 +10,10 @@ import {
   StatusBar,
   Modal,
   FlatList,
-  Alert,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Animated,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -23,6 +23,39 @@ import {
 } from 'react-native-responsive-screen';
 
 const { width, height } = Dimensions.get('window');
+
+const Toast = ({ visible, message, backgroundColor }) => {
+  const slideAnim = useRef(new Animated.Value(-100)).current;
+
+  useEffect(() => {
+    if (visible) {
+      Animated.sequence([
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.delay(2500),
+        Animated.timing(slideAnim, {
+          toValue: -100,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [visible]);
+
+  return (
+    <Animated.View
+      style={[
+        toastStyles.toastContainer,
+        { transform: [{ translateY: slideAnim }], backgroundColor },
+      ]}
+    >
+      <Text style={toastStyles.toastText}>{message}</Text>
+    </Animated.View>
+  );
+};
 
 const ServiceSelectionForm = ({ navigation }) => {
   const [formData, setFormData] = useState({
@@ -37,73 +70,49 @@ const ServiceSelectionForm = ({ navigation }) => {
   const [showServiceModal, setShowServiceModal] = useState(false);
   const [showStateModal, setShowStateModal] = useState(false);
   const [showCityModal, setShowCityModal] = useState(false);
-  const [showNoteModal, setShowNoteModal] = useState(false); // NOTE modal
+  const [showNoteModal, setShowNoteModal] = useState(false);
 
-  const services = [
-    'Ambulance',
-    'Fire Department',
-    'Police',
-    'Medical Emergency',
-    'Hospital',
-    'Pharmacy',
-  ];
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastColor, setToastColor] = useState('#4BB543'); // success green
 
-  const states = [
-    'Tamil Nadu',
-    'Kerala',
-    'Karnataka',
-    'Andhra Pradesh',
-    'Telangana',
-    'Maharashtra',
-    'Gujarat',
-    'Rajasthan',
-  ];
-
-  const cities = [
-    'Chennai',
-    'Mumbai',
-    'Delhi',
-    'Bangalore',
-    'Hyderabad',
-    'Pune',
-    'Kolkata',
-    'Ahmedabad',
-  ];
+  const services = ['Ambulance', 'Fire Department', 'Police', 'Medical Emergency', 'Hospital', 'Pharmacy'];
+  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Gujarat', 'Rajasthan'];
+  const cities = ['Chennai', 'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Pune', 'Kolkata', 'Ahmedabad'];
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value,
-    }));
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = () => {
     if (!formData.name || !formData.contactNumber || !formData.emailAddress) {
-      Alert.alert('Error', 'Please fill in all required fields');
+      showToast('Please fill in all required fields', '#FF3B30');
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.emailAddress)) {
-      Alert.alert('Error', 'Please enter a valid email address');
+      showToast('Please enter a valid email address', '#FF3B30');
       return;
     }
 
-    // Show Note Modal
-    setShowNoteModal(true);
+    showToast('Form submitted successfully!', '#4BB543');
+
+    setTimeout(() => {
+      setShowNoteModal(true);
+    }, 1000);
   };
 
-  const renderDropdownModal = (
-    visible,
-    setVisible,
-    data,
-    selectedValue,
-    onSelect,
-    placeholder
-  ) => (
+  const showToast = (msg, color) => {
+    setToastMessage(msg);
+    setToastColor(color);
+    setToastVisible(true);
+  };
+
+  const renderDropdownModal = (visible, setVisible, data, selectedValue, onSelect, placeholder) => (
     <Modal
       visible={visible}
-      transparent={true}
+      transparent
       animationType="slide"
       onRequestClose={() => setVisible(false)}
     >
@@ -111,10 +120,7 @@ const ServiceSelectionForm = ({ navigation }) => {
         <View style={styles.modalContent}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>{placeholder}</Text>
-            <TouchableOpacity
-              onPress={() => setVisible(false)}
-              style={styles.closeButton}
-            >
+            <TouchableOpacity onPress={() => setVisible(false)} style={styles.closeButton}>
               <Icon name="close" size={24} color="#666" />
             </TouchableOpacity>
           </View>
@@ -123,21 +129,13 @@ const ServiceSelectionForm = ({ navigation }) => {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
-                style={[
-                  styles.modalItem,
-                  selectedValue === item && styles.selectedModalItem,
-                ]}
+                style={[styles.modalItem, selectedValue === item && styles.selectedModalItem]}
                 onPress={() => {
                   onSelect(item);
                   setVisible(false);
                 }}
               >
-                <Text
-                  style={[
-                    styles.modalItemText,
-                    selectedValue === item && styles.selectedModalItemText,
-                  ]}
-                >
+                <Text style={[styles.modalItemText, selectedValue === item && styles.selectedModalItemText]}>
                   {item}
                 </Text>
               </TouchableOpacity>
@@ -151,46 +149,27 @@ const ServiceSelectionForm = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#8B5CF6" barStyle="light-content" />
+      <Toast visible={toastVisible} message={toastMessage} backgroundColor={toastColor} />
       <LinearGradient
         colors={['#ffffff', '#C3DFFF']}
         start={{ x: 0, y: 0.3 }}
         end={{ x: 0, y: 0 }}
         style={styles.topBackground}
       >
-        {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Icon name="arrow-back" size={24} color="#8B5CF6" />
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Icon name="arrow-back" size={24} color="#000000" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Select The Service</Text>
+          <Text style={styles.headerTitle}>Provide the necessary details to proceed</Text>
         </View>
 
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        >
-          <ScrollView
-            contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-          >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 100 }} keyboardShouldPersistTaps="handled">
             <View style={styles.formContainer}>
-              {/* Input Fields */}
               {[
                 { label: 'Name', key: 'name', keyboardType: 'default' },
-                {
-                  label: 'Contact Number',
-                  key: 'contactNumber',
-                  keyboardType: 'phone-pad',
-                },
-                {
-                  label: 'Email Address',
-                  key: 'emailAddress',
-                  keyboardType: 'email-address',
-                },
+                { label: 'Contact Number', key: 'contactNumber', keyboardType: 'phone-pad' },
+                { label: 'Email Address', key: 'emailAddress', keyboardType: 'email-address' },
               ].map((item, index) => (
                 <View style={styles.inputGroup} key={index}>
                   <Text style={styles.label}>{item.label}</Text>
@@ -200,43 +179,23 @@ const ServiceSelectionForm = ({ navigation }) => {
                     placeholderTextColor="#A0A0A0"
                     value={formData[item.key]}
                     keyboardType={item.keyboardType}
-                    onChangeText={text =>
-                      handleInputChange(item.key, text)
-                    }
+                    onChangeText={text => handleInputChange(item.key, text)}
                   />
                 </View>
               ))}
 
-              {/* Dropdowns */}
               {[
-                {
-                  label: 'Service',
-                  value: formData.service,
-                  onPress: () => setShowServiceModal(true),
-                },
-                {
-                  label: 'State',
-                  value: formData.state || 'Select state',
-                  onPress: () => setShowStateModal(true),
-                },
-                {
-                  label: 'City',
-                  value: formData.city || 'Select city',
-                  onPress: () => setShowCityModal(true),
-                },
+                { label: 'Service', value: formData.service, onPress: () => setShowServiceModal(true) },
+                { label: 'State', value: formData.state || 'Select state', onPress: () => setShowStateModal(true) },
+                { label: 'City', value: formData.city || 'Select city', onPress: () => setShowCityModal(true) },
               ].map((item, index) => (
                 <View style={styles.inputGroup} key={index}>
                   <Text style={styles.label}>{item.label}</Text>
-                  <TouchableOpacity
-                    style={styles.dropdown}
-                    onPress={item.onPress}
-                  >
+                  <TouchableOpacity style={styles.dropdown} onPress={item.onPress}>
                     <Text
                       style={[
                         styles.dropdownText,
-                        (item.value === 'Select state' ||
-                          item.value === 'Select city') &&
-                          styles.placeholderText,
+                        (item.value === 'Select state' || item.value === 'Select city') && styles.placeholderText,
                       ]}
                     >
                       {item.value}
@@ -246,72 +205,35 @@ const ServiceSelectionForm = ({ navigation }) => {
                 </View>
               ))}
 
-              {/* Submit Button */}
-              <TouchableOpacity
-                style={styles.submitButton}
-                onPress={handleSubmit}
-              >
+              <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
                 <Text style={styles.submitButtonText}>Submit</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
 
-        {/* Dropdown Modals */}
-        {renderDropdownModal(
-          showServiceModal,
-          setShowServiceModal,
-          services,
-          formData.service,
-          value => handleInputChange('service', value),
-          'Select Service'
-        )}
-        {renderDropdownModal(
-          showStateModal,
-          setShowStateModal,
-          states,
-          formData.state,
-          value => handleInputChange('state', value),
-          'Select State'
-        )}
-        {renderDropdownModal(
-          showCityModal,
-          setShowCityModal,
-          cities,
-          formData.city,
-          value => handleInputChange('city', value),
-          'Select City'
-        )}
+        {renderDropdownModal(showServiceModal, setShowServiceModal, services, formData.service, value => handleInputChange('service', value), 'Select Service')}
+        {renderDropdownModal(showStateModal, setShowStateModal, states, formData.state, value => handleInputChange('state', value), 'Select State')}
+        {renderDropdownModal(showCityModal, setShowCityModal, cities, formData.city, value => handleInputChange('city', value), 'Select City')}
 
-        {/* Note Modal */}
-        <Modal
-          visible={showNoteModal}
-          transparent
-          animationType="fade"
-          onRequestClose={() => setShowNoteModal(false)}
-        >
+        <Modal visible={showNoteModal} transparent animationType="fade" onRequestClose={() => setShowNoteModal(false)}>
           <View style={styles.overlay}>
             <View style={styles.noteModal}>
               <Text style={styles.noteTitle}>Note</Text>
               <Text style={styles.noteMessage}>
-                Once your request form is approved by the admin, you will be
-                granted access to use as Vendor
+                Once your request form is approved by the admin, you will be granted access to use as Vendor
               </Text>
-            <TouchableOpacity
-  style={styles.cancelButton}
-  onPress={() => {
-    setShowNoteModal(false);
-    navigation.navigate('Login6'); 
-  }}
->
-  <LinearGradient
-    colors={['#8B5CF6', '#7C3AED']}
-    style={styles.cancelButtonGradient}
-  >
-    <Text style={styles.cancelButtonText}>Cancel</Text>
-  </LinearGradient>
-</TouchableOpacity>
-
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => {
+                  setShowNoteModal(false);
+                  navigation.navigate('LoginAccoundScreen');
+                }}
+              >
+                <LinearGradient colors={['#8B5CF6', '#7C3AED']} style={styles.cancelButtonGradient}>
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </LinearGradient>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -319,6 +241,7 @@ const ServiceSelectionForm = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -389,7 +312,7 @@ const styles = StyleSheet.create({
     color: '#A0A0A0',
   },
   submitButton: {
-    backgroundColor: '#8B5CF6',
+    backgroundColor: '#7518AA',
     borderRadius: 8,
     paddingVertical: height * 0.02,
     alignItems: 'center',
@@ -492,6 +415,25 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+});
+
+const toastStyles = StyleSheet.create({
+  toastContainer: {
+    position: 'absolute',
+    top: 50,
+    alignSelf: 'center',
+    zIndex: 1000,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+    elevation: 5,
+    maxWidth: width * 0.9,
+  },
+  toastText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 

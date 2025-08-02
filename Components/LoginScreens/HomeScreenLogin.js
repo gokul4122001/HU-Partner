@@ -12,10 +12,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import Fonts from '../Fonts/Fonts';
 import Colors from '../Colors/Colors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
-import { setAuthDetails } from '../redux/slice/authSlice';
-
 
 const { width } = Dimensions.get('window');
 const radius = width * 0.35;
@@ -35,46 +31,27 @@ const icons = [
 export default function App() {
   const rotation = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
-  const checkLoginStatus = async () => {
-    try {
-      const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-      const token = await AsyncStorage.getItem('token');
 
-      if (isLoggedIn === 'true' && token ) {
-        dispatch(
-          setAuthDetails({
-            access_token: token,
-          }),
-        );
-        navigation.navigate('MainApp')
-      } else {
-        navigation.navigate('LoginAccoundScreen');
-      }
-    } catch (error) {
-      console.error('Error checking login status:', error);
-    }
-  };
+  
 
-  useEffect(() => {
-   
-    Animated.loop(
-      Animated.timing(rotation, {
-        toValue: 1,
-        duration: 10000,
-        useNativeDriver: true,
-        easing: Easing.linear,
-      }),
-    ).start();
+useEffect(() => {
+  Animated.loop(
+    Animated.timing(rotation, {
+      toValue: 1,
+      duration: 10000,
+      useNativeDriver: true,
+      easing: Easing.linear,
+    }),
+  ).start();
 
-    // Navigate after 5 seconds
-    const timer = setTimeout(() => {
-      checkLoginStatus();
-    }, 5000);
+  const timer = setTimeout(() => {
+    navigation.replace('Services'); 
+  }, 2000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  return () => clearTimeout(timer);
+}, []);
+
 
   const spin = rotation.interpolate({
     inputRange: [0, 1],
