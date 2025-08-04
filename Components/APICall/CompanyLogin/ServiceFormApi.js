@@ -1,6 +1,6 @@
 // src/APICall/LoginApi.js
 import axios from 'axios';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const BASE_URL = 'https://www.myhealth.amrithaa.net/backend/api';
 
 export const Company_register = async (
