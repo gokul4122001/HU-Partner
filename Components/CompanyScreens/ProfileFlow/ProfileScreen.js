@@ -24,12 +24,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserProfileAPI } from '../../APICall/ProfileApiCall/ProfileApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setClear } from '../../redux/slice/authSlice';
+import { useCompany } from '../../Context/CompanyContext';
+import { IMAGE_URL } from '../Config';
 
 const ProfileScreen = ({ navigation }) => {
   const [isLogoutPopupVisible, setIsLogoutPopupVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const token = useSelector(state => state.auth.token);
   const dispatch = useDispatch();
+  const { setCompanyProfile, setToken,companyProfile } = useCompany();
 
   const menuItems = [
     {
@@ -101,9 +104,14 @@ const ProfileScreen = ({ navigation }) => {
   const handleLogout = async () => {
     setIsLogoutPopupVisible(false);
 
-    await AsyncStorage.removeItem('isLoggedIn');
+    await AsyncStorage.removeItem('login');
     await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('rememberedPhone');
+    await AsyncStorage.removeItem('rememberedPassword');
+    await AsyncStorage.removeItem('user_type');
     dispatch(setClear());
+    setCompanyProfile(null)
+    setToken(null)
     navigation.navigate('LoginAccoundScreen');
     // Add your logout logic here
     console.log('User logged out');
@@ -146,11 +154,11 @@ const ProfileScreen = ({ navigation }) => {
             <View style={styles.profileCard}>
               <Image
                 source={{
-                  uri: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face&auto=format',
+                  uri: companyProfile?.profile_photo ? `${IMAGE_URL}${companyProfile?.profile_photo}`:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face&auto=format',
                 }}
                 style={styles.avatar}
               />
-              <Text style={styles.userName}>Jeswanth Kumar</Text>
+              <Text style={styles.userName}>{companyProfile?.name}</Text>
             </View>
           </ImageBackground>
 

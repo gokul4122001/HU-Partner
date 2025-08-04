@@ -3,7 +3,9 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fonts from '../HU-Partner/Components/Fonts/Fonts';
+import { useCompany } from './Components/Context/CompanyContext';
 const CustomHeader = ({ username = 'Akash Ambulance', onNotificationPress, onWalletPress }) => {
+  const { companyProfile } = useCompany();
   return (
     <View style={styles.headerContainer}>
       {/* Logo & Welcome Message */}
@@ -14,7 +16,7 @@ const CustomHeader = ({ username = 'Akash Ambulance', onNotificationPress, onWal
         />
         <View style={{ marginLeft: 10 }}>
           <Text style={styles.welcomeText}>Hi, Welcome</Text>
-          <Text style={styles.usernameText}>{username}</Text>
+          <Text style={styles.usernameText}>{companyProfile?.name}</Text>
         </View>
       </View>
 

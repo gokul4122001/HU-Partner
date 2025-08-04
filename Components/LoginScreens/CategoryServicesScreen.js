@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -20,23 +20,51 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Colors from '../Colors/Colors';
 import Fonts from '../Fonts/Fonts';
+import { getDistric, getStates } from '../APICall/CompanyLogin/ServiceFormApi';
+import { useCompany } from '../Context/CompanyContext';
 
 const MyReportsScreen = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [ambulanceType, setAmbulanceType] = useState(null);
   const [tempAmbulanceType, setTempAmbulanceType] = useState(null);
+  const { companyProfile } = useCompany();
 
   const services = [
-    { id: '1', name: 'Ambulance', image: require('../Assets/HomeAmbulance.png'), screen: 'Servicesform' },
-    { id: '2', name: 'Home Care Nursing', image: require('../Assets/Homecarenursing.png') },
-    { id: '3', name: 'Phisiotherapy', image: require('../Assets/phisiotherapy.png') },
+    {
+      id: '1',
+      name: 'Ambulance',
+      image: require('../Assets/HomeAmbulance.png'),
+      screen: 'Servicesform',
+    },
+    {
+      id: '2',
+      name: 'Home Care Nursing',
+      image: require('../Assets/Homecarenursing.png'),
+    },
+    {
+      id: '3',
+      name: 'Phisiotherapy',
+      image: require('../Assets/phisiotherapy.png'),
+    },
     { id: '4', name: 'Lap', image: require('../Assets/lap.png') },
-    { id: '5', name: 'Funeral & Mortuary Service', image: require('../Assets/murchary.png') },
-    { id: '6', name: 'Hospital', image: require('../Assets/myreportServiceHospital.png') },
+    {
+      id: '5',
+      name: 'Funeral & Mortuary Service',
+      image: require('../Assets/murchary.png'),
+    },
+    {
+      id: '6',
+      name: 'Hospital',
+      image: require('../Assets/myreportServiceHospital.png'),
+    },
     { id: '7', name: 'Clinics', image: require('../Assets/clinics.png') },
     { id: '8', name: 'Blood Bank', image: require('../Assets/report3.png') },
     { id: '9', name: 'Pharmacy', image: require('../Assets/report4.png') },
-    { id: '10', name: 'Medical Equipment', image: require('../Assets/mediequp.png') },
+    {
+      id: '10',
+      name: 'Medical Equipment',
+      image: require('../Assets/mediequp.png'),
+    },
   ];
 
   const chunkArray = (arr, size) => {
@@ -49,12 +77,12 @@ const MyReportsScreen = ({ navigation }) => {
 
   const serviceChunks = chunkArray(services, 3);
 
-  const renderCard = (item) => (
+  const renderCard = item => (
     <TouchableOpacity
       key={item.id}
       onPress={() => {
         if (item.name === 'Ambulance') {
-          setTempAmbulanceType(null); // Reset selection when opening modal
+          setTempAmbulanceType(null);
           setModalVisible(true);
         } else if (item.screen) {
           navigation.navigate(item.screen);
@@ -101,89 +129,101 @@ const MyReportsScreen = ({ navigation }) => {
           ))}
         </ScrollView>
 
-      <Modal
-  isVisible={isModalVisible}
-  onBackdropPress={() => setModalVisible(false)}
->
-  <View style={styles.modalContainer}>
-    <Text style={styles.modalTitle}>Note</Text>
-    <Text style={styles.modalText}>
-      Add more details about the ambulance service
-    </Text>
-
-    <Text style={styles.modalLabel}>Ambulance Service Type</Text>
-    <View style={styles.radioGroup}>
-      {/* Company */}
-      <TouchableOpacity
-        style={[
-          styles.radioButton,
-          tempAmbulanceType === 'Servicesform' && styles.radioSelected,
-        ]}
-        onPress={() => {
-          setTempAmbulanceType('Servicesform');
-          setModalVisible(false);
-          navigation.navigate('Servicesform');
-        }}
-      >
-        <RadioButton
-          value="Servicesform"
-          status={tempAmbulanceType === 'Servicesform' ? 'checked' : 'unchecked'}
-          onPress={() => {
-            setTempAmbulanceType('Servicesform');
-            setModalVisible(false);
-            navigation.navigate('Servicesform');
-          }}
-          color="#5D0E8A"
-        />
-        <Text style={styles.radioText}>Company</Text>
-      </TouchableOpacity>
-
-      {/* Driver */}
-      <TouchableOpacity
-        style={[
-          styles.radioButton,
-          tempAmbulanceType === 'Driver' && styles.radioSelected,
-        ]}
-        onPress={() => setTempAmbulanceType('Driver')}
-      >
-        <RadioButton
-          value="Driver"
-          status={tempAmbulanceType === 'Driver' ? 'checked' : 'unchecked'}
-          onPress={() => setTempAmbulanceType('Driver')}
-          color="#5D0E8A"
-        />
-        <Text style={styles.radioText}>Driver</Text>
-      </TouchableOpacity>
-    </View>
-
-    <View style={styles.loginRow}>
-      <Text style={styles.loginPrompt}>
-        Have you already registered?{' '}
-        <Text
-          style={styles.loginLink}
-          onPress={() => navigation.navigate('LoginAccoundScreen')}
+        <Modal
+          isVisible={isModalVisible}
+          onBackdropPress={() => setModalVisible(false)}
         >
-          Login
-        </Text>
-      </Text>
-    </View>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Note</Text>
+            <Text style={styles.modalText}>
+              Add more details about the ambulance service
+            </Text>
 
-    <TouchableOpacity
-      style={styles.submitButton}
-      onPress={() => {
-        if (tempAmbulanceType === 'Driver') {
-          setModalVisible(false);
-          navigation.navigate('Driver');
-        } else {
-          ToastAndroid.show('Please select a service type', ToastAndroid.SHORT);
-        }
-      }}
-    >
-      <Text style={styles.submitText}>Submit</Text>
-    </TouchableOpacity>
-  </View>
-</Modal>
+            <Text style={styles.modalLabel}>Ambulance Service Type</Text>
+            <View style={styles.radioGroup}>
+              {/* Company */}
+              <TouchableOpacity
+                style={[
+                  styles.radioButton,
+                  tempAmbulanceType === 'Servicesform' && styles.radioSelected,
+                ]}
+                onPress={() => {
+                  setTempAmbulanceType('Servicesform');
+                  setModalVisible(false);
+                  if (companyProfile && companyProfile?.approved === 1) {
+                    navigation.navigate('LoginAccoundScreen');
+                  } else {
+                    navigation.navigate('Servicesform');
+                  }
+                }}
+              >
+                <RadioButton
+                  value="Servicesform"
+                  status={
+                    tempAmbulanceType === 'Servicesform'
+                      ? 'checked'
+                      : 'unchecked'
+                  }
+                  onPress={() => {
+                    setTempAmbulanceType('Servicesform');
+                    setModalVisible(false);
+                    navigation.navigate('Servicesform');
+                  }}
+                  color="#5D0E8A"
+                />
+                <Text style={styles.radioText}>Company</Text>
+              </TouchableOpacity>
 
+              {/* Driver */}
+              <TouchableOpacity
+                style={[
+                  styles.radioButton,
+                  tempAmbulanceType === 'Driver' && styles.radioSelected,
+                ]}
+                onPress={() => setTempAmbulanceType('Driver')}
+              >
+                <RadioButton
+                  value="Driver"
+                  status={
+                    tempAmbulanceType === 'Driver' ? 'checked' : 'unchecked'
+                  }
+                  onPress={() => setTempAmbulanceType('Driver')}
+                  color="#5D0E8A"
+                />
+                <Text style={styles.radioText}>Driver</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.loginRow}>
+              <Text style={styles.loginPrompt}>
+                Have you already registered?{' '}
+                <Text
+                  style={styles.loginLink}
+                  onPress={() => navigation.navigate('LoginAccoundScreen')}
+                >
+                  Login
+                </Text>
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={() => {
+                if (tempAmbulanceType === 'Driver') {
+                  setModalVisible(false);
+                  navigation.navigate('Driver');
+                } else {
+                  ToastAndroid.show(
+                    'Please select a service type',
+                    ToastAndroid.SHORT,
+                  );
+                }
+              }}
+            >
+              <Text style={styles.submitText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </LinearGradient>
     </SafeAreaView>
   );

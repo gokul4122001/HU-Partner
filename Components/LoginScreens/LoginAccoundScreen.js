@@ -27,6 +27,7 @@ import LottieView from 'lottie-react-native';
 import { useDispatch } from 'react-redux';
 import { setAuthDetails } from '../redux/slice/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useCompany } from '../Context/CompanyContext';
 
 const { width, height } = Dimensions.get('window');
 
@@ -75,6 +76,7 @@ const LoginScreen = ({ navigation }) => {
   const [toastColor, setToastColor] = useState('#000');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const { setCompanyProfile, setToken, companyProfile } = useCompany();
 
   useEffect(() => {
     const loadCredentials = async () => {
@@ -129,8 +131,13 @@ const LoginScreen = ({ navigation }) => {
         setAuthDetails({
           access_token: res.access_token,
           user_type: res.user_type,
-        })
+        }),
       );
+      setToken(res.access_token)
+      await AsyncStorage.setItem('token', res.access_token);
+      await AsyncStorage.setItem('user_type', res.user_type);
+      await AsyncStorage.setItem('login', "true");
+      await AsyncStorage.setItem('rememberedPassword', password);
 
       if (rememberMe) {
         await AsyncStorage.setItem('rememberedPhone', phoneInput);
@@ -145,6 +152,8 @@ const LoginScreen = ({ navigation }) => {
         navigation.navigate('WelcomeSwipe');
       }, 1000);
     } catch (error) {
+      console.log(error);
+      
       let errorMsg = 'Login failed';
       if (error.response) {
         errorMsg =
@@ -166,9 +175,17 @@ const LoginScreen = ({ navigation }) => {
       end={{ x: 0, y: 1 }}
       style={styles.gradientContainer}
     >
-      <StatusBar barStyle="dark-content" backgroundColor="#7416B2" translucent />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="#7416B2"
+        translucent
+      />
       <SafeAreaView style={{ flex: 1 }}>
-        <Toast visible={toastVisible} message={toastMessage} backgroundColor={toastColor} />
+        <Toast
+          visible={toastVisible}
+          message={toastMessage}
+          backgroundColor={toastColor}
+        />
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
@@ -202,7 +219,8 @@ const LoginScreen = ({ navigation }) => {
               </View>
 
               <Text style={styles.subtitle}>
-                Your username and password credentials will be sent to your mobile number
+                Your username and password credentials will be sent to your
+                mobile number
               </Text>
 
               <View style={styles.inputGroup}>
@@ -250,7 +268,10 @@ const LoginScreen = ({ navigation }) => {
                   onPress={() => setRememberMe(!rememberMe)}
                 >
                   <View
-                    style={[styles.checkbox, rememberMe && styles.checkboxChecked]}
+                    style={[
+                      styles.checkbox,
+                      rememberMe && styles.checkboxChecked,
+                    ]}
                   >
                     {rememberMe && (
                       <Icons name="check" size={14} color="#FFFFFF" />
@@ -262,7 +283,9 @@ const LoginScreen = ({ navigation }) => {
                 <TouchableOpacity
                   onPress={() => navigation.navigate('ForgetPassword')}
                 >
-                  <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
+                  <Text style={styles.forgotPasswordText}>
+                    Forgot Password ?
+                  </Text>
                 </TouchableOpacity>
               </View>
 
@@ -294,7 +317,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   illustrationContainer: {
-    height: height * 0.40,
+    height: height * 0.4,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,

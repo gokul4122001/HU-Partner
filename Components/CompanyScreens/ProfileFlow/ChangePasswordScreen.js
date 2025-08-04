@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  Animated,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -21,6 +23,43 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Fonts from '../../Fonts/Fonts';
 import Colors from '../../Colors/Colors';
 import CustomHeader from '../../../Header';
+import { Change_Password } from '../../APICall/CompanyLogin/LoginApi';
+import { useDispatch, useSelector } from 'react-redux';
+
+const { width, height } = Dimensions.get('window');
+
+const Toast = ({ visible, message, backgroundColor }) => {
+  const slideAnim = useRef(new Animated.Value(-100)).current;
+
+  useEffect(() => {
+    if (visible) {
+      Animated.sequence([
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.delay(2500),
+        Animated.timing(slideAnim, {
+          toValue: -100,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [visible]);
+
+  return (
+    <Animated.View
+      style={[
+        toastStyles.toastContainer,
+        { transform: [{ translateY: slideAnim }], backgroundColor },
+      ]}
+    >
+      <Text style={toastStyles.toastText}>{message}</Text>
+    </Animated.View>
+  );
+};
 
 const ChangePasswordScreen = ({ navigation }) => {
   const [passwords, setPasswords] = useState({
@@ -28,6 +67,8 @@ const ChangePasswordScreen = ({ navigation }) => {
     newPassword: '',
     confirmPassword: '',
   });
+  const dispatch = useDispatch();
+    const { token } = useSelector(state => state.auth);
 
   const [showPasswords, setShowPasswords] = useState({
     currentPassword: false,
@@ -35,7 +76,11 @@ const ChangePasswordScreen = ({ navigation }) => {
     confirmPassword: false,
   });
 
-  const togglePasswordVisibility = (field) => {
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastColor, setToastColor] = useState('#4BB543');
+
+  const togglePasswordVisibility = field => {
     setShowPasswords(prev => ({
       ...prev,
       [field]: !prev[field],
@@ -49,40 +94,65 @@ const ChangePasswordScreen = ({ navigation }) => {
     }));
   };
 
+  const showToast = (msg, color) => {
+    setToastVisible(false);
+    setTimeout(() => {
+      setToastMessage(msg);
+      setToastColor(color);
+      setToastVisible(true);
+    }, 100);
+  };
+
   const validatePasswords = () => {
     if (!passwords.currentPassword.trim()) {
-      Alert.alert('Error', 'Please enter your current password');
+      showToast('Please enter your current password', '#FF4C4C');
       return false;
     }
     if (!passwords.newPassword.trim()) {
-      Alert.alert('Error', 'Please enter a new password');
+      showToast('Please enter a new password', '#FF4C4C');
       return false;
     }
     if (passwords.newPassword.length < 6) {
-      Alert.alert('Error', 'New password must be at least 6 characters long');
+      showToast('New password must be at least 6 characters long', '#FF4C4C');
       return false;
     }
     if (passwords.newPassword !== passwords.confirmPassword) {
-      Alert.alert('Error', 'New password and confirm password do not match');
+      showToast('New password and confirm password do not match', '#FF4C4C');
       return false;
     }
     return true;
   };
-
-  const handleApplyChanges = () => {
+  console.log(passwords,"token");
+  
+  const handleApplyChanges = async () => {
     if (validatePasswords()) {
-      console.log('Password change request:', {
-        currentPassword: passwords.currentPassword,
-        newPassword: passwords.newPassword,
-      });
-      Alert.alert('Success', 'Password changed successfully!', [
-        {
-          text: 'OK',
-          onPress: () => {
-            console.log('Password changed successfully');
-          },
-        },
-      ]);
+      try {
+        const res = await Change_Password(
+          passwords.currentPassword,
+          passwords.newPassword,
+          token
+        );
+
+        showToast('Password changed successfully!', '#4BB543');
+
+        setPasswords({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+
+        console.log('Password change request:', {
+          currentPassword: passwords.currentPassword,
+          newPassword: passwords.newPassword,
+        });
+      } catch (error) {
+        console.log('Password change error:', error);
+
+        const errorMsg =
+          error?.response?.data?.message ||
+          'Failed to change password. Please try again.';
+        showToast(errorMsg, '#FF4C4C');
+      }
     }
   };
 
@@ -117,6 +187,11 @@ const ChangePasswordScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.statusBar} />
+      <Toast
+        visible={toastVisible}
+        message={toastMessage}
+        backgroundColor={toastColor}
+      />
       <LinearGradient
         colors={['#ffffff', '#C3DFFF']}
         start={{ x: 0, y: 0.3 }}
@@ -164,21 +239,21 @@ const ChangePasswordScreen = ({ navigation }) => {
                 'Current Password',
                 passwords.currentPassword,
                 text => updatePassword('currentPassword', text),
-                'currentPassword'
+                'currentPassword',
               )}
 
               {renderPasswordField(
                 'New Password',
                 passwords.newPassword,
                 text => updatePassword('newPassword', text),
-                'newPassword'
+                'newPassword',
               )}
 
               {renderPasswordField(
                 'Confirm New Password',
                 passwords.confirmPassword,
                 text => updatePassword('confirmPassword', text),
-                'confirmPassword'
+                'confirmPassword',
               )}
             </View>
           </View>
@@ -308,6 +383,25 @@ const styles = StyleSheet.create({
     fontSize: Fonts.size.PageHeading,
     fontWeight: '600',
     fontFamily: Fonts.family.regular,
+  },
+});
+
+const toastStyles = StyleSheet.create({
+  toastContainer: {
+    position: 'absolute',
+    top: 50,
+    alignSelf: 'center',
+    zIndex: 1000,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 10,
+    elevation: 5,
+    maxWidth: width * 0.9,
+  },
+  toastText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 

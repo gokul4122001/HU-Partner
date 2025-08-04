@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,43 +10,63 @@ import {
   SafeAreaView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import CustomHeader from '../../../Header'; 
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import CustomHeader from '../../../Header';
 import Fonts from '../../Fonts/Fonts';
 import Icon from 'react-native-vector-icons/Feather';
-
-
-
+import { useSelector } from 'react-redux';
+import { Driver_List } from '../../APICall/CompanyLogin/ServiceFormApi';
+import { useFocusEffect } from '@react-navigation/native';
+import { IMAGE_URL } from '../Config';
 const App = ({ navigation }) => {
-  const drivers = [
-    {
-      id: 'AK0215',
-      name: 'Selva Kumar',
-      contact: '9345665447',
-      email: 'selvakumar@gmail.com',
-      gender: 'Male',
-      dateOfBirth: '03/06/2002',
-      age: 22,
-      status: 'ON DUTY',
-      avatar: require('../../Assets/profile.png'),
-    },
-    {
-      id: 'AK0216',
-      name: 'Raj Kumar',
-      contact: '9345123456',
-      email: 'rajkumar@gmail.com',
-      gender: 'Male',
-      dateOfBirth: '01/01/2000',
-      age: 24,
-      status: 'ON DUTY',
-      avatar: require('../../Assets/profile.png'),
-    },
-  ];
+  const { token } = useSelector(state => state.auth);
+  const [drivers, setDrivers] = useState([]);
+  // const drivers = [
+  //   {
+  //     id: 'AK0215',
+  //     name: 'Selva Kumar',
+  //     contact: '9345665447',
+  //     email: 'selvakumar@gmail.com',
+  //     gender: 'Male',
+  //     dateOfBirth: '03/06/2002',
+  //     age: 22,
+  //     status: 'ON DUTY',
+  //     avatar: require('../../Assets/profile.png'),
+  //   },
+  //   {
+  //     id: 'AK0216',
+  //     name: 'Raj Kumar',
+  //     contact: '9345123456',
+  //     email: 'rajkumar@gmail.com',
+  //     gender: 'Male',
+  //     dateOfBirth: '01/01/2000',
+  //     age: 24,
+  //     status: 'ON DUTY',
+  //     avatar: require('../../Assets/profile.png'),
+  //   },
+  // ];
+
+  const fetchData = useCallback(async () => {
+    console.log(token, 'res');
+    const res = await Driver_List(token);
+    setDrivers(res?.data);
+  }, [token]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [fetchData]),
+  );
 
   const DriverCard = ({ driver }) => (
     <View style={styles.driverCard}>
       <View style={styles.driverHeader}>
-        <Image source={driver.avatar} style={styles.avatar} />
+        <Image   source={{
+                  uri: driver?.profile ? `${IMAGE_URL}${driver?.profile}`:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face&auto=format',
+                }} style={styles.avatar} />
         <View style={styles.driverInfo}>
           <View style={styles.nameRow}>
             <Text style={styles.driverName}>{driver.name}</Text>
@@ -60,16 +80,16 @@ const App = ({ navigation }) => {
       </View>
 
       <View style={styles.driverDetails}>
-        <Text style={styles.detailText}>Contact No : {driver.contact}</Text>
+        <Text style={styles.detailText}>Contact No : {driver.contact_no}</Text>
         <Text style={styles.detailText}>Email ID : {driver.email}</Text>
         <Text style={styles.detailText}>Gender : {driver.gender}</Text>
         <View style={styles.dobAgeRow}>
-          <Text style={styles.detailText}>Date of Birth : {driver.dateOfBirth}</Text>
+          <Text style={styles.detailText}>Date of Birth : {driver.dob}</Text>
           <Text style={styles.ageText}>Age : {driver.age}</Text>
         </View>
       </View>
 
-      <TouchableOpacity style={styles.viewDetailsButton}>
+      <TouchableOpacity style={styles.viewDetailsButton} onPress={()=>navigation.navigate("ServiceHospitalDetailScreen",{item:driver})}>
         <Text style={styles.viewDetailsText}>View Details</Text>
       </TouchableOpacity>
     </View>
@@ -103,13 +123,17 @@ const App = ({ navigation }) => {
           ))}
 
           <TouchableOpacity
-  style={styles.addButton}
-  onPress={() => navigation.navigate('ServiceHospitalScreen')}
->
-  <Icon name="plus" size={24} color="#fff" style={styles.addButtonIcon} />
-  <Text style={styles.addButtonText}>Add New Driver</Text>
-</TouchableOpacity>
-
+            style={styles.addButton}
+            onPress={() => navigation.navigate('ServiceHospitalScreen')}
+          >
+            <Icon
+              name="plus"
+              size={24}
+              color="#fff"
+              style={styles.addButtonIcon}
+            />
+            <Text style={styles.addButtonText}>Add New Driver</Text>
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>
@@ -124,7 +148,7 @@ const styles = StyleSheet.create({
     height: hp('100%'),
   },
   pageTitle: {
-      fontSize: Fonts.size.PageHeading,
+    fontSize: Fonts.size.PageHeading,
     fontWeight: 'bold',
     color: '#8B5CF6',
     textAlign: 'center',
@@ -189,7 +213,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   driverId: {
-     fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
 
     color: '#6B7280',
     fontWeight: '500',
@@ -198,7 +222,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   detailText: {
-       fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
 
     color: '#374151',
     marginBottom: 4,
@@ -208,26 +232,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   ageText: {
-       fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
 
     color: '#374151',
   },
   viewDetailsButton: {
-  backgroundColor: '#7518AA',
-  paddingVertical: 10,
-  borderRadius: 8,
-  alignSelf: 'flex-end',
+    backgroundColor: '#7518AA',
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignSelf: 'flex-end',
 
-  // ✅ Added size
-  height: 40,
-  width: 150,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
+    // ✅ Added size
+    height: 40,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
   viewDetailsText: {
     color: 'white',
-      fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
     fontWeight: 'bold',
   },
   addButton: {
@@ -251,7 +275,7 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: 'white',
-       fontSize: Fonts.size.PageSubheading,
+    fontSize: Fonts.size.PageSubheading,
     fontWeight: 'bold',
   },
 });

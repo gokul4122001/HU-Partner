@@ -14,6 +14,7 @@ import WelcomeSwipe from './Components/LoginScreens/WelcomeSwipeScreen.js';
 import Header from './Header.js';
 import { Provider } from 'react-redux';
 import store from './Components/redux/store';
+// import AmbulanceAddRegisterPage from '../../CompanyScreens/CompanyAmbulanceAddFlow/AmbulanceAddRegisterPage';
 
 const Stack = createNativeStackNavigator();
 //hi
@@ -24,7 +25,9 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator
             initialRouteName="Login1"
-            screenOptions={{ headerShown: false }}
+            screenOptions={{ headerShown: false,
+               keyboardHandlingEnabled: false,
+             }}
           >
             <Stack.Screen name="Header" component={Header} />
             <Stack.Screen name="MainApp" component={BottomTabs} />

@@ -12,6 +12,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import Fonts from '../Fonts/Fonts';
 import Colors from '../Colors/Colors';
+import { useDispatch } from 'react-redux';
+import { setAuthDetails } from '../redux/slice/authSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 const radius = width * 0.35;
@@ -31,27 +34,40 @@ const icons = [
 export default function App() {
   const rotation = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(rotation, {
+        toValue: 1,
+        duration: 10000,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      }),
+    ).start();
 
+    const timer = setTimeout(async () => {
+      const login = await AsyncStorage.getItem('login');
+      const token = await AsyncStorage.getItem('token');
+      const user_type = await AsyncStorage.getItem('user_type');
+      if (login  && token && user_type) {
+        dispatch(
+          setAuthDetails({
+            access_token: token,
+            user_type: user_type,
+          }),
+        );
+        if(user_type?.toString() === "company"){
+            navigation.replace('MainApp');
+        }
+      }
+      else{
+        navigation.replace('Services');
+      }
 
-  
+    }, 1500);
 
-useEffect(() => {
-  Animated.loop(
-    Animated.timing(rotation, {
-      toValue: 1,
-      duration: 10000,
-      useNativeDriver: true,
-      easing: Easing.linear,
-    }),
-  ).start();
-
-  const timer = setTimeout(() => {
-    navigation.replace('Services'); 
-  }, 2000);
-
-  return () => clearTimeout(timer);
-}, []);
-
+    return () => clearTimeout(timer);
+  }, []);
 
   const spin = rotation.interpolate({
     inputRange: [0, 1],

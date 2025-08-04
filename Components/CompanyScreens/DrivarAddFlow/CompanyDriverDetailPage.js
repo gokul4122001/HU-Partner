@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -14,27 +14,49 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomHeader from '../../../Header'; // Adjust this import path
 import Fonts from '../../Fonts/Fonts';
+import { useCompany } from '../../Context/CompanyContext';
+import { Driver_One } from '../../APICall/CompanyLogin/ServiceFormApi';
 
-const DriverDetailsScreen = () => {
+const DriverDetailsScreen = ({ route }) => {
+  const editData = route.params?.item;
+  
+  const { token } = useCompany();
+  const [item, setItem] = useState(null);
+  console.log(item,"item");
+  
   const navigation = useNavigation();
+
+  const fetchEditData = async () => {
+    const res = await Driver_One(token, editData?.id);
+    setItem(res);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (editData) {
+        fetchEditData();
+      }
+    }, [editData]),
+  );
 
   return (
     <LinearGradient
       colors={['#ffffff', '#C3DFFF']}
-      start={{x: 0, y: 0.3}}
-      end={{x: 0, y: 0}}
-      style={styles.topBackground}>
+      start={{ x: 0, y: 0.3 }}
+      end={{ x: 0, y: 0 }}
+      style={styles.topBackground}
+    >
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       <View style={styles.container}>
         <CustomHeader />
 
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}>
-
+          showsVerticalScrollIndicator={false}
+        >
           {/* Header with Back Icon */}
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -53,17 +75,23 @@ const DriverDetailsScreen = () => {
 
           {/* Summary */}
           <View style={styles.summaryContainer}>
-            <View style={[styles.summaryBox, {backgroundColor: '#FEF3C7'}]}>
+            <View style={[styles.summaryBox, { backgroundColor: '#FEF3C7' }]}>
               <Text style={styles.summaryTitle}>Earnings</Text>
-              <Text style={[styles.summaryValue, {color: '#F59E0B'}]}>20K</Text>
+              <Text style={[styles.summaryValue, { color: '#F59E0B' }]}>
+                20K
+              </Text>
             </View>
-            <View style={[styles.summaryBox, {backgroundColor: '#DBEAFE'}]}>
+            <View style={[styles.summaryBox, { backgroundColor: '#DBEAFE' }]}>
               <Text style={styles.summaryTitle}>Completed</Text>
-              <Text style={[styles.summaryValue, {color: '#3B82F6'}]}>150</Text>
+              <Text style={[styles.summaryValue, { color: '#3B82F6' }]}>
+                150
+              </Text>
             </View>
-            <View style={[styles.summaryBox, {backgroundColor: '#FEE2E2'}]}>
+            <View style={[styles.summaryBox, { backgroundColor: '#FEE2E2' }]}>
               <Text style={styles.summaryTitle}>Rejected</Text>
-              <Text style={[styles.summaryValue, {color: '#EF4444'}]}>50</Text>
+              <Text style={[styles.summaryValue, { color: '#EF4444' }]}>
+                50
+              </Text>
             </View>
           </View>
 
@@ -75,7 +103,7 @@ const DriverDetailsScreen = () => {
                 style={styles.profileImage}
               />
               <View>
-                <Text style={styles.name}>Selva Kumar</Text>
+                <Text style={styles.name}>{item?.name}</Text>
                 <Text style={styles.id}>ID no : AK0215</Text>
               </View>
               <View style={styles.statusBadge}>
@@ -163,24 +191,33 @@ const DriverDetailsScreen = () => {
           {/* Card 4 - Documents */}
           <View style={styles.card}>
             <View style={styles.docRow}>
-              {['Driver License', 'ID Proof', 'Medical Fitness', 'Profile Image'].map(
-                (item, index) => (
-                  <View key={index} style={styles.docCard}>
-                    <Icon name="picture-as-pdf" size={30} color="#8B5CF6" />
-                    <Text style={styles.docTitle}>{item}</Text>
-                    <Text style={styles.docSubtitle}>Document name</Text>
-                  </View>
-                )
-              )}
+              {[
+                'Driver License',
+                'ID Proof',
+                'Medical Fitness',
+                'Profile Image',
+              ].map((item, index) => (
+                <View key={index} style={styles.docCard}>
+                  <Icon name="picture-as-pdf" size={30} color="#8B5CF6" />
+                  <Text style={styles.docTitle}>{item}</Text>
+                  <Text style={styles.docSubtitle}>Document name</Text>
+                </View>
+              ))}
             </View>
           </View>
 
           {/* Footer Buttons */}
           <View style={styles.footerButtons}>
-            <TouchableOpacity style={styles.footerButton1}   onPress={() => navigation.navigate('FormPage')}>
+            <TouchableOpacity
+              style={styles.footerButton1}
+              onPress={() => navigation.navigate('FormPage')}
+            >
               <Text style={styles.footerButtonText1}>View Ambulance</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerButton}   onPress={() => navigation.navigate('TrackAmbulance')}>
+            <TouchableOpacity
+              style={styles.footerButton}
+              onPress={() => navigation.navigate('TrackAmbulance')}
+            >
               <Text style={styles.footerButtonText}>Track Driver</Text>
             </TouchableOpacity>
           </View>
@@ -227,7 +264,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e5e7eb',
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 1.41,
     elevation: 2,
@@ -389,7 +426,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: Fonts.size.PageHeading,
   },
-   footerButton1: {
+  footerButton1: {
     backgroundColor: '#DBDBDB',
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -400,5 +437,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: Fonts.size.PageHeading,
   },
-
 });
